@@ -1,0 +1,23 @@
+{
+  "_comment": "Manual corrections applied by scripts/apply-overrides.mjs after build-adventure. passes: keyed by day slug, each entry matches a detected high point by elevation (±25 m); name null = drop it. add = extra passes the detector missed.",
+  "places": {
+    "Brenner - Brennero": "Brenner",
+    "Prad am Stilfserjoch - Prato allo Stelvio": "Prato allo Stelvio"
+  },
+  "passes": {
+    "day-03": [{ "ele": 1794, "name": "Arlbergpass", "official": 1793 }],
+    "day-05": [{ "ele": 2095, "name": "Passo di Monte Giovo (Jaufenpass)", "official": 2094 }, { "ele": 909, "name": null }],
+    "day-06": [
+      { "ele": 2752, "name": "Passo dello Stelvio", "official": 2757 },
+      { "ele": 2286, "name": "Passo di Foscagno", "official": 2291 },
+      { "ele": 2308, "name": "Forcola di Livigno", "official": 2315 },
+      { "ele": 2327, "name": "Passo del Bernina", "official": 2328 }
+    ],
+    "day-07": [{ "ele": 2317, "name": "Albulapass", "official": 2312 }, { "ele": 937, "name": null }],
+    "day-08": [{ "ele": 2049, "name": "Oberalppass", "official": 2044 }, { "ele": 2438, "name": "Furkapass", "official": 2429 }],
+    "day-09": [{ "ele": 1535, "name": "Col de la Forclaz", "official": 1527 }, { "ele": 1466, "name": "Col des Montets", "official": 1461 }, { "ele": 1112, "name": null }]
+  },
+  "add": {
+    "day-04": [{ "atEnd": true, "name": "Brenner Pass", "official": 1370 }]
+  }
+}

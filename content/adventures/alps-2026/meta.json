@@ -1,0 +1,11 @@
+{
+  "order": 1,
+  "riders": 2,
+  "title": { "en": "Crossing the Alps", "fr": "La traversée des Alpes" },
+  "tagline": { "en": "Zurich → Albertville, two riders, nine days", "fr": "Zurich → Albertville, à deux, en neuf jours" },
+  "intro": {
+    "en": "[WIP] Nine days, four countries and a dozen passes — from the lakes of Zurich to the Arlberg, over the Brenner into Italy, up the Stelvio, across the Engadine and the Swiss high passes, then down into Savoie.",
+    "fr": "[WIP] Neuf jours, quatre pays et une douzaine de cols — des lacs de Zurich à l'Arlberg, le Brenner pour basculer en Italie, le Stelvio, l'Engadine et les grands cols suisses, avant de redescendre en Savoie."
+  },
+  "sport": { "en": "Road cycling", "fr": "Cyclisme sur route" }
+}
