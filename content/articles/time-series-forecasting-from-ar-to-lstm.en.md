@@ -3,6 +3,8 @@ title: "Time series forecasting: from AR to LSTM"
 summary: "Stationarity, AR, MA, ARIMA, SARIMAX and LSTM in plain words, and how I choose between them."
 category: "data-science"
 date: "2026-11-10"
+written: "2023-06"
+scene: "wave"
 readingMinutes: 5
 order: 4
 ---

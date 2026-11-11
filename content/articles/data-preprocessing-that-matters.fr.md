@@ -3,6 +3,8 @@ title: "Prétraitement des données : les neuf étapes qui comptent"
 summary: "Valeurs aberrantes, valeurs manquantes, mise à l'échelle, encodage, sélection et enrichissement : ma checklist avant tout modèle."
 category: "data-science"
 date: "2026-11-10"
+written: "2023-06"
+scene: "sieve"
 readingMinutes: 5
 order: 2
 ---

@@ -3,6 +3,8 @@ title: "Choosing the right metric for your model"
 summary: "Confusion matrix, precision, recall, F-scores, ROC-AUC, R2, MAE, MAPE, silhouette: what each one really tells you."
 category: "data-science"
 date: "2026-11-10"
+written: "2023-06"
+scene: "target"
 readingMinutes: 5
 order: 5
 ---

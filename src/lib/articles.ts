@@ -6,7 +6,7 @@ import type { Locale } from "./i18n";
 
 const DIR = path.join(process.cwd(), "content", "articles");
 
-export type ArticleMeta = { slug: string; title: string; summary: string; category: string; date: string; readingMinutes: number; order: number };
+export type ArticleMeta = { slug: string; title: string; summary: string; category: string; date: string; written?: string; scene?: string; readingMinutes: number; order: number };
 export type Article = ArticleMeta & { html: string };
 
 function read(slug: string, locale: Locale) {

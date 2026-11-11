@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Adventure, Day } from "@/lib/adventures";
 import { fmtDate, fmtDuration, fmtNum, type Dict, type Locale } from "@/lib/i18n";
 import { CubeProfile, type Mark } from "./CubeProfile";
+import { JourneyScroll } from "./JourneyScroll";
+import { Terrain3D } from "./Terrain3D";
 import { RouteMap } from "./RouteMap";
 import { Scramble } from "./Scramble";
 
@@ -116,6 +118,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
     () => day.passes.filter((p) => p.name).map((p) => ({ at: Math.min(0.999, (p.km * 1000) / P.d[P.d.length - 1]), label: p.name!, sub: `${fmtNum(p.eleOfficial ?? p.ele, locale)} m` })),
     [day, P, locale],
   );
+  const markAt = useMemo(() => marks.map((m) => m.at), [marks]);
   const pins = useMemo(() => day.passes.filter((p) => p.name && p.lat != null).map((p) => ({ at: [p.lat!, p.lon!] as [number, number], label: p.name! })), [day]);
   const hasTransfer = useMemo(() => track.some((p, i) => i > 0 && Math.hypot((p[0] - track[i - 1][0]) * 111, (p[1] - track[i - 1][1]) * 78) > 2.5), [track]);
 
@@ -161,6 +164,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
             {adv.cover ? <img src={adv.cover} alt="" /> : <span className="label">Cover photo</span>}
           </div>
         </div>
+        <JourneyScroll src={`/adventures/${adv.slug}/terrain/overview.json`} summary={summary} dict={dict} locale={locale} />
         <dl className="stat-grid totals">
           {totals.map(([k, v, u]) => (
             <div key={k} className="stat">
@@ -230,7 +234,16 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
 
         <div className="panel">
           <div className="panel-head">
-            <h3 className="label">[ 01 ] {t.profile}</h3>
+            <h3 className="label">[ 01 ] {t.terrain}</h3>
+            <span className="label dim terrain-hint">↔ {t.terrainHint}</span>
+          </div>
+          <Terrain3D key={day.slug} src={`/adventures/${adv.slug}/terrain/${day.slug}.json`} cursor={cur} marks={markAt} label={`${t.terrain} — ${place(day.start)} → ${place(day.end)}`} />
+          <p className="note">{t.terrainNote}</p>
+        </div>
+
+        <div className="panel">
+          <div className="panel-head">
+            <h3 className="label">[ 02 ] {t.profile}</h3>
             <div className="chips" role="group" aria-label={t.shadeBy}>
               <span className="label dim">{t.shadeBy}</span>
               {(["grade", "hr", "sp", "t"] as const).map((m) => (
@@ -238,7 +251,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
               ))}
             </div>
           </div>
-          <CubeProfile ele={P.e} shade={shade} marks={marks} cursor={cur} onHover={setCur} height={360} label={`${t.profile} — ${place(day.start)} → ${place(day.end)}`} />
+          <CubeProfile ele={P.e} shade={shade} marks={marks} cursor={cur} onHover={setCur} height={230} label={`${t.profile} — ${place(day.start)} → ${place(day.end)}`} />
           <div className="readout" aria-live="off">
             {ci == null ? (
               <span className="dim">↔ {t.hoverHint}</span>
@@ -269,12 +282,12 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
 
         <div className="split">
           <div className="panel">
-            <div className="panel-head"><h3 className="label">[ 02 ] {t.satellite}</h3></div>
+            <div className="panel-head"><h3 className="label">[ 03 ] {t.satellite}</h3></div>
             <RouteMap track={track} date={day.date} cursor={cursorLL} pins={pins} labels={{ day: t.layerDay, sharp: t.layerSharp, map: t.layerMap, color: t.color }} />
             <p className="note">{t.satNote}</p>
           </div>
           <div className="panel">
-            <div className="panel-head"><h3 className="label">[ 03 ] {t.weather}</h3></div>
+            <div className="panel-head"><h3 className="label">[ 04 ] {t.weather}</h3></div>
             <p className="wx-line"><Scramble text={wxLine} duration={700} /></p>
             <div className="table-scroll">
               <table className="wx">
@@ -301,7 +314,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
               </table>
             </div>
             <p className="note">{t.weatherNote}</p>
-            <div className="panel-head sub"><h3 className="label">[ 04 ] {t.device}</h3></div>
+            <div className="panel-head sub"><h3 className="label">[ 05 ] {t.device}</h3></div>
             <Spark values={P.hr} cursor={cur} unit="bpm" label={t.metrics.hr} />
             <Spark values={P.sp} cursor={cur} unit="km/h" label={t.metrics.sp} />
             <Spark values={P.t} cursor={cur} unit="°C" label={t.metrics.t} />
@@ -310,7 +323,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
         </div>
 
         <div className="panel">
-          <div className="panel-head"><h3 className="label">[ 05 ] {t.photos}</h3></div>
+          <div className="panel-head"><h3 className="label">[ 06 ] {t.photos}</h3></div>
           <div className="photos">
             {day.photos.length
               ? day.photos.map((src) => <figure key={src} className="frame"><img src={src} alt="" loading="lazy" /></figure>)
@@ -321,7 +334,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
         </div>
 
         <div className="panel">
-          <div className="panel-head"><h3 className="label">[ 06 ] {t.notes}</h3></div>
+          <div className="panel-head"><h3 className="label">[ 07 ] {t.notes}</h3></div>
           {day.notesHtml ? (
             <div className="prose" dangerouslySetInnerHTML={{ __html: day.notesHtml }} />
           ) : (

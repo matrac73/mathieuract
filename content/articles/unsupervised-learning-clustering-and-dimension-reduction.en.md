@@ -3,6 +3,8 @@ title: "Unsupervised learning: clustering and dimension reduction"
 summary: "K-means, hierarchical clustering, DBSCAN, PCA and NMF: how each one works and when I reach for it."
 category: "data-science"
 date: "2026-11-10"
+written: "2023-06"
+scene: "clusters"
 readingMinutes: 5
 order: 3
 ---

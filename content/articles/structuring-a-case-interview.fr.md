@@ -3,6 +3,8 @@ title: "Comment structurer une étude de cas en entretien"
 summary: "Clarifier, bâtir un arbre MECE, prioriser et conclure par une recommandation : la méthode que j'ai rodée sur des cas de stratégie."
 category: "consulting"
 date: "2026-11-10"
+written: "2024-10"
+scene: "tree"
 readingMinutes: 5
 order: 7
 ---

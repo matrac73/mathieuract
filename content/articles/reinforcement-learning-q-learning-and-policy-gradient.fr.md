@@ -3,6 +3,8 @@ title: "Apprentissage par renforcement : Q-learning et policy gradient"
 summary: "Deux façons d'apprendre à un agent par essais et erreurs, expliquées sur une petite grille avec obstacles."
 category: "data-science"
 date: "2026-11-10"
+written: "2023-06"
+scene: "maze"
 readingMinutes: 5
 order: 6
 ---

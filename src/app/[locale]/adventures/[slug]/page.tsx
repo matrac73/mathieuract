@@ -25,7 +25,7 @@ export default async function AdventurePage({ params }: P) {
   const index = all.length - all.findIndex((a) => a.slug === slug);
   return (
     <div className="page adventure">
-      <Link href={`/${locale}/adventures`} className="back label">← {dict.adv.allAdventures}</Link>
+      <Link href={`/${locale}/perso#adventures`} className="back label">← {dict.adv.allAdventures}</Link>
       <AdventureExplorer adv={adv} days={getDays(slug, locale)} dict={dict} locale={locale} index={index} />
     </div>
   );

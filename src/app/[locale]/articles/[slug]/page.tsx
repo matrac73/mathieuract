@@ -24,9 +24,9 @@ export default async function ArticlePage({ params }: P) {
   const next = all[(all.findIndex((x) => x.slug === slug) + 1) % all.length];
   return (
     <article className="page article">
-      <Link href={`/${locale}/articles`} className="back label">← {d.articles.back}</Link>
+      <Link href={`/${locale}/pro#career`} className="back label">← {d.articles.back}</Link>
       <header className="article-head">
-        <p className="label">[ {d.articles.categories[a.category] ?? a.category} ] {a.readingMinutes} {d.articles.min} · {fmtDate(a.date, locale)}</p>
+        <p className="label">[ {d.articles.categories[a.category] ?? a.category} ] {a.readingMinutes} {d.articles.min} · {fmtDate(`${a.written ?? a.date.slice(0, 7)}-15`, locale, { month: "long", year: "numeric" })}</p>
         <h1 className="display small">{a.title}</h1>
         <p className="lead">{a.summary}</p>
       </header>

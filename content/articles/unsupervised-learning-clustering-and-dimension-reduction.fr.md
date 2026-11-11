@@ -3,6 +3,8 @@ title: "Apprentissage non supervisé : clustering et réduction de dimension"
 summary: "K-means, clustering hiérarchique, DBSCAN, ACP et NMF : comment chacun fonctionne et quand je m'en sers."
 category: "data-science"
 date: "2026-11-10"
+written: "2023-06"
+scene: "clusters"
 readingMinutes: 5
 order: 3
 ---

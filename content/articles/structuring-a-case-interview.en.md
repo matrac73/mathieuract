@@ -3,6 +3,8 @@ title: "How to structure a case interview"
 summary: "Clarify, build a MECE issue tree, prioritise, and close with a recommendation: the method I drilled on strategy cases."
 category: "consulting"
 date: "2026-11-10"
+written: "2024-10"
+scene: "tree"
 readingMinutes: 5
 order: 7
 ---

@@ -3,6 +3,8 @@ title: "Le pipeline de machine learning, de bout en bout"
 summary: "Les huit étapes que je suis sur chaque projet de ML, de l'import des données au tuning, et où part vraiment le temps."
 category: "data-science"
 date: "2026-11-10"
+written: "2023-06"
+scene: "stairs"
 readingMinutes: 4
 order: 1
 ---

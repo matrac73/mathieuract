@@ -3,6 +3,8 @@ title: "Prévision de séries temporelles : de l'AR au LSTM"
 summary: "Stationnarité, AR, MA, ARIMA, SARIMAX et LSTM expliqués simplement, et comment je choisis entre eux."
 category: "data-science"
 date: "2026-11-10"
+written: "2023-06"
+scene: "wave"
 readingMinutes: 5
 order: 4
 ---

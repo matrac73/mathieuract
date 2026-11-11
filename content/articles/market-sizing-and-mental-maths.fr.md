@@ -3,6 +3,8 @@ title: "Market sizing et calcul mental pour les entretiens de cas"
 summary: "Estimations top-down et bottom-up, segmentation, arrondis, raccourcis de croissance et d'actualisation, et test de cohérence."
 category: "consulting"
 date: "2026-11-10"
+written: "2024-10"
+scene: "bars"
 readingMinutes: 5
 order: 8
 ---

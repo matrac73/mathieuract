@@ -3,6 +3,8 @@ title: "Reinforcement learning: Q-learning and policy gradient"
 summary: "Two ways to teach an agent by trial and error, explained on a small grid world with obstacles."
 category: "data-science"
 date: "2026-11-10"
+written: "2023-06"
+scene: "maze"
 readingMinutes: 5
 order: 6
 ---

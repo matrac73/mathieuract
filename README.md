@@ -13,7 +13,7 @@ npm run build
 
 | What | Where |
 |---|---|
-| Profile, CV, skills, contacts, project list | `src/content/site.ts` |
+| Tagline, life stages of the timeline game, career, CV, skills, contacts, project list | `src/content/site.ts` |
 | UI strings (EN / FR) | `src/lib/i18n.ts` |
 | Articles (one `.en.md` + one `.fr.md` per slug) | `content/articles/` |
 | Adventures (data, notes) | `content/adventures/<slug>/` |

@@ -3,6 +3,8 @@ title: "Choisir la bonne métrique pour son modèle"
 summary: "Matrice de confusion, précision, rappel, F-scores, ROC-AUC, R2, MAE, MAPE, silhouette : ce que chacune dit vraiment."
 category: "data-science"
 date: "2026-11-10"
+written: "2023-06"
+scene: "target"
 readingMinutes: 5
 order: 5
 ---

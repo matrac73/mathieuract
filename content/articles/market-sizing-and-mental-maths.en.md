@@ -3,6 +3,8 @@ title: "Market sizing and mental maths for case interviews"
 summary: "Top-down and bottom-up estimates, segmentation, rounding, growth and discounting shortcuts, and the sanity check."
 category: "consulting"
 date: "2026-11-10"
+written: "2024-10"
+scene: "bars"
 readingMinutes: 5
 order: 8
 ---

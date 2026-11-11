@@ -37,6 +37,7 @@ The build script currently reads the Garmin layout (`activities.json` + zipped F
 node scripts/build-adventure.mjs <slug>     # FIT → days/*.json + summary.json, weather, place names
 node scripts/name-passes.mjs <slug>         # optional: names high points from OpenStreetMap
 node scripts/apply-overrides.mjs <slug>     # applies overrides.json (manual pass / place names)
+node scripts/build-terrain.mjs <slug>       # real relief for the 3D cube view + the scroll map (public/adventures/<slug>/terrain/)
 ```
 
 Rides on the same calendar day are merged into one stage.

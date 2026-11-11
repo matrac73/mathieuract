@@ -9,7 +9,8 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dict }) {
   const pathname = usePathname() ?? `/${locale}`;
   const rest = pathname.replace(/^\/(en|fr)/, "");
   const other: Locale = locale === "en" ? "fr" : "en";
-  const items = (["profile", "projects", "articles", "adventures"] as const).map((k) => ({ k, href: `/${locale}/${k}`, label: dict.nav[k] }));
+  const items = (["pro", "perso"] as const).map((k) => ({ k, href: `/${locale}/${k}`, label: dict.nav[k] }));
+  const section = /^\/(articles|cv)/.test(rest) ? "pro" : /^\/adventures/.test(rest) ? "perso" : rest.split("/")[1];
 
   const setLang = () => {
     document.cookie = `lang=${other}; path=/; max-age=31536000; samesite=lax`;
@@ -29,7 +30,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dict }) {
       </Link>
       <nav className="nav" aria-label="Main">
         {items.map(({ k, href, label }, i) => (
-          <Link key={k} href={href} className={rest.startsWith(`/${k}`) ? "active" : ""}>
+          <Link key={k} href={href} className={section === k ? "active" : ""}>
             <span className="nav-n" aria-hidden>0{i + 1}</span>
             <HoverScramble text={label} />
           </Link>

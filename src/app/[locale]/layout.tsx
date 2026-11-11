@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Doto, Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
+import { Year } from "@/components/Year";
 import { getDict, isLocale, locales } from "@/lib/i18n";
 import { site } from "@/content/site";
 import "../globals.css";
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const d = getDict(isLocale(locale) ? locale : "en");
   return {
     metadataBase: new URL(site.url),
-    title: { default: `${site.name} — ${d.home.role}`, template: `%s — ${site.name}` },
+    title: { default: site.name, template: `%s — ${site.name}` },
     description: d.home.lead,
     alternates: { languages: { en: "/en", fr: "/fr" } },
     openGraph: { title: site.name, description: d.home.lead, type: "website", images: ["/avatar.jpg"] },
@@ -43,8 +44,7 @@ export default async function RootLayout({ children, params }: { children: React
         <Header locale={locale} dict={dict} />
         <main id="main">{children}</main>
         <footer className="site-footer">
-          <span>© {new Date().getFullYear()} {site.name}</span>
-          <span className="dim">{dict.footer.built}</span>
+          <span>© <Year /> {site.name}</span>
           <a href="#main">{dict.footer.top} ↑</a>
         </footer>
         <div className="grain" aria-hidden />

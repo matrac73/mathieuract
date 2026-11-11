@@ -7,7 +7,7 @@ import { getDict, isLocale, type Dict, type Locale } from "@/lib/i18n";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
-  return { title: getDict(isLocale(locale) ? locale : "en").profile.title };
+  return { title: "CV" };
 }
 
 function Timeline({ items, locale, d }: { items: typeof experience; locale: Locale; d: Dict }) {
@@ -44,9 +44,9 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
     <div className="page profile">
       <header className="page-head">
         <div>
-          <p className="label">[ 01 ] {p.title}</p>
+          <p className="label">[ CV ]</p>
           <Scramble as="h1" className="display" text={site.name} />
-          <p className="hero-role">{d.home.role}</p>
+          <p className="hero-role">{p.role}</p>
           <p className="muted">{site.location}</p>
         </div>
         <div className="profile-side">

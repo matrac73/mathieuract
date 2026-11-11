@@ -3,6 +3,8 @@ title: "Data preprocessing: the nine steps that matter"
 summary: "Outliers, missing values, scaling, encoding, feature selection and enrichment: my working checklist before any model."
 category: "data-science"
 date: "2026-11-10"
+written: "2023-06"
+scene: "sieve"
 readingMinutes: 5
 order: 2
 ---

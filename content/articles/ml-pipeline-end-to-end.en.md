@@ -3,6 +3,8 @@ title: "The machine learning pipeline, end to end"
 summary: "The eight steps I follow on every ML project, from loading data to tuning, and where the time really goes."
 category: "data-science"
 date: "2026-11-10"
+written: "2023-06"
+scene: "stairs"
 readingMinutes: 4
 order: 1
 ---
