@@ -3,11 +3,29 @@ import type { L10n } from "@/lib/i18n";
 // Everything personal lives here: edit this file to update the profile pages.
 export const site = {
   name: "Mathieu Ract",
-  // One line under the name on the home page: a person first, not a job title.
-  tagline: {
-    en: "Savoyard, brother, enthusiast — with a touch of madness.",
-    fr: "Savoyard, frère, passionné — avec un brin de folie.",
-  } as L10n,
+  // Lines that take turns under the name on the home page: a person first, not a job title.
+  taglines: {
+    en: [
+      "Between Savoie and Paris.",
+      "Between engineering school and business school.",
+      "Between alpine passes and Excel sheets.",
+      "Between reblochon and quinoa.",
+      "Between code and PowerPoint.",
+      "Between 2,000 m of climbing and the office lift.",
+      "Between artificial intelligence and mountain common sense.",
+      "Between serious and slightly mad.",
+    ],
+    fr: [
+      "Entre Savoie et Paris.",
+      "Entre école d'ingénieur et école de commerce.",
+      "Entre cols alpins et tableurs Excel.",
+      "Entre reblochon et quinoa.",
+      "Entre code et PowerPoint.",
+      "Entre 2 000 m de D+ et l'ascenseur du bureau.",
+      "Entre intelligence artificielle et bon sens paysan.",
+      "Entre sérieux et brin de folie.",
+    ],
+  } as Record<"en" | "fr", string[]>,
   url: "https://mathieuract.vercel.app",
   location: "Paris, France",
   contacts: {
@@ -18,20 +36,24 @@ export const site = {
   },
 };
 
-// [WIP] personal note — pre-drafted, to be rewritten in your own words.
-export const about: Record<"en" | "fr", string[]> = {
+// Professional summary, shown on the printable CV only.
+export const summary: Record<"en" | "fr", string[]> = {
   en: [
     "I trained as an engineer at CentraleSupélec, with a focus on artificial intelligence, then added a business degree at ESSEC, split between Singapore and Paris. I like the place where those two worlds meet: turning a technical possibility into something a team actually uses on a Monday morning.",
     "I learned to build at Safran, where I spent three years on data science and computer vision for landing systems; to structure a problem with BCG X; and to ship generative AI at scale at Onepoint, as tech lead of an internal copilot and right hand to the Chief AI Officer.",
     "Since October 2024 I have been part of Adagia Partners, a private equity firm, as Associate Tech & AI — building the tools and the habits that let an investment team work with AI every day.",
-    "Away from the screen, I run and I ride. Long distances, preferably uphill. The Adventures section of this site is where those days end up.",
   ],
   fr: [
     "Ingénieur diplômé de CentraleSupélec, spécialisé en intelligence artificielle, j'ai complété mon parcours par le programme Grande École de l'ESSEC, entre Singapour et Paris. J'aime l'endroit où ces deux mondes se rencontrent : transformer une possibilité technique en un outil qu'une équipe utilise vraiment le lundi matin.",
     "J'ai appris à construire chez Safran, pendant trois ans de data science et de vision par ordinateur sur les trains d'atterrissage ; à structurer un problème avec BCG X ; et à déployer l'IA générative à l'échelle chez Onepoint, comme tech lead d'un copilote interne et bras droit du Chief AI Officer.",
     "Depuis octobre 2024, je fais partie d'Adagia Partners, société de private equity, en tant qu'Associate Tech & AI : j'y construis les outils et les réflexes qui permettent à une équipe d'investissement de travailler avec l'IA au quotidien.",
-    "Loin de l'écran, je cours et je roule. Longtemps, et de préférence en montée. La rubrique Aventures de ce site est l'endroit où ces journées finissent.",
   ],
+};
+
+// [WIP] personal note for the Personal page — to be rewritten in your own words.
+export const about: Record<"en" | "fr", string[]> = {
+  en: ["Away from the screen, I run and I ride. Long distances, preferably uphill. The adventures below are where those days end up."],
+  fr: ["Loin de l'écran, je cours et je roule. Longtemps, et de préférence en montée. Les aventures ci-dessous sont l'endroit où ces journées finissent."],
 };
 
 type Item = { org: string; role: L10n; place: string; from: string; to: string | null; bullets: Record<"en" | "fr", string[]>; wip?: boolean };
@@ -187,7 +209,7 @@ export const languages: { name: L10n; level: L10n }[] = [
   { name: { en: "Chinese", fr: "Chinois" }, level: { en: "Beginner — HSK 2", fr: "Débutant — HSK 2" } },
 ];
 
-export const interests: { label: L10n; text: L10n }[] = [
+export const interests: { label: L10n; text: L10n; cvOnly?: boolean }[] = [
   {
     label: { en: "Running", fr: "Course à pied" },
     text: {
@@ -207,6 +229,7 @@ export const interests: { label: L10n; text: L10n }[] = [
     text: { en: "Competitive skiing; French championships 2013.", fr: "Ski de compétition ; championnats de France 2013." },
   },
   {
+    cvOnly: true,
     label: { en: "Sustainability", fr: "Durabilité" },
     text: {
       en: "Volunteer with the DataForGood collective, estimating the environmental footprint of generative AI.",
@@ -245,64 +268,56 @@ export const projects: Project[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// The path, as played in the timeline game on the Pro / Academic page.
-// `outfit` and `foe` pick the pixel sprites (see src/components/LifeGame.tsx).
-// [WIP] the first three stages (years, wording) are assumptions to confirm.
+// The path, drawn as a two-lane timeline on the Pro / Academic page:
+// an academic lane above the time axis, a professional lane below; periods overlap.
+// `level` = height of the block (1–3), `row` = 1 for a period stacked on another one.
+// [WIP] the first three periods (dates, wording) are assumptions to confirm.
 // ---------------------------------------------------------------------------
-export type Stage = { id: string; years: string; short: string; title: L10n; place: L10n; text: L10n; foe: L10n; wip?: boolean };
+export type Stage = { id: string; lane: "acad" | "pro"; start: string; end: string | null; level: number; row?: number; short: string; title: L10n; place: L10n; text: L10n; slug?: string; wip?: boolean };
 export const life: Stage[] = [
-  { id: "ugine", years: "≈ 2013 — 2015", short: "UGINE", wip: true,
+  { id: "ugine", lane: "acad", start: "2013-09", end: "2015-06", level: 1, short: "UGINE", wip: true,
     title: { en: "High school in Savoie", fr: "Lycée en Savoie" }, place: { en: "Ugine, Savoie", fr: "Ugine, Savoie" },
-    text: { en: "High school at the foot of the slopes. The skis are never far from the school bag.", fr: "Le lycée au pied des pistes. Les skis ne sont jamais loin du cartable." },
-    foe: { en: "The slalom gate", fr: "La porte de slalom" } },
-  { id: "usa", years: "≈ 2015 — 2016", short: "USA", wip: true,
+    text: { en: "High school at the foot of the slopes. The skis are never far from the school bag.", fr: "Le lycée au pied des pistes. Les skis ne sont jamais loin du cartable." } },
+  { id: "usa", lane: "acad", start: "2015-08", end: "2016-06", level: 1, short: "USA", wip: true,
     title: { en: "United States", fr: "États-Unis" }, place: { en: "United States", fr: "États-Unis" },
-    text: { en: "Off to the United States: high school in its original version.", fr: "Cap sur les États-Unis : le lycée en version originale." },
-    foe: { en: "The XXL burger", fr: "Le burger XXL" } },
-  { id: "lyon", years: "≈ 2016 — 2017", short: "LYON", wip: true,
+    text: { en: "Off to the United States: high school in its original version.", fr: "Cap sur les États-Unis : le lycée en version originale." } },
+  { id: "lyon", lane: "acad", start: "2016-09", end: "2017-06", level: 1, short: "LYON", wip: true,
     title: { en: "Final year of high school", fr: "Terminale" }, place: { en: "Lyon", fr: "Lyon" },
-    text: { en: "Back in France for the final year, in Lyon. One target: the baccalauréat.", fr: "Retour en France pour la terminale, à Lyon. Un objectif : le bac." },
-    foe: { en: "The baccalauréat", fr: "Le bac" } },
-  { id: "prepa", years: "2017 — 2019", short: "PRÉPA",
-    title: { en: "Preparatory classes", fr: "Classes préparatoires" }, place: { en: "Lycée La Martinière Monplaisir, Lyon", fr: "Lycée La Martinière Monplaisir, Lyon" },
-    text: { en: "Two years of maths, physics and computer science — and oral exams at the blackboard.", fr: "Deux ans de maths, de physique et d'informatique — et de khôlles au tableau." },
-    foe: { en: "The integral", fr: "L'intégrale" } },
-  { id: "cs", years: "2019 — 2022", short: "CENTRALESUPÉLEC",
+    text: { en: "Back in France for the final year, in Lyon. One target: the baccalauréat.", fr: "Retour en France pour la terminale, à Lyon. Un objectif : le bac." } },
+  { id: "prepa", lane: "acad", start: "2017-09", end: "2019-06", level: 2, short: "PRÉPA", slug: "prepa",
+    title: { en: "Preparatory classes", fr: "Classes préparatoires" }, place: { en: "La Martinière Monplaisir, Lyon", fr: "La Martinière Monplaisir, Lyon" },
+    text: { en: "Two years of maths, physics and computer science — and oral exams at the blackboard.", fr: "Deux ans de maths, de physique et d'informatique — et de khôlles au tableau." } },
+  { id: "cs", lane: "acad", start: "2019-09", end: "2022-06", level: 3, short: "CENTRALESUPÉLEC", slug: "centralesupelec",
     title: { en: "CentraleSupélec", fr: "CentraleSupélec" }, place: { en: "Rennes · Gif-sur-Yvette", fr: "Rennes · Gif-sur-Yvette" },
-    text: { en: "Engineering school, digital track, with a strong focus on artificial intelligence. And the Raid CentraleSupélec on the side.", fr: "École d'ingénieur, filière numérique, forte dominante intelligence artificielle. Et le Raid CentraleSupélec à côté." },
-    foe: { en: "The bug", fr: "Le bug" } },
-  { id: "safran", years: "2019 — 2022", short: "SAFRAN",
-    title: { en: "Hired by Safran", fr: "Recruté chez Safran" }, place: { en: "Safran Landing Systems, Vélizy", fr: "Safran Landing Systems, Vélizy" },
-    text: { en: "Three years as an apprentice: data science and computer vision for landing gear.", fr: "Trois ans d'apprentissage : data science et vision par ordinateur pour les trains d'atterrissage." },
-    foe: { en: "The aircraft to land", fr: "L'avion à poser" } },
-  { id: "bcg", years: "2021 — 2022", short: "BCG X",
-    title: { en: "BCG X", fr: "BCG X" }, place: { en: "Paris", fr: "Paris" },
-    text: { en: "End-of-studies project with a consulting team: BCG Greener IT.", fr: "Projet de fin d'études au sein d'une équipe de consultants : BCG Greener IT." },
-    foe: { en: "The slide", fr: "La slide" } },
-  { id: "essec", years: "2022 — 2024", short: "ESSEC",
+    text: { en: "Engineering school, digital track, with a strong focus on artificial intelligence.", fr: "École d'ingénieur, filière numérique, forte dominante intelligence artificielle." } },
+  { id: "essec", lane: "acad", start: "2022-09", end: "2024-09", level: 3, short: "ESSEC", slug: "essec",
     title: { en: "ESSEC Business School", fr: "ESSEC Business School" }, place: { en: "Singapore · Cergy", fr: "Singapour · Cergy" },
-    text: { en: "Business after engineering, between Singapore and Paris.", fr: "Le business après l'ingénierie, entre Singapour et Paris." },
-    foe: { en: "The Singapore sun", fr: "Le soleil de Singapour" } },
-  { id: "onepoint", years: "2023 — 2024", short: "ONEPOINT",
+    text: { en: "Business after engineering, between Singapore and Paris.", fr: "Le business après l'ingénierie, entre Singapour et Paris." } },
+  { id: "safran", lane: "pro", start: "2019-09", end: "2022-06", level: 2, short: "SAFRAN", slug: "safran",
+    title: { en: "Safran Landing Systems", fr: "Safran Landing Systems" }, place: { en: "Vélizy-Villacoublay", fr: "Vélizy-Villacoublay" },
+    text: { en: "Three years as an apprentice: data science and computer vision for landing gear.", fr: "Trois ans d'apprentissage : data science et vision par ordinateur pour les trains d'atterrissage." } },
+  { id: "bcg", lane: "pro", start: "2021-09", end: "2022-06", level: 1, row: 1, short: "BCG X", slug: "bcg-x",
+    title: { en: "BCG X", fr: "BCG X" }, place: { en: "Paris", fr: "Paris" },
+    text: { en: "End-of-studies project with a consulting team: BCG Greener IT.", fr: "Projet de fin d'études au sein d'une équipe de consultants : BCG Greener IT." } },
+  { id: "onepoint", lane: "pro", start: "2023-09", end: "2024-09", level: 2, short: "ONEPOINT", slug: "onepoint",
     title: { en: "Onepoint", fr: "Onepoint" }, place: { en: "Paris", fr: "Paris" },
-    text: { en: "Tech lead of Neo, a generative AI copilot, and right hand to the Chief AI Officer.", fr: "Tech lead de Neo, copilote d'IA générative, et bras droit du Chief AI Officer." },
-    foe: { en: "The hallucinating AI", fr: "L'IA qui hallucine" } },
-  { id: "adagia", years: "2024 — …", short: "ADAGIA",
+    text: { en: "Tech lead of Neo, a generative AI copilot, and right hand to the Chief AI Officer.", fr: "Tech lead de Neo, copilote d'IA générative, et bras droit du Chief AI Officer." } },
+  { id: "adagia", lane: "pro", start: "2024-10", end: null, level: 3, short: "ADAGIA", slug: "adagia",
     title: { en: "Adagia Partners", fr: "Adagia Partners" }, place: { en: "Paris", fr: "Paris" },
-    text: { en: "Associate Tech & AI in a private equity firm: AI tools an investment team uses every day.", fr: "Associate Tech & AI dans une société de private equity : des outils d'IA qu'une équipe d'investissement utilise au quotidien." },
-    foe: { en: "The spreadsheet", fr: "Le tableur" } },
+    text: { en: "Associate Tech & AI in a private equity firm: AI tools an investment team uses every day.", fr: "Associate Tech & AI dans une société de private equity : des outils d'IA qu'une équipe d'investissement utilise au quotidien." } },
 ];
 
-// Reverse-chronological career, scrolled through under the game. `scene` picks the cube illustration.
-export type CareerItem = Item & { scene: string; start: string; end: string | null }; // start/end as YYYY-MM, used to place articles
-const withScene = (it: Item, scene: string, start: string, end: string | null): CareerItem => ({ ...it, scene, start, end });
+// Reverse-chronological career, scrolled through under the timeline. `scene` picks the cube illustration;
+// `slug` is the address of the detail page (/experience/<slug>) — its long text lives in content/experiences/<slug>.<locale>.md
+export type CareerItem = Item & { slug: string; scene: string; start: string; end: string | null }; // start/end as YYYY-MM, used to place articles
+const withScene = (it: Item, slug: string, scene: string, start: string, end: string | null): CareerItem => ({ ...it, slug, scene, start, end });
 export const career: CareerItem[] = [
-  withScene(experience[0], "bars", "2024-10", null),
-  withScene(experience[1], "chat", "2023-09", "2024-09"),
-  withScene(education[0], "skyline", "2022-09", "2023-08"),
-  withScene(experience[2], "matrix", "2021-09", "2022-06"),
-  withScene(extras[0], "mountain", "2020-09", "2021-08"),
-  withScene(experience[3], "plane", "2019-09", "2022-06"),
-  withScene(education[1], "pyramid", "2019-09", "2022-06"),
-  withScene(education[2], "books", "2017-09", "2019-06"),
+  withScene(experience[0], "adagia", "bars", "2024-10", null),
+  withScene(experience[1], "onepoint", "chat", "2023-09", "2024-09"),
+  withScene(education[0], "essec", "skyline", "2022-09", "2023-08"),
+  withScene(experience[2], "bcg-x", "matrix", "2021-09", "2022-06"),
+  withScene(extras[0], "raid", "mountain", "2020-09", "2021-08"),
+  withScene(experience[3], "safran", "plane", "2019-09", "2022-06"),
+  withScene(education[1], "centralesupelec", "pyramid", "2019-09", "2022-06"),
+  withScene(education[2], "prepa", "books", "2017-09", "2019-06"),
 ];

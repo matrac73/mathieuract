@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PrintButton } from "@/components/PrintButton";
 import { Scramble } from "@/components/Scramble";
-import { about, education, experience, extras, interests, languages, site, skills } from "@/content/site";
+import { summary, education, experience, extras, interests, languages, site, skills } from "@/content/site";
 import { getDict, isLocale, type Dict, type Locale } from "@/lib/i18n";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -58,7 +58,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
 
       <section className="block">
         <h2 className="label">[ {p.about} ] <span className="tag">{p.wip}</span></h2>
-        <div className="about">{about[locale].map((para) => <p key={para.slice(0, 24)}>{para}</p>)}</div>
+        <div className="about">{summary[locale].map((para) => <p key={para.slice(0, 24)}>{para}</p>)}</div>
       </section>
 
       <section className="block">

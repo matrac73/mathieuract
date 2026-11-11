@@ -4,6 +4,7 @@ import { CubeProfile } from "@/components/CubeProfile";
 import { Intro } from "@/components/Intro";
 import { NoiseTrack } from "@/components/NoiseTrack";
 import { PixelPortrait } from "@/components/PixelPortrait";
+import { Rotator } from "@/components/Rotator";
 import { HoverScramble, Scramble } from "@/components/Scramble";
 import { listAdventures } from "@/lib/adventures";
 import { fmtDate, fmtNum, getDict, isLocale } from "@/lib/i18n";
@@ -31,8 +32,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
             <br />
             <Scramble text="Ract" duration={700} delay={350} />
           </h1>
-          <p className="hero-role">{site.tagline[locale]}</p>
-          <p className="lead hero-lead">{d.home.lead}</p>
+          <p className="hero-role"><Rotator items={site.taglines[locale]} /></p>
           <div className="hero-cta">
             <Link className="btn" href={`/${locale}/pro`}>{d.home.ctaPro} <span aria-hidden>→</span></Link>
             {latest && <Link className="btn ghost" href={`/${locale}/adventures/${latest.slug}`}>{d.home.ctaAdventure} <span aria-hidden>→</span></Link>}
@@ -68,7 +68,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
                 {latest.meta.tagline[locale]} — {fmtDate(latest.summary.startDate, locale, { month: "long", year: "numeric" })}
               </p>
             </div>
-            <CubeProfile ele={tripEle} height={180} minRange={1500} label={latest.meta.title[locale]} />
+            <CubeProfile ele={tripEle} height={180} minRange={1500} trace label={latest.meta.title[locale]} />
             <div className="teaser-stats">
               <span><b className="num">{fmtNum(latest.summary.totals.distanceKm, locale)}</b> km</span>
               <span><b className="num">{fmtNum(latest.summary.totals.ascent, locale)}</b> m ↑</span>

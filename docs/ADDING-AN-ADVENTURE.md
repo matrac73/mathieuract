@@ -38,6 +38,7 @@ node scripts/build-adventure.mjs <slug>     # FIT → days/*.json + summary.json
 node scripts/name-passes.mjs <slug>         # optional: names high points from OpenStreetMap
 node scripts/apply-overrides.mjs <slug>     # applies overrides.json (manual pass / place names)
 node scripts/build-terrain.mjs <slug>       # real relief for the 3D cube view + the scroll map (public/adventures/<slug>/terrain/)
+node scripts/build-towns.mjs <slug>         # candidate towns along each stage → towns.json (then keep only the main ones by hand)
 ```
 
 Rides on the same calendar day are merged into one stage.

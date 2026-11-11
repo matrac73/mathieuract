@@ -62,7 +62,7 @@ export function VoxelScene({ scene, scroll = false, className }: { scene: string
       let p = 1;
       if (scroll && !reduce) {
         const r = cv.getBoundingClientRect(), vh = window.innerHeight;
-        p = Math.min(1, Math.max(0, (vh * 0.96 - r.top) / (vh * 0.55)));
+        p = Math.min(1, Math.max(0, (vh - r.top) / (vh - (vh - r.height) / 2))); // complete exactly when the scene is centred, where the scroll pauses
       }
       const cs = getComputedStyle(document.documentElement);
       const bg = hex(cs.getPropertyValue("--bg")), fg = hex(cs.getPropertyValue("--fg")), accent = cs.getPropertyValue("--accent").trim();

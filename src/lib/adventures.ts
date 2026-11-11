@@ -22,6 +22,7 @@ export type Day = {
   n: number; date: string; slug: string; startTs: number; endTs: number; start: Place; end: Place;
   stats: Stats; profile: Profile; passes: Pass[]; weather: Weather[];
   photos: string[]; notesHtml: string | null;
+  towns: { name: string; i: number }[]; // main towns on the way, `i` = index of the nearest profile point (towns.json)
 };
 export type DayCard = { n: number; slug: string; date: string; start: Place; end: Place; stats: Stats; passes: Pass[]; ele: number[]; track: [number, number][] };
 export type Summary = {
@@ -55,7 +56,9 @@ export function getDays(slug: string, locale: Locale): Day[] {
   const adv = getAdventure(slug);
   if (!adv) return [];
   return adv.summary.days.map((c) => {
-    const day = json<Omit<Day, "photos" | "notesHtml">>(path.join(DIR, slug, "days", `${c.slug}.json`));
+    const day = json<Omit<Day, "photos" | "notesHtml" | "towns">>(path.join(DIR, slug, "days", `${c.slug}.json`));
+    const townsFile = path.join(DIR, slug, "towns.json");
+    const towns = fs.existsSync(townsFile) ? (json<Record<string, { name: string; i: number }[]>>(townsFile)[c.slug] ?? []) : [];
     const photoDir = path.join(PUB, slug, c.slug);
     const photos = fs.existsSync(photoDir)
       ? fs.readdirSync(photoDir).filter((f) => IMG.test(f)).sort().map((f) => `/adventures/${slug}/${c.slug}/${f}`)
@@ -68,6 +71,6 @@ export function getDays(slug: string, locale: Locale): Day[] {
         if (md) { notesHtml = marked.parse(md, { async: false }) as string; break; }
       }
     }
-    return { ...day, photos, notesHtml };
+    return { ...day, photos, notesHtml, towns: towns.map(({ name, i }) => ({ name, i })) };
   });
 }

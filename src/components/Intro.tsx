@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { scrambleTo } from "./Scramble";
 
-const TOTAL = 3000; // ms, whole "meet me in brief" sequence
+const TOTAL = 2000; // ms, whole "meet me in brief" sequence
 
 /** Full-screen opening sequence, once per browser session, skippable with any click or key. */
 export function Intro({ label, lines, skip }: { label: string; lines: string[]; skip: string }) {
@@ -30,7 +30,7 @@ export function Intro({ label, lines, skip }: { label: string; lines: string[]; 
       timers.push(setTimeout(() => {
         setStep(i);
         cancel();
-        if (text.current) cancel = scrambleTo(text.current, line.toUpperCase(), Math.min(480, per * 0.7));
+        if (text.current) cancel = scrambleTo(text.current, line.toUpperCase(), Math.min(700, per * 0.7));
       }, i * per)),
     );
     timers.push(setTimeout(finish, TOTAL));
@@ -51,7 +51,7 @@ export function Intro({ label, lines, skip }: { label: string; lines: string[]; 
     <div className={`intro ${state === "out" ? "intro-out" : ""}`} onClick={finish} role="presentation">
       <div className="intro-top">
         <span className="label">[ {label} ]</span>
-        <span className="label">{String(step + 1).padStart(2, "0")} / {String(lines.length).padStart(2, "0")}</span>
+        {lines.length > 1 && <span className="label">{String(step + 1).padStart(2, "0")} / {String(lines.length).padStart(2, "0")}</span>}
       </div>
       <div className="intro-text" ref={text} aria-live="polite">{lines[0].toUpperCase()}</div>
       <div className="intro-bottom">

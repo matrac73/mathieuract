@@ -2,68 +2,77 @@
 
 import { useEffect, useRef } from "react";
 
-// Portrait that starts as a handful of big pixels. While hovered (or after a tap),
-// every pixel splits in four, again and again, until the real photo is there.
-const LEVELS = [8, 16, 32, 64, 128, 256]; // pixels per side; one more step = the untouched image
-const SIZE = 512;
+// Black-and-white portrait that starts as four big pixels. The pixel under the pointer
+// splits in four; its neighbours stay whole. Keep moving and the face sharpens where you look.
+const G = 256; // finest grid (pixels per side)
+const SIZE = 512; // canvas backing size
+const AGE = 95; // ms a pixel must exist before it can split again
 
 export function PixelPortrait({ src, alt, className }: { src: string; alt: string; className?: string }) {
   const ref = useRef<HTMLCanvasElement>(null);
-  const api = useRef({ want: 0, toggle: () => {} });
 
   useEffect(() => {
     const cv = ref.current!;
     const ctx = cv.getContext("2d")!;
-    const small = document.createElement("canvas");
     const img = new Image();
-    let level = 0, timer: ReturnType<typeof setTimeout> | undefined, ready = false;
+    const size = new Uint16Array(G * G).fill(G / 2); // size of the leaf covering each cell
+    const born = new Float64Array(G * G);
+    let sat: Float64Array | null = null; // summed-area table of the grey image
+    let timer: ReturnType<typeof setInterval> | undefined, at: [number, number] | null = null;
+    const k = SIZE / G;
 
-    const draw = () => {
-      if (!ready) return;
-      const side = Math.min(img.naturalWidth, img.naturalHeight);
-      const sx = (img.naturalWidth - side) / 2, sy = (img.naturalHeight - side) / 2;
-      ctx.clearRect(0, 0, SIZE, SIZE);
-      if (level >= LEVELS.length) {
-        ctx.imageSmoothingEnabled = true;
-        ctx.filter = "none";
-        ctx.drawImage(img, sx, sy, side, side, 0, 0, SIZE, SIZE);
-        return;
-      }
-      const n = LEVELS[level];
-      small.width = small.height = n;
-      const s = small.getContext("2d")!;
-      s.imageSmoothingEnabled = true;
-      s.drawImage(img, sx, sy, side, side, 0, 0, n, n);
-      ctx.imageSmoothingEnabled = false;
-      ctx.filter = "grayscale(1) contrast(1.15)";
-      ctx.drawImage(small, 0, 0, n, n, 0, 0, SIZE, SIZE);
+    const paint = (x: number, y: number, s: number) => {
+      const W = G + 1, t = sat!;
+      const sum = t[(y + s) * W + x + s] - t[y * W + x + s] - t[(y + s) * W + x] + t[y * W + x];
+      const v = Math.max(0, Math.min(255, ((sum / (s * s) - 128) * 1.15 + 128) | 0));
+      ctx.fillStyle = `rgb(${v},${v},${v})`;
+      ctx.fillRect(x * k, y * k, s * k, s * k);
     };
-    const step = () => {
-      const want = api.current.want;
-      if (level === want) return;
-      level += want > level ? 1 : -1;
-      draw();
-      timer = setTimeout(step, want > level ? 105 : 55);
+    const split = (cx: number, cy: number, now: number) => {
+      const s = size[cy * G + cx];
+      if (s <= 1 || now - born[cy * G + cx] < AGE) return;
+      const x0 = Math.floor(cx / s) * s, y0 = Math.floor(cy / s) * s, h = s / 2;
+      for (let y = y0; y < y0 + s; y++) for (let x = x0; x < x0 + s; x++) { size[y * G + x] = h; born[y * G + x] = now; }
+      for (const [dx, dy] of [[0, 0], [h, 0], [0, h], [h, h]]) paint(x0 + dx, y0 + dy, h);
     };
-    const go = (want: number) => {
-      api.current.want = want;
-      clearTimeout(timer);
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { level = want; draw(); } else step();
+    const tick = () => { if (at && sat) split(at[0], at[1], performance.now()); };
+    const move = (e: PointerEvent) => {
+      const r = cv.getBoundingClientRect();
+      at = [Math.max(0, Math.min(G - 1, Math.floor(((e.clientX - r.left) / r.width) * G))), Math.max(0, Math.min(G - 1, Math.floor(((e.clientY - r.top) / r.height) * G)))];
+      tick();
+      timer ??= setInterval(tick, 60);
     };
-    api.current.toggle = () => go(api.current.want ? 0 : LEVELS.length);
-    const enter = (e: PointerEvent) => { if (e.pointerType === "mouse") go(LEVELS.length); };
-    const leave = (e: PointerEvent) => { if (e.pointerType === "mouse") go(0); };
-    const tap = (e: PointerEvent) => { if (e.pointerType !== "mouse") api.current.toggle(); };
-    cv.addEventListener("pointerenter", enter);
+    const leave = () => { at = null; clearInterval(timer); timer = undefined; };
+    cv.addEventListener("pointermove", move);
+    cv.addEventListener("pointerdown", move);
     cv.addEventListener("pointerleave", leave);
-    cv.addEventListener("pointerup", tap);
-    img.onload = () => { ready = true; draw(); };
+    cv.addEventListener("pointercancel", leave);
+
+    img.onload = () => {
+      const off = document.createElement("canvas");
+      off.width = off.height = G;
+      const o = off.getContext("2d", { willReadFrequently: true })!;
+      const side = Math.min(img.naturalWidth, img.naturalHeight);
+      o.drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, G, G);
+      const d = o.getImageData(0, 0, G, G).data, W = G + 1;
+      sat = new Float64Array(W * W);
+      for (let y = 0; y < G; y++) {
+        let row = 0;
+        for (let x = 0; x < G; x++) {
+          const q = (y * G + x) * 4;
+          row += 0.299 * d[q] + 0.587 * d[q + 1] + 0.114 * d[q + 2];
+          sat[(y + 1) * W + x + 1] = sat[y * W + x + 1] + row;
+        }
+      }
+      for (const [x, y] of [[0, 0], [G / 2, 0], [0, G / 2], [G / 2, G / 2]]) paint(x, y, G / 2);
+    };
     img.src = src;
     return () => {
-      clearTimeout(timer);
-      cv.removeEventListener("pointerenter", enter);
+      clearInterval(timer);
+      cv.removeEventListener("pointermove", move);
+      cv.removeEventListener("pointerdown", move);
       cv.removeEventListener("pointerleave", leave);
-      cv.removeEventListener("pointerup", tap);
+      cv.removeEventListener("pointercancel", leave);
     };
   }, [src]);
 

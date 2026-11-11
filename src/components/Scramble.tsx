@@ -2,21 +2,18 @@
 
 import { createElement, useEffect, useRef } from "react";
 
-// Only glyphs that offer no line-break opportunity (no "-", "/", brackets…): a scrambled word must never wrap differently from the real one.
-const GLYPHS = "#<>=*_01XZ@&";
+// Glyphs with no line-break opportunity and no ligature partner: a scrambled word keeps the
+// exact footprint of the real one (same number of cells, same wrapping), so nothing around it moves.
+const GLYPHS = "#01XZ@&*";
 const rnd = () => GLYPHS[(Math.random() * GLYPHS.length) | 0];
+const LETTER = /[\p{L}\p{N}]/u;
 
-/** Imperative scramble: random glyphs resolve left-to-right into `to`. Returns a cancel fn. */
+/** Imperative scramble: letters and digits flicker then resolve left-to-right into `to`; spaces and punctuation never move. Returns a cancel fn. */
 export function scrambleTo(el: HTMLElement, to: string, duration = 550) {
   if (typeof window === "undefined" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     el.textContent = to;
     return () => {};
   }
-  // Freeze the box while the glyphs change: single-line texts cannot wrap, and the height is pinned.
-  const prev = { ws: el.style.whiteSpace };
-  const single = el.getClientRects().length <= 1;
-  if (single) el.style.whiteSpace = "nowrap";
-  const restore = () => { el.style.whiteSpace = prev.ws; };
   const start = performance.now();
   let raf = 0;
   let last = 0;
@@ -26,16 +23,14 @@ export function scrambleTo(el: HTMLElement, to: string, duration = 550) {
       last = now;
       const solved = Math.floor(p * to.length);
       let out = to.slice(0, solved);
-      for (let i = solved; i < to.length; i++) out += to[i] === " " ? " " : rnd();
+      for (let i = solved; i < to.length; i++) out += LETTER.test(to[i]) ? rnd() : to[i];
       el.textContent = out;
     }
     if (p < 1) raf = requestAnimationFrame(tick);
-    else restore();
   };
   raf = requestAnimationFrame(tick);
-  return () => { cancelAnimationFrame(raf); restore(); };
+  return () => cancelAnimationFrame(raf);
 }
-
 type Props = { text: string; as?: string; className?: string; duration?: number; delay?: number; onMount?: boolean };
 
 /** Renders `text`; whenever it changes (and optionally on mount), it scrambles into place. */

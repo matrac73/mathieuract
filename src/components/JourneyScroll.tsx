@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { Summary } from "@/lib/adventures";
 import { fmtDate, fmtNum, type Dict, type Locale } from "@/lib/i18n";
+import { TRAIN, arc, sprite } from "@/lib/pixel";
 import { Scramble } from "./Scramble";
 
 // Whole adventure on one relief map (dot matrix, seen from above). Scrolling moves
@@ -65,7 +66,10 @@ export function JourneyScroll({ src, summary, dict, locale }: { src: string; sum
       const f = Math.min(1, (km - acc) / kms[d]);
       const idx = Math.min(X.length - 1.001, brk[d] + f * (brk[d + 1] - 1 - brk[d]));
       const i0 = Math.floor(idx), fr = idx - i0;
-      const hx = (X[i0] + (X[i0 + 1] - X[i0]) * fr) * cell, hy = (Y[i0] + (Y[i0 + 1] - Y[i0]) * fr) * cell;
+      const jump = (k: number) => k > 0 && Math.hypot(X[k] - X[k - 1], Y[k] - Y[k - 1]) > 4; // a transfer (train), not a ride
+      const [hx, hy] = jump(i0 + 1)
+        ? arc(X[i0] * cell, Y[i0] * cell, X[i0 + 1] * cell, Y[i0 + 1] * cell, fr)
+        : [(X[i0] + (X[i0 + 1] - X[i0]) * fr) * cell, (Y[i0] + (Y[i0 + 1] - Y[i0]) * fr) * cell];
       const mw = o.nu * cell, mh = o.nv * cell;
       const tx = mw <= W ? (W - mw) / 2 : Math.min(0, Math.max(W - mw, W / 2 - hx));
       const ty = (H - mh) / 2;
@@ -78,19 +82,42 @@ export function JourneyScroll({ src, summary, dict, locale }: { src: string; sum
       const path = (to: number) => {
         ctx.beginPath();
         for (let k = 0; k <= Math.floor(to); k++) {
-          const jump = k > 0 && Math.hypot(X[k] - X[k - 1], Y[k] - Y[k - 1]) > 4; // train transfer: lift the pen
-          if (k === 0 || jump) ctx.moveTo(X[k] * cell, Y[k] * cell); else ctx.lineTo(X[k] * cell, Y[k] * cell);
+          if (k === 0 || jump(k)) ctx.moveTo(X[k] * cell, Y[k] * cell); else ctx.lineTo(X[k] * cell, Y[k] * cell);
         }
       };
       path(X.length - 1);
       ctx.strokeStyle = bg; ctx.lineWidth = 5; ctx.stroke();
       ctx.strokeStyle = mid; ctx.lineWidth = 2; ctx.stroke();
-      path(idx); ctx.lineTo(hx, hy);
+      path(idx); if (!jump(i0 + 1)) ctx.lineTo(hx, hy);
       ctx.strokeStyle = accent; ctx.lineWidth = 3; ctx.stroke();
+      for (let k = 1; k < X.length; k++) if (jump(k)) { // dotted arc and a tiny train where the route is cut
+        const ax = X[k - 1] * cell, ay = Y[k - 1] * cell, bx = X[k] * cell, by = Y[k] * cell, done = idx >= k;
+        ctx.lineCap = "butt"; ctx.setLineDash([3, 6]);
+        for (const [w, c] of [[6, bg], [2.4, done ? accent : fg]] as const) {
+          ctx.strokeStyle = c; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(ax, ay);
+          for (let q = 1; q <= 24; q++) { const [x, y] = arc(ax, ay, bx, by, q / 24); ctx.lineTo(x, y); }
+          ctx.stroke();
+        }
+        ctx.setLineDash([]); ctx.lineCap = "round";
+        const [tx, ty] = arc(ax, ay, bx, by, 0.5);
+        sprite(ctx, TRAIN, tx, ty, 2, done ? accent : fg, bg);
+      }
       brk.slice(0, -1).forEach((b, k) => { // stage starts
         ctx.fillStyle = bg; ctx.fillRect(X[b] * cell - 4.5, Y[b] * cell - 4.5, 9, 9);
         ctx.fillStyle = k <= d ? accent : fg; ctx.fillRect(X[b] * cell - 3, Y[b] * cell - 3, 6, 6);
       });
+      // towns are named as the rider reaches them
+      ctx.font = "600 10px ui-monospace, monospace"; ctx.textBaseline = "middle"; ctx.textAlign = "left";
+      const boxes: number[][] = [];
+      const names = [...summary.days.map((x, k) => ({ at: brk[k], name: x.start.name, on: k <= d })), { at: X.length - 1, name: summary.days[summary.days.length - 1].end.name, on: p > 0.995 }];
+      for (const t of names) {
+        if (!t.on || !t.name) continue;
+        const name = t.name.toUpperCase(), w = ctx.measureText(name).width + 10, x = X[t.at] * cell + 9, y = Y[t.at] * cell - 16;
+        if (boxes.some((b) => x < b[0] + b[2] + 4 && x + w + 4 > b[0] && Math.abs(y - b[1]) < 18)) continue;
+        boxes.push([x, y, w]);
+        ctx.fillStyle = bg; ctx.fillRect(x, y - 8, w, 16);
+        ctx.fillStyle = fg; ctx.fillText(name, x + 5, y + 0.5);
+      }
       ctx.fillStyle = bg; ctx.fillRect(hx - 8, hy - 8, 16, 16);
       ctx.fillStyle = accent; ctx.fillRect(hx - 6, hy - 6, 12, 12);
 

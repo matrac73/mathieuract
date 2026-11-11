@@ -33,7 +33,7 @@ export default async function PersoPage({ params }: { params: Promise<{ locale: 
         <div>
           <p className="label">[ 02 ] {site.name}</p>
           <Scramble as="h1" className="display" text={d.perso.title} />
-          <p className="lead">{site.tagline[locale]}</p>
+          <p className="lead">{d.perso.lead}</p>
         </div>
         <div className="profile-side">
           <div className="frame perso-portrait"><PixelPortrait src="/avatar.jpg" alt={site.name} /></div>
@@ -44,7 +44,7 @@ export default async function PersoPage({ params }: { params: Promise<{ locale: 
         <h2 className="label">[ {d.perso.about} ] <span className="tag">{d.profile.wip}</span></h2>
         <div className="about">{about[locale].map((para) => <p key={para.slice(0, 24)}>{para}</p>)}</div>
         <dl className="interests">
-          {interests.map((i) => (
+          {interests.filter((i) => !i.cvOnly).map((i) => (
             <div key={i.label.en}><dt>{i.label[locale]}</dt><dd>{i.text[locale]}</dd></div>
           ))}
         </dl>
@@ -61,7 +61,7 @@ export default async function PersoPage({ params }: { params: Promise<{ locale: 
                 <h3 className="display small">{a.meta.title[locale]}</h3>
                 <p className="muted">{a.meta.tagline[locale]}</p>
               </div>
-              <CubeProfile ele={a.summary.days.flatMap((x) => x.ele)} height={180} minRange={1500} label={a.meta.title[locale]} />
+              <CubeProfile ele={a.summary.days.flatMap((x) => x.ele)} height={180} minRange={1500} trace label={a.meta.title[locale]} />
               <div className="teaser-stats">
                 <span><b className="num">{fmtNum(a.summary.totals.distanceKm, locale)}</b> km</span>
                 <span><b className="num">{fmtNum(a.summary.totals.ascent, locale)}</b> m ↑</span>

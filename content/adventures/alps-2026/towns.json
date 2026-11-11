@@ -1,0 +1,11 @@
+{
+ "day-01": [{ "name": "Adliswil", "i": 137 }, { "name": "Horgen", "i": 308 }],
+ "day-02": [{ "name": "Rapperswil", "i": 103 }, { "name": "Walenstadt", "i": 308 }, { "name": "Vaduz", "i": 411 }],
+ "day-03": [{ "name": "Bludenz", "i": 137 }, { "name": "St. Anton am Arlberg", "i": 274 }, { "name": "Zams", "i": 411 }],
+ "day-04": [{ "name": "Innsbruck", "i": 274 }, { "name": "Matrei am Brenner", "i": 342 }],
+ "day-05": [{ "name": "Vipiteno", "i": 34 }, { "name": "San Leonardo", "i": 137 }, { "name": "Merano", "i": 262 }, { "name": "Silandro", "i": 411 }],
+ "day-06": [{ "name": "Bormio", "i": 103 }, { "name": "Livigno", "i": 274 }, { "name": "Pontresina", "i": 411 }],
+ "day-07": [{ "name": "Bergün", "i": 103 }, { "name": "Thusis", "i": 240 }, { "name": "Ilanz", "i": 411 }],
+ "day-08": [{ "name": "Disentis", "i": 68 }, { "name": "Andermatt", "i": 171 }, { "name": "Realp", "i": 274 }, { "name": "Martigny", "i": 445 }],
+ "day-09": [{ "name": "Chamonix", "i": 137 }, { "name": "Megève", "i": 342 }, { "name": "Ugine", "i": 411 }]
+}

@@ -1,15 +1,23 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type MutableRefObject } from "react";
+import { TRAIN, arc, sprite } from "@/lib/pixel";
 
 // The real mountain of the day, built out of cubes from an elevation grid
 // (scripts/build-terrain.mjs). Big blocks first, refined until the cubes are small;
 // then the route, already there in grey, turns orange behind a moving head in 5 s.
 // The pointer tilts the model by a few degrees, no more.
 
-type Data = { nu: number; nv: number; cellKm: number; min: number; step: number; ex: number; pitch: number; h: string; u: number[]; v: number[] };
+type Data = { nu: number; nv: number; cellKm: number; min: number; step: number; ex: number; pitch: number; bearing: number; h: string; u: number[]; v: number[] };
+export type Wind = { dir: number; speed: number } | null; // dir = where it blows from (degrees), speed in km/h
+export type TerrainHandle = { set: (progress: number, wind?: Wind) => void };
 type Level = { b: number; n: number; m: number; z: Float32Array };
-type Props = { src: string; cursor?: number | null; marks?: number[]; label?: string; maxHeight?: number };
+type Props = {
+  src: string; cursor?: number | null; marks?: number[]; label?: string; maxHeight?: number;
+  handle?: MutableRefObject<TerrainHandle | null>; // when given, the route follows `set(progress)` (scroll) instead of drawing itself in 5 s
+  towns?: { name: string; at: number }[]; // named as the rider reaches them
+  fill?: boolean; // size to the parent box
+};
 
 const REST_YAW = -7, MAX_YAW = 8, MAX_PITCH = 5; // degrees
 const RISE = 420, FADE = 230, HOLD = 110, DRAW = 5000; // ms
@@ -21,12 +29,13 @@ const hex = (c: string) => {
 };
 const mix = (a: number[], b: number[], t: number) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(",")})`;
 
-export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640 }: Props) {
+export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, handle, towns, fill }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
-  const live = useRef({ cursor: null as number | null, marks: [] as number[], kick: () => {} });
+  const live = useRef({ cursor: null as number | null, marks: [] as number[], towns: [] as { name: string; at: number }[], p: null as number | null, wind: null as Wind, kick: () => {} });
   live.current.cursor = cursor;
   live.current.marks = marks ?? [];
+  live.current.towns = towns ?? [];
 
   useEffect(() => { live.current.kick(); }, [cursor]);
 
@@ -38,7 +47,8 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640 }:
     let W = 0, H = 0, S = 1, ox = 0, oy = 0, dpr = 1, zmax = 1;
     let zw = new Float32Array(0), levels: Level[] = [], zl = new Float32Array(0), gap = new Uint8Array(0);
     let layers: (HTMLCanvasElement | null)[] = [], cache: HTMLCanvasElement | null = null, cachePose = "";
-    let t0 = 0, started = false;
+    let t0 = 0, started = false, vis = false, lastT = 0;
+    const gusts = Array.from({ length: 80 }, (_, i) => ({ x: Math.random(), y: Math.random(), l: 0.5 + ((i * 37) % 10) / 10 }));
     let yaw = REST_YAW, pitch = 50, tYaw = REST_YAW, tPitch = 50;
     let col = { bg: [0, 0, 0], fg: [255, 255, 255], accent: "#ff5a1f", tones: [] as string[] };
 
@@ -75,7 +85,7 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640 }:
       const PAD = 30;
       S = (W * 0.94) / (x1 - x0);
       H = (up1 - up0) * S + PAD;
-      const cap = Math.min(maxHeight, Math.max(260, window.innerHeight * 0.78));
+      const cap = fill ? Math.max(220, el.parentElement!.clientHeight) : Math.min(maxHeight, Math.max(260, window.innerHeight * 0.78));
       if (H > cap) { S *= (cap - PAD) / (H - PAD); H = cap; }
       ox = W / 2 - ((x0 + x1) / 2) * S;
       oy = PAD / 2 + up1 * S;
@@ -159,7 +169,10 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640 }:
       }
       const lw = Math.max(2, Math.min(3.2, S * 0.42));
       g.lineJoin = g.lineCap = "round";
-      const at = (f: number) => { const i = Math.min(n - 2, Math.floor(f)), r = f - i; return [X[i] + (X[i + 1] - X[i]) * r, Y[i] + (Y[i + 1] - Y[i]) * r] as const; };
+      const at = (f: number) => {
+        const i = Math.min(n - 2, Math.floor(f)), r = f - i;
+        return gap[i + 1] ? arc(X[i], Y[i], X[i + 1], Y[i + 1], r) : ([X[i] + (X[i + 1] - X[i]) * r, Y[i] + (Y[i + 1] - Y[i]) * r] as const);
+      };
       const stroke = (end: number, colour: string) => {
         for (const flag of [0, 1]) {
           g.beginPath();
@@ -179,6 +192,30 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640 }:
       g.globalAlpha = alpha;
       stroke(n - 1, tone(0.5));
       if (p > 0) stroke(p * (n - 1), col.accent);
+      for (let k = 0; k < n - 1; k++) if (gap[k + 1]) { // a transfer (train): dotted arc and a tiny train
+        const done = p * (n - 1) >= k + 1;
+        g.lineCap = "butt"; g.setLineDash([3, 6]);
+        for (const [w, c] of [[6, tone(0)], [2.4, done ? col.accent : tone(0.8)]] as const) {
+          g.strokeStyle = c; g.lineWidth = w; g.beginPath(); g.moveTo(X[k], Y[k]);
+          for (let q = 1; q <= 24; q++) { const [x, y] = arc(X[k], Y[k], X[k + 1], Y[k + 1], q / 24); g.lineTo(x, y); }
+          g.stroke();
+        }
+        g.setLineDash([]); g.lineCap = "round";
+        const [tx, ty] = arc(X[k], Y[k], X[k + 1], Y[k + 1], 0.5);
+        sprite(g, TRAIN, tx, ty, 2, done ? col.accent : tone(1), tone(0));
+      }
+      g.font = `600 10px ui-monospace, monospace`; g.textBaseline = "middle"; g.textAlign = "left";
+      for (const t of live.current.towns) { // towns light up as the rider gets there
+        const a = Math.min(1, Math.max(0, (p - t.at + 0.012) / 0.03));
+        if (a <= 0) continue;
+        const i = Math.round(t.at * (n - 1)), name = t.name.toUpperCase(), w = g.measureText(name).width + 10, right = X[i] + 12 + w > W;
+        const lx = right ? X[i] - 12 - w : X[i] + 12, ly = Y[i] + 14;
+        g.globalAlpha = alpha * a;
+        g.fillStyle = tone(1); g.fillRect(X[i] - 2.5, Y[i] - 2.5, 5, 5);
+        g.fillStyle = tone(0); g.fillRect(lx, ly - 8, w, 16);
+        g.fillStyle = tone(1); g.fillText(name, lx + 5, ly + 0.5);
+      }
+      g.globalAlpha = alpha;
       box(X[0], Y[0], lw, p > 0 ? col.accent : tone(0.5));
       box(X[n - 1], Y[n - 1], lw, p >= 1 ? col.accent : tone(0.5));
       g.font = `600 10px ui-monospace, monospace`; g.textAlign = "center"; g.textBaseline = "middle";
@@ -188,7 +225,7 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640 }:
         g.fillStyle = f <= p ? col.accent : tone(1); g.fillRect(x - 8, y - 8, 16, 16);
         g.fillStyle = tone(0); g.fillText(String(k + 1), x, y + 0.5);
       });
-      if (p > 0 && p < 1) { const [x, y] = at(p * (n - 1)); box(x, y, lw + 2.5, col.accent); }
+      if (p > 0 && (p < 1 || handle)) { const [x, y] = at(Math.min(n - 1.001, p * (n - 1))); box(x, y, lw + 2.5, col.accent); }
       const cu = live.current.cursor;
       if (cu != null) {
         const [x, y] = at(Math.min(n - 1.001, cu * (n - 1)));
@@ -210,8 +247,9 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640 }:
 
     const frame = (now: number) => {
       raf = 0;
-      if (dead || !data || !started) return;
-      const t = reduce ? Infinity : now - t0, last = levels.length - 1;
+      if (dead || !data || !started || !vis) return;
+      const t = reduce ? Infinity : now - t0, last = levels.length - 1, dt = Math.min(60, now - (lastT || now));
+      lastT = now;
       const refine = RISE + last * (FADE + HOLD);
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, cv.width, cv.height);
@@ -236,17 +274,33 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640 }:
           if (!cache || cachePose !== pose) { cache = offscreen(levels[last], yaw, pitch); cachePose = pose; }
           blit(cache, 1);
         }
-        const p = Math.min(1, (t - refine) / DRAW);
+        const ext = live.current.p, p = ext != null ? ext : Math.min(1, (t - refine) / DRAW);
         route(ctx, yaw, pitch, p, 1);
-        again = moving || p < 1;
+        const wind = live.current.wind;
+        if (wind && !reduce) { // grey streams: where the wind goes, and how hard
+          const th = rad(wind.dir + 180 - data.bearing), du = Math.cos(th), dv = -Math.sin(th);
+          const c = Math.cos(rad(yaw)), s = Math.sin(rad(yaw)), sp = Math.sin(rad(pitch));
+          const dx = du * c - dv * s, dy = -(du * s + dv * c) * sp, v = (10 + wind.speed * 5) * (dt / 1000), len = 6 + wind.speed * 2.2;
+          ctx.strokeStyle = tone(0.8); ctx.lineWidth = 1; ctx.lineCap = "butt";
+          ctx.globalAlpha = Math.min(0.5, 0.16 + wind.speed * 0.014);
+          ctx.beginPath();
+          for (const q of gusts) {
+            q.x += (dx * v * q.l) / W; q.y += (dy * v * q.l) / H;
+            if (q.x < 0 || q.x > 1 || q.y < 0 || q.y > 1) { q.x = (q.x + 1) % 1; q.y = (q.y + 1) % 1; }
+            ctx.moveTo(q.x * W, q.y * H); ctx.lineTo(q.x * W - dx * len * q.l, q.y * H - dy * len * q.l);
+          }
+          ctx.stroke(); ctx.globalAlpha = 1;
+        }
+        again = moving || (ext != null ? !!wind && !reduce : p < 1);
       }
       if (again) raf = requestAnimationFrame(frame);
     };
     const kick = () => { if (!raf && started) raf = requestAnimationFrame(frame); };
     live.current.kick = kick;
+    if (handle) handle.current = { set: (p, w) => { live.current.p = p; if (w !== undefined) live.current.wind = w; kick(); } };
 
     const start = () => { if (started || !data) return; started = true; t0 = performance.now(); kick(); };
-    const io = new IntersectionObserver((es) => { if (es.some((e) => e.isIntersecting)) start(); }, { threshold: 0.3 });
+    const io = new IntersectionObserver((es) => { vis = es.some((e) => e.isIntersecting); if (vis) { lastT = 0; start(); kick(); } }, { threshold: 0.2 });
 
     fetch(src)
       .then((r) => r.json())
@@ -287,8 +341,9 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640 }:
       el.removeEventListener("pointermove", move);
       el.removeEventListener("pointerleave", leave);
       live.current.kick = () => {};
+      if (handle) handle.current = null;
     };
-  }, [src, maxHeight]);
+  }, [src, maxHeight, handle, fill]);
 
   return (
     <div ref={wrap} className="terrain" role="img" aria-label={label}>

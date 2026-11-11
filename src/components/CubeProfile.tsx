@@ -18,6 +18,7 @@ type Props = {
   onHover?: (frac: number | null) => void;
   onPick?: (frac: number) => void;
   label?: string;
+  trace?: boolean; // an orange line creeps along the crest, in a loop
 };
 
 const LEVELS = [12, 24, 48, 96, 192];
@@ -32,7 +33,8 @@ const hash = (c: number, k: number, l: number) => (((c + 1) * 73856093) ^ ((k + 
 
 type Geo = { n: number; s: number; D: number; ox: number; oy: number; heights: Int16Array; shades: Float32Array };
 
-export function CubeProfile({ ele, shade, height = 340, minRange = 500, marks, cursor, onHover, onPick, label }: Props) {
+export function CubeProfile({ ele, shade, height = 340, minRange = 500, marks, cursor, onHover, onPick, label, trace }: Props) {
+  const [crest, setCrest] = useState("");
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const lastEle = useRef<number[] | null>(null);
@@ -122,6 +124,7 @@ export function CubeProfile({ ele, shade, height = 340, minRange = 500, marks, c
       const final = geos[geos.length - 1];
       geoRef.current = final;
       setBox({ ox: final.ox, w: final.n * final.s });
+      if (trace) setCrest(Array.from({ length: final.n }, (_, c) => `${(final.ox + (c + 0.75) * final.s).toFixed(1)},${(final.oy - (final.heights[c * final.D] + 0.25) * final.s).toFixed(1)}`).join(" "));
       setFlags(
         (marks ?? []).map((m) => {
           const c = Math.min(final.n - 1, Math.max(0, Math.floor(m.at * final.n)));
@@ -193,7 +196,7 @@ export function CubeProfile({ ele, shade, height = 340, minRange = 500, marks, c
     };
     // marks are derived from the same day as `ele`, so they don't need to be a dependency
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ele, shade, height, minRange]);
+  }, [ele, shade, height, minRange, trace]);
 
   const fracAt = (clientX: number) => {
     const r = wrap.current!.getBoundingClientRect();
@@ -213,6 +216,7 @@ export function CubeProfile({ ele, shade, height = 340, minRange = 500, marks, c
       style={{ cursor: onPick ? "pointer" : onHover ? "crosshair" : undefined }}
     >
       <canvas ref={canvas} style={{ width: "100%", height }} />
+      {trace && crest && <svg className="cubes-trace" aria-hidden><polyline points={crest} pathLength={1} /></svg>}
       {cursor != null && <div className="cubes-cursor" style={{ left: box.ox + cursor * box.w }} />}
       {marks?.map((m, i) =>
         flags[i] ? (
