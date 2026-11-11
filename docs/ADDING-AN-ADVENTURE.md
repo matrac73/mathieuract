@@ -69,3 +69,25 @@ content/adventures/<slug>/notes/day-01.fr.md
 
 Keep photos reasonably light (≈ 2000 px wide, < 500 KB) — they are served as-is.
 Commit and push: Vercel redeploys automatically.
+
+## Photos, videos and the dots on the route
+
+Drop files in `public/adventures/<slug>/day-NN/` (jpg, png, webp, mp4, webm, mov). Each one becomes a blinking dot
+on the day's 3D route (hover = preview) and a tile in the Photos panel. Where the dot goes, in order of trust:
+
+1. `km042` in the file name (`km042_stelvio-sommet.jpg` → kilometre 42 of that day);
+2. the GPS position stored in the photo (straight from a phone, not re-exported by a messaging app);
+3. its capture time (camera clock assumed on CEST);
+4. otherwise the files are spread evenly along the day, in file-name order.
+
+Cover of the adventure: `public/adventures/<slug>/cover.jpg`.
+
+## meta.json extras
+
+- `"kind"`: `bike`, `run`, `ski` or `hike` — the pictogram shown instead of the sport's name.
+- `"massKg"`: rider + bike + bags, used by the power estimate (there is no power meter; see `src/lib/ride.ts`).
+
+## Minimap
+
+`node scripts/build-terrain.mjs <slug> --minimap` rebuilds only `terrain/minimap.json` (wide frame, coast, lakes, cities).
+A full run of `build-terrain.mjs` rebuilds it too.

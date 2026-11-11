@@ -599,3 +599,79 @@ ul, ol { list-style: none; }
 .anecdotes .frame { min-height: 130px; }
 @media (max-width: 640px) { .anecdotes { grid-template-columns: 1fr; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-snap-type: none; } .cubes-trace polyline { stroke-dashoffset: 0; } }
+
+/* =====================================================================
+   v4
+   ===================================================================== */
+:root { --warm: #ffd21f; }
+:root[data-theme="light"] { --warm: #c28e00; }
+html { scroll-snap-type: none; }
+.back { text-transform: none; letter-spacing: 0.04em; font-size: 12px; color: var(--fg); border: 1px solid var(--line); padding: 4px 9px; background: var(--bg); }
+.back::before { content: "$ "; color: var(--accent); }
+.pro .page-head .display, .perso .page-head .display { white-space: nowrap; text-transform: none; font-size: clamp(40px, 9.6vw, 136px); }
+.page-head .lead { max-width: 40ch; }
+.pro .profile-side { align-items: end; }
+
+/* header: the flickering copy sits on top of an invisible, real one — the link can never change width */
+.hs { position: relative; display: inline-block; white-space: nowrap; }
+.hs-ghost { visibility: hidden; }
+.hs-live { position: absolute; left: 0; top: 0; width: 100%; white-space: nowrap; overflow: hidden; }
+.nav a { text-transform: none; }
+
+/* timeline card: fixed height, so the page below never moves while it plays */
+.game-slot { height: 236px; min-height: 0; overflow: hidden; }
+.game-title { white-space: nowrap; }
+.game-place { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 700px) { .game-slot { height: 196px; } .game-title { font-size: clamp(18px, 5.6vw, 28px); } }
+
+/* career: each row is held in place while its cubes finish assembling, then lets go (no scroll-jacking) */
+.career-row { display: block; min-height: 0; scroll-snap-align: none; height: calc(100svh - var(--header-h) + 62vh); }
+.career-pin { position: sticky; top: var(--header-h); height: calc(100svh - var(--header-h)); display: grid; grid-template-columns: 34px minmax(0, 1fr) clamp(200px, 34vw, 430px); gap: 0 22px; align-items: center; }
+.career-pin .career-rail { align-self: stretch; }
+.career-scene { max-height: calc(100svh - var(--header-h) - 60px); }
+@media (max-width: 760px), (max-height: 520px), (prefers-reduced-motion: reduce) {
+  .career-row { height: auto; }
+  .career-pin { position: static; height: auto; grid-template-columns: 22px minmax(0, 1fr); }
+  .career-pin .career-scene-link { grid-column: 2; }
+}
+
+/* sport pictogram */
+.sport-icon { display: inline-block; vertical-align: -5px; fill: var(--fg); margin: 0 6px 0 2px; }
+
+/* day title: always one line (the font shrinks to fit) */
+.day-title, .journey-title { white-space: nowrap; overflow-x: clip; overflow-wrap: normal; }
+.stat-grid.nine { grid-template-columns: repeat(9, 1fr); }
+.stat-grid.nine .stat .num { font-size: clamp(20px, 2.1vw, 30px); }
+.stat dd { transition: color 0.3s steps(4); }
+.stat dd .unit { color: var(--mid); }
+@media (max-width: 1100px) { .stat-grid.nine { grid-template-columns: repeat(5, 1fr); } }
+@media (max-width: 640px) { .stat-grid.nine { grid-template-columns: repeat(3, 1fr); } }
+
+/* live gauges: white when low, yellow then orange as the value climbs */
+.scene-hud .num { transition: color 0.25s linear; }
+.meter { --c: var(--fg); background: linear-gradient(90deg, var(--c) calc(var(--v) * 100%), var(--line) 0); }
+.wind-gauge { --l: 50%; --w: 0%; --c: var(--fg); position: relative; display: inline-block; width: 74px; height: 10px; margin-right: 10px; background: var(--line); -webkit-mask: repeating-linear-gradient(90deg, #000 0 5px, transparent 5px 7px); mask: repeating-linear-gradient(90deg, #000 0 5px, transparent 5px 7px); }
+.wind-gauge::before { content: ""; position: absolute; top: 0; bottom: 0; left: var(--l); width: var(--w); background: var(--c); }
+.wind-gauge::after { content: ""; position: absolute; top: -3px; bottom: -3px; left: calc(50% - 1px); width: 2px; background: var(--fg); }
+.wind-ends { display: flex; justify-content: space-between; width: 74px; font-size: 8px; letter-spacing: 0.02em; margin: 1px 0 0; text-align: left; }
+.scene-hud.right .wind-ends { margin-right: auto; }
+.scene-hud.right > div:last-child dd { justify-content: flex-end; }
+.photos figure video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* photo / video shown when a dot of the route is hovered */
+.terrain-media { position: absolute; z-index: 4; width: min(300px, 62vw); margin: 0; transform: translate(14px, calc(-100% - 14px)); border: 1px solid var(--fg); background: var(--bg); padding: 4px; pointer-events: none; }
+.terrain-media.left { transform: translate(calc(-100% - 14px), calc(-100% - 14px)); }
+.terrain-media.below { transform: translate(14px, 14px); }
+.terrain-media.left.below { transform: translate(calc(-100% - 14px), 14px); }
+.terrain-media img, .terrain-media video { display: block; width: 100%; max-height: 240px; object-fit: cover; }
+.terrain-media figcaption { padding: 4px 2px 0; color: var(--fg); }
+
+/* minimap, video-game style: small in the corner, bigger under the pointer */
+.minimap { --ratio: 1.38; position: absolute; left: 14px; bottom: 74px; z-index: 3; width: 156px; aspect-ratio: var(--ratio); padding: 0; border: 1px solid var(--fg); background: color-mix(in srgb, var(--bg) 90%, transparent); cursor: zoom-in; transition: width 0.22s steps(7); overflow: hidden; }
+.minimap canvas { display: block; width: 100%; height: 100%; }
+.minimap-tag { position: absolute; left: 0; top: 0; background: var(--fg); color: var(--bg); padding: 1px 5px; font-size: 9px; }
+@media (hover: hover) { .minimap:hover { width: min(480px, 62%); } }
+.minimap.open { width: min(480px, calc(100% - 28px)); cursor: zoom-out; }
+@media (max-width: 620px) { .minimap { width: 104px; bottom: 56px; left: 8px; } .wind-gauge { width: 44px; } .wind-ends { display: none; } }
+@media (max-height: 640px) { .minimap { width: 112px; } }
+.dot-sq { display: inline-block; width: 0.15em; height: 0.15em; background: currentColor; margin: 0 0.07em 0 0.05em; }

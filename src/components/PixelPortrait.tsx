@@ -3,10 +3,10 @@
 import { useEffect, useRef } from "react";
 
 // Black-and-white portrait that starts as four big pixels. The pixel under the pointer
-// splits in four; its neighbours stay whole. Keep moving and the face sharpens where you look.
-const G = 256; // finest grid (pixels per side)
+// splits in four; its neighbours stay whole. Six splits, no more, and the face is sharp where you look.
+const G = 128; // finest grid (pixels per side): 2 × 2 big pixels, split six times
 const SIZE = 512; // canvas backing size
-const AGE = 95; // ms a pixel must exist before it can split again
+const AGE = 40; // ms a pixel must exist before it can split again
 
 export function PixelPortrait({ src, alt, className }: { src: string; alt: string; className?: string }) {
   const ref = useRef<HTMLCanvasElement>(null);
@@ -35,12 +35,21 @@ export function PixelPortrait({ src, alt, className }: { src: string; alt: strin
       for (let y = y0; y < y0 + s; y++) for (let x = x0; x < x0 + s; x++) { size[y * G + x] = h; born[y * G + x] = now; }
       for (const [dx, dy] of [[0, 0], [h, 0], [0, h], [h, h]]) paint(x0 + dx, y0 + dy, h);
     };
-    const tick = () => { if (at && sat) split(at[0], at[1], performance.now()); };
+    const tick = () => {
+      if (!at || !sat) return;
+      const now = performance.now(), s = size[at[1] * G + at[0]];
+      split(at[0], at[1], now);
+      if (s <= 8) // small pixels: the brush takes the four neighbours along, so the last levels do not drag
+        for (const [dx, dy] of [[-s, 0], [s, 0], [0, -s], [0, s]]) {
+          const x = at[0] + dx, y = at[1] + dy;
+          if (x >= 0 && y >= 0 && x < G && y < G && size[y * G + x] >= s) split(x, y, now);
+        }
+    };
     const move = (e: PointerEvent) => {
       const r = cv.getBoundingClientRect();
       at = [Math.max(0, Math.min(G - 1, Math.floor(((e.clientX - r.left) / r.width) * G))), Math.max(0, Math.min(G - 1, Math.floor(((e.clientY - r.top) / r.height) * G)))];
       tick();
-      timer ??= setInterval(tick, 60);
+      timer ??= setInterval(tick, 30);
     };
     const leave = () => { at = null; clearInterval(timer); timer = undefined; };
     cv.addEventListener("pointermove", move);

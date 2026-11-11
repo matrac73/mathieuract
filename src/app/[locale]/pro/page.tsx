@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { LifeGame } from "@/components/LifeGame";
-import { HoverScramble, Scramble } from "@/components/Scramble";
+import { DotTitle, HoverScramble } from "@/components/Scramble";
+import { PixelPortrait } from "@/components/PixelPortrait";
 import { VoxelScene } from "@/components/VoxelScene";
 import { career, languages, life, projects, site, skills } from "@/content/site";
 import { listArticles, type ArticleMeta } from "@/lib/articles";
@@ -40,10 +41,13 @@ export default async function ProPage({ params }: { params: Promise<{ locale: st
       <header className="page-head">
         <div>
           <p className="label">[ 01 ] {site.name}</p>
-          <Scramble as="h1" className="display" text={t.title} />
+          <DotTitle className="display" text={t.title} />
           <p className="lead">{t.lead}</p>
         </div>
-        <Link className="btn ghost no-print" href={`/${locale}/cv`}>{t.cv} <span aria-hidden>→</span></Link>
+        <div className="profile-side">
+          <div className="frame perso-portrait"><PixelPortrait src="/portrait-pro.jpg" alt={site.name} /></div>
+          <Link className="btn ghost no-print" href={`/${locale}/cv`}>{t.cv} <span aria-hidden>→</span></Link>
+        </div>
       </header>
 
       <section className="block" id="path">
@@ -57,6 +61,7 @@ export default async function ProPage({ params }: { params: Promise<{ locale: st
         <ol className="career">
           {career.map((it, i) => (
             <li key={it.org + it.from} className="career-row">
+              <div className="career-pin" data-pin>
               <div className="career-rail">
                 {placed[i].map(({ a, top, k }) => (
                   <Link key={a.slug} href={`/${locale}/articles/${a.slug}`} className="bump" style={{ top: `calc(${(top * 100).toFixed(1)}% + ${k * 30}px)`, animationDelay: `${-(k * 0.37 + i * 0.2).toFixed(2)}s` }} aria-label={a.title}>
@@ -73,12 +78,13 @@ export default async function ProPage({ params }: { params: Promise<{ locale: st
               </div>
               <div className="career-body">
                 <p className="label">{it.from === it.to ? it.from : `${it.from} — ${it.to ?? d.profile.present}`}</p>
-                <h3><Link href={`/${locale}/experience/${it.slug}`} className="career-link">{it.org}</Link>{it.wip && <span className="tag">WIP</span>}</h3>
+                <h3><Link href={`/${locale}/experience/${it.slug}`} className="career-link">{it.short ?? it.org}</Link>{it.wip && <span className="tag">WIP</span>}</h3>
                 <p className="tl-role">{it.role[locale]} · <span className="dim">{it.place}</span></p>
                 <ul>{it.bullets[locale].map((b) => <li key={b}>{b}</li>)}</ul>
                 <Link href={`/${locale}/experience/${it.slug}`} className="label career-more">{t.details} →</Link>
               </div>
               <Link href={`/${locale}/experience/${it.slug}`} className="career-scene-link" aria-label={it.org} tabIndex={-1}><VoxelScene scene={it.scene} scroll className="career-scene" /></Link>
+              </div>
             </li>
           ))}
         </ol>

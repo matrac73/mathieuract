@@ -50,7 +50,7 @@ export default async function ExperiencePage({ params }: P) {
 
   return (
     <article className="page exp">
-      <Link href={`/${locale}/pro#career`} className="back label">← {t.expBack}</Link>
+      <Link href={`/${locale}/pro#career`} className="back label">cd ..</Link>
       <header className="exp-head">
         <div>
           <p className="label">[ {String(career.length - i).padStart(2, "0")} / {String(career.length).padStart(2, "0")} ] {it.from === it.to ? it.from : `${it.from} — ${it.to ?? d.profile.present}`} · {it.place}</p>
@@ -99,8 +99,8 @@ export default async function ExperiencePage({ params }: P) {
       )}
 
       <div className="pager">
-        {prev ? <Link className="btn ghost" href={`/${locale}/experience/${prev.slug}`}>← {prev.org}</Link> : <span />}
-        {next ? <Link className="btn" href={`/${locale}/experience/${next.slug}`}>{next.org} →</Link> : <span />}
+        {prev ? <Link className="btn ghost" href={`/${locale}/experience/${prev.slug}`}>← {prev.short ?? prev.org}</Link> : <span />}
+        {next ? <Link className="btn" href={`/${locale}/experience/${next.slug}`}>{next.short ?? next.org} →</Link> : <span />}
       </div>
     </article>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type MutableRefObject } from "react";
+import { useEffect, useRef, useState, type MutableRefObject } from "react";
 import { TRAIN, arc, sprite } from "@/lib/pixel";
 
 // The real mountain of the day, built out of cubes from an elevation grid
@@ -9,18 +9,24 @@ import { TRAIN, arc, sprite } from "@/lib/pixel";
 // The pointer tilts the model by a few degrees, no more.
 
 type Data = { nu: number; nv: number; cellKm: number; min: number; step: number; ex: number; pitch: number; bearing: number; h: string; u: number[]; v: number[] };
-export type Wind = { dir: number; speed: number } | null; // dir = where it blows from (degrees), speed in km/h
+export type Wind = { dir: number; speed: number; rain?: number } | null; // dir = where it blows from (degrees), speed in km/h, rain in mm/h
+export type Spot = { src: string; at: number; video: boolean }; // a photo or a video, `at` = 0..1 along the route
+type Town = { name: string; at: number; always?: boolean };
 export type TerrainHandle = { set: (progress: number, wind?: Wind) => void };
 type Level = { b: number; n: number; m: number; z: Float32Array };
 type Props = {
   src: string; cursor?: number | null; marks?: number[]; label?: string; maxHeight?: number;
   handle?: MutableRefObject<TerrainHandle | null>; // when given, the route follows `set(progress)` (scroll) instead of drawing itself in 5 s
-  towns?: { name: string; at: number }[]; // named as the rider reaches them
+  towns?: Town[]; // named as the rider reaches them (`always`: start and finish, shown from the first frame)
+  media?: Spot[]; // blinking dots on the route; hovering one shows the picture
+  mediaLabel?: string;
   fill?: boolean; // size to the parent box
 };
 
 const REST_YAW = -7, MAX_YAW = 8, MAX_PITCH = 5; // degrees
 const RISE = 420, FADE = 230, HOLD = 110, DRAW = 5000; // ms
+const RELIEF = 1.5; // extra vertical exaggeration, on top of the one chosen by build-terrain
+const CLOUD = ["..####....", ".#######..", "##########", ".########."];
 const rad = (d: number) => (d * Math.PI) / 180;
 const hex = (c: string) => {
   const m = c.trim().replace("#", "");
@@ -29,13 +35,15 @@ const hex = (c: string) => {
 };
 const mix = (a: number[], b: number[], t: number) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(",")})`;
 
-export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, handle, towns, fill }: Props) {
+export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, handle, towns, fill, media, mediaLabel }: Props) {
+  const [tip, setTip] = useState<{ k: number; x: number; y: number } | null>(null);
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
-  const live = useRef({ cursor: null as number | null, marks: [] as number[], towns: [] as { name: string; at: number }[], p: null as number | null, wind: null as Wind, kick: () => {} });
+  const live = useRef({ cursor: null as number | null, marks: [] as number[], towns: [] as Town[], media: [] as Spot[], p: null as number | null, wind: null as Wind, kick: () => {} });
   live.current.cursor = cursor;
   live.current.marks = marks ?? [];
   live.current.towns = towns ?? [];
+  live.current.media = media ?? [];
 
   useEffect(() => { live.current.kick(); }, [cursor]);
 
@@ -48,14 +56,16 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
     let zw = new Float32Array(0), levels: Level[] = [], zl = new Float32Array(0), gap = new Uint8Array(0);
     let layers: (HTMLCanvasElement | null)[] = [], cache: HTMLCanvasElement | null = null, cachePose = "";
     let t0 = 0, started = false, vis = false, lastT = 0;
-    const gusts = Array.from({ length: 80 }, (_, i) => ({ x: Math.random(), y: Math.random(), l: 0.5 + ((i * 37) % 10) / 10 }));
+    const gusts = Array.from({ length: 54 }, (_, i) => ({ u: 0, v: 0, age: 1e9, life: 900 + ((i * 37) % 10) * 90, l: 0.6 + ((i * 53) % 10) / 12 }));
+    const drops = Array.from({ length: 44 }, (_, i) => ({ a: ((i * 61) % 44) / 44, b: ((i * 29) % 44) / 44, ph: ((i * 17) % 44) / 44 }));
+    let spots: { k: number; x: number; y: number }[] = [], hot = -1;
     let yaw = REST_YAW, pitch = 50, tYaw = REST_YAW, tPitch = 50;
-    let col = { bg: [0, 0, 0], fg: [255, 255, 255], accent: "#ff5a1f", tones: [] as string[] };
+    let col = { bg: [0, 0, 0], fg: [255, 255, 255], accent: "#ff5a1f", hot: [255, 90, 31], tones: [] as string[] };
 
     const colours = () => {
       const cs = getComputedStyle(document.documentElement);
       const bg = hex(cs.getPropertyValue("--bg") || "#000"), fg = hex(cs.getPropertyValue("--fg") || "#fff");
-      col = { bg, fg, accent: cs.getPropertyValue("--accent").trim() || "#ff5a1f", tones: Array.from({ length: 33 }, (_, i) => mix(bg, fg, i / 32)) };
+      col = { bg, fg, accent: cs.getPropertyValue("--accent").trim() || "#ff5a1f", hot: hex(cs.getPropertyValue("--accent") || "#ff5a1f"), tones: Array.from({ length: 33 }, (_, i) => mix(bg, fg, i / 32)) };
     };
     const tone = (t: number) => col.tones[Math.max(0, Math.min(32, Math.round(t * 32)))];
 
@@ -206,10 +216,10 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
       }
       g.font = `600 10px ui-monospace, monospace`; g.textBaseline = "middle"; g.textAlign = "left";
       for (const t of live.current.towns) { // towns light up as the rider gets there
-        const a = Math.min(1, Math.max(0, (p - t.at + 0.012) / 0.03));
+        const a = t.always ? 1 : Math.min(1, Math.max(0, (p - t.at + 0.012) / 0.03));
         if (a <= 0) continue;
         const i = Math.round(t.at * (n - 1)), name = t.name.toUpperCase(), w = g.measureText(name).width + 10, right = X[i] + 12 + w > W;
-        const lx = right ? X[i] - 12 - w : X[i] + 12, ly = Y[i] + 14;
+        const lx = right ? X[i] - 12 - w : X[i] + 12, ly = t.always ? Y[i] - 16 : Y[i] + 14;
         g.globalAlpha = alpha * a;
         g.fillStyle = tone(1); g.fillRect(X[i] - 2.5, Y[i] - 2.5, 5, 5);
         g.fillStyle = tone(0); g.fillRect(lx, ly - 8, w, 16);
@@ -226,6 +236,15 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
         g.fillStyle = tone(0); g.fillText(String(k + 1), x, y + 0.5);
       });
       if (p > 0 && (p < 1 || handle)) { const [x, y] = at(Math.min(n - 1.001, p * (n - 1))); box(x, y, lw + 2.5, col.accent); }
+      spots = live.current.media.map((m, k) => { const [x, y] = at(Math.min(n - 1.001, Math.max(0, m.at) * (n - 1))); return { k, x, y }; });
+      const beat = (performance.now() % 1600) / 1600;
+      for (const q of spots) { // where a photo or a video was taken: a dot that pings
+        const r = 3.5 + (q.k === hot ? 2 : 0), ring = r + 3 + beat * 9;
+        g.globalAlpha = alpha * (1 - beat) * 0.9; g.strokeStyle = tone(1); g.lineWidth = 1.5; g.strokeRect(q.x - ring, q.y - ring, ring * 2, ring * 2);
+        g.globalAlpha = alpha; g.fillStyle = tone(0); g.fillRect(q.x - r - 2, q.y - r - 2, 2 * r + 4, 2 * r + 4);
+        g.fillStyle = tone(1); g.fillRect(q.x - r, q.y - r, 2 * r, 2 * r);
+        g.fillStyle = col.accent; g.fillRect(q.x - 1.5, q.y - 1.5, 3, 3);
+      }
       const cu = live.current.cursor;
       if (cu != null) {
         const [x, y] = at(Math.min(n - 1.001, cu * (n - 1)));
@@ -233,6 +252,63 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
         g.strokeStyle = tone(1); g.lineWidth = 1.5; g.strokeRect(x - 6, y - 6, 12, 12);
       }
       g.globalAlpha = 1;
+    };
+
+    // The weather of the moment, only where the rider is: streams that hug the cubes around the point
+    // (longer and warmer when it blows), and, when it rained there, a small cloud with streaks falling on the road.
+    const weather = (wind: NonNullable<Wind>, p: number, dt: number) => {
+      const d = data!, n = d.u.length, fin = levels[levels.length - 1];
+      const f = Math.min(n - 1.001, Math.max(0, p) * (n - 1)), i0 = Math.floor(f), fr = f - i0;
+      const ru = d.u[i0] + (d.u[i0 + 1] - d.u[i0]) * fr, rv = d.v[i0] + (d.v[i0 + 1] - d.v[i0]) * fr;
+      const c = Math.cos(rad(yaw)), s = Math.sin(rad(yaw)), sp = Math.sin(rad(pitch)), cp = Math.cos(rad(pitch));
+      const proj = (u: number, v: number, z: number) => { const du = u - d.nu / 2, dv = v - d.nv / 2; return [ox + (du * c - dv * s) * S, oy - ((du * s + dv * c) * sp + z * cp) * S] as const; };
+      const ground = (u: number, v: number) => zAt(fin, u, v) + 0.35 * fin.b;
+      const skim = (u: number, v: number) => Math.max(ground(u, v), ground(u + 1.5, v), ground(u - 1.5, v), ground(u, v + 1.5), ground(u, v - 1.5)); // just above the cubes around
+      const th = rad(wind.dir + 180 - d.bearing), wu = Math.cos(th), wv = -Math.sin(th); // where the air goes, in grid cells
+      const R = Math.max(7, d.nu * 0.085), strong = Math.min(1, Math.max(0, (wind.speed - 7) / 14));
+      const len = 1.6 + wind.speed * 0.42, run = (2.2 + wind.speed * 0.55) * (dt / 1000);
+      ctx.lineCap = "round"; ctx.lineJoin = "round";
+      for (const pass of [0, 1]) { // a dark underlay first, so the streams read on light cubes too
+        for (const q of gusts) {
+          if (pass === 0) {
+            q.age += dt; q.u += wu * run * q.l; q.v += wv * run * q.l;
+            if (q.age > q.life || Math.hypot(q.u - ru, q.v - rv) > R * 1.25) { // born again around the rider, a little upwind
+              const a = Math.random() * 6.283, r = Math.sqrt(Math.random()) * R;
+              q.u = ru + Math.cos(a) * r - wu * R * 0.35; q.v = rv + Math.sin(a) * r - wv * R * 0.35; q.age = 0;
+            }
+          }
+          const k = Math.sin(Math.PI * Math.min(1, q.age / q.life)), edge = 1 - Math.min(1, Math.hypot(q.u - ru, q.v - rv) / (R * 1.25));
+          if (k * edge < 0.03) continue;
+          const tu = q.u - wu * len * q.l, tv = q.v - wv * len * q.l, z = Math.max(skim(q.u, q.v), ground(tu, tv)); // one straight dash, lying on the surface
+          const [x1, y1] = proj(q.u, q.v, z), [x2, y2] = proj(tu, tv, z);
+          ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+          ctx.globalAlpha = Math.min(1, k * (0.35 + edge) * (pass ? 0.95 : 0.55));
+          ctx.strokeStyle = pass ? mix(col.fg, col.hot, strong) : tone(0);
+          ctx.lineWidth = pass ? 1.6 + strong * 0.8 : 3.6;
+          ctx.stroke();
+        }
+      }
+      const rain = wind.rain ?? 0;
+      if (rain > 0.04) {
+        const heavy = Math.min(1, Math.max(0, (rain - 1) / 3)), top = zl[i0] + Math.max(9, d.nu * 0.1), t = performance.now() / 1000;
+        const count = Math.min(drops.length, Math.round(7 + rain * 16)), spread = Math.max(3.2, d.nu * 0.035);
+        ctx.lineCap = "butt"; ctx.lineWidth = 1.4 + heavy;
+        ctx.strokeStyle = mix(col.bg.map((v, i) => v + (col.fg[i] - v) * 0.8), col.hot, heavy);
+        ctx.globalAlpha = 0.75;
+        ctx.beginPath();
+        for (let j = 0; j < count; j++) {
+          const q = drops[j], u = ru + (q.a - 0.5) * 2 * spread, v = rv + (q.b - 0.5) * 2 * spread * 0.7, z0 = ground(u, v);
+          const k = (q.ph + t * (0.9 + heavy * 0.6)) % 1, z = top - (top - z0) * k, tail = Math.min(1.4 + heavy, top - z);
+          const [x1, y1] = proj(u, v, z), [x2, y2] = proj(u, v, z + tail);
+          ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+        }
+        ctx.stroke();
+        const [cx, cy] = proj(ru, rv, top), px = Math.max(5, S * spread * 0.24), bob = Math.round(Math.sin(t * 0.8) * 2);
+        ctx.globalAlpha = 0.34 + Math.min(0.3, rain * 0.2);
+        ctx.fillStyle = tone(0.92);
+        CLOUD.forEach((row, r) => [...row].forEach((ch, q) => { if (ch === "#") ctx.fillRect(Math.round(cx + (q - row.length / 2) * px), Math.round(cy + (r - CLOUD.length) * px) + bob, px - 1, px - 1); }));
+      }
+      ctx.globalAlpha = 1;
     };
 
     const offscreen = (L: Level, yawD: number, pitchD: number) => {
@@ -267,7 +343,7 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
       } else {
         yaw += (tYaw - yaw) * 0.14; pitch += (tPitch - pitch) * 0.14;
         const moving = Math.abs(tYaw - yaw) > 0.04 || Math.abs(tPitch - pitch) > 0.04;
-        if (moving && last > 0) terrain(ctx, levels[last - 1], yaw, pitch); // one step coarser while it turns: stays fluid
+        if (moving) terrain(ctx, levels[last], yaw, pitch); // same cubes while it turns: the resolution never drops
         else {
           if (!moving) { yaw = tYaw; pitch = tPitch; }
           const pose = `${yaw.toFixed(2)}/${pitch.toFixed(2)}`;
@@ -277,21 +353,9 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
         const ext = live.current.p, p = ext != null ? ext : Math.min(1, (t - refine) / DRAW);
         route(ctx, yaw, pitch, p, 1);
         const wind = live.current.wind;
-        if (wind && !reduce) { // grey streams: where the wind goes, and how hard
-          const th = rad(wind.dir + 180 - data.bearing), du = Math.cos(th), dv = -Math.sin(th);
-          const c = Math.cos(rad(yaw)), s = Math.sin(rad(yaw)), sp = Math.sin(rad(pitch));
-          const dx = du * c - dv * s, dy = -(du * s + dv * c) * sp, v = (10 + wind.speed * 5) * (dt / 1000), len = 6 + wind.speed * 2.2;
-          ctx.strokeStyle = tone(0.8); ctx.lineWidth = 1; ctx.lineCap = "butt";
-          ctx.globalAlpha = Math.min(0.5, 0.16 + wind.speed * 0.014);
-          ctx.beginPath();
-          for (const q of gusts) {
-            q.x += (dx * v * q.l) / W; q.y += (dy * v * q.l) / H;
-            if (q.x < 0 || q.x > 1 || q.y < 0 || q.y > 1) { q.x = (q.x + 1) % 1; q.y = (q.y + 1) % 1; }
-            ctx.moveTo(q.x * W, q.y * H); ctx.lineTo(q.x * W - dx * len * q.l, q.y * H - dy * len * q.l);
-          }
-          ctx.stroke(); ctx.globalAlpha = 1;
-        }
-        again = moving || (ext != null ? !!wind && !reduce : p < 1);
+        if (wind && !reduce && ext != null) weather(wind, p, dt);
+        const pings = live.current.media.length > 0 && !reduce;
+        again = moving || pings || (ext != null ? !!wind && !reduce : p < 1);
       }
       if (again) raf = requestAnimationFrame(frame);
     };
@@ -307,9 +371,22 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
       .then((d: Data) => {
         if (dead) return;
         data = d;
-        const bin = atob(d.h), k = (d.step * d.ex) / (d.cellKm * 1000);
+        const bin = atob(d.h), k = (d.step * d.ex * RELIEF) / (d.cellKm * 1000);
         zw = new Float32Array(bin.length);
-        for (let i = 0; i < bin.length; i++) zw[i] = 1 + bin.charCodeAt(i) * k;
+        const raw = new Float32Array(bin.length);
+        for (let i = 0; i < bin.length; i++) raw[i] = 1 + bin.charCodeAt(i) * k;
+        // taller relief needs calmer cubes: a light 3 × 3 smoothing keeps the shapes and drops the cell-to-cell jitter
+        for (let y = 0; y < d.nv; y++)
+          for (let x = 0; x < d.nu; x++) {
+            let sum = 0, wt = 0;
+            for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+              const xx = x + dx, yy = y + dy;
+              if (xx < 0 || yy < 0 || xx >= d.nu || yy >= d.nv) continue;
+              const w = (dx ? 1 : 2) * (dy ? 1 : 2);
+              sum += raw[yy * d.nu + xx] * w; wt += w;
+            }
+            zw[y * d.nu + x] = sum / wt;
+          }
         zmax = 1 + 255 * k;
         pitch = tPitch = d.pitch;
         colours();
@@ -323,9 +400,13 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
       const r = el.getBoundingClientRect();
       tYaw = REST_YAW + (0.5 - (e.clientX - r.left) / r.width) * 2 * MAX_YAW;
       tPitch = data.pitch + ((e.clientY - r.top) / r.height - 0.5) * 2 * MAX_PITCH;
+      const mx = e.clientX - r.left, my = e.clientY - r.top;
+      let best = -1, bd = 18;
+      for (const q of spots) { const dd = Math.hypot(q.x - mx, q.y - my); if (dd < bd) { bd = dd; best = q.k; } }
+      if (best !== hot) { hot = best; const q = spots.find((x) => x.k === best); setTip(q ? { k: q.k, x: q.x, y: q.y } : null); }
       kick();
     };
-    const leave = () => { if (!data) return; tYaw = REST_YAW; tPitch = data.pitch; kick(); };
+    const leave = () => { if (!data) return; tYaw = REST_YAW; tPitch = data.pitch; hot = -1; setTip(null); kick(); };
     el.addEventListener("pointermove", move);
     el.addEventListener("pointerleave", leave);
     let lastW = el.clientWidth;
@@ -348,6 +429,15 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
   return (
     <div ref={wrap} className="terrain" role="img" aria-label={label}>
       <canvas ref={canvas} style={{ width: "100%" }} />
+      {tip && media?.[tip.k] && (
+        <figure className={`terrain-media ${tip.x > (wrap.current?.clientWidth ?? 0) / 2 ? "left" : ""} ${tip.y < 190 ? "below" : ""}`} style={{ left: tip.x, top: tip.y }}>
+          {media[tip.k].video
+            ? <video src={media[tip.k].src} autoPlay muted loop playsInline />
+            // eslint-disable-next-line @next/next/no-img-element
+            : <img src={media[tip.k].src} alt="" />}
+          {mediaLabel && <figcaption className="label">{mediaLabel}</figcaption>}
+        </figure>
+      )}
     </div>
   );
 }

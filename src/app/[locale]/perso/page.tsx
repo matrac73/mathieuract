@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CubeProfile } from "@/components/CubeProfile";
 import { PixelPortrait } from "@/components/PixelPortrait";
-import { Scramble } from "@/components/Scramble";
+import { DotTitle } from "@/components/Scramble";
+import { SportIcon } from "@/components/SportIcon";
 import { about, interests, site } from "@/content/site";
 import { listAdventures } from "@/lib/adventures";
 import { fmtDate, fmtNum, getDict, isLocale } from "@/lib/i18n";
@@ -32,11 +33,11 @@ export default async function PersoPage({ params }: { params: Promise<{ locale: 
       <header className="page-head">
         <div>
           <p className="label">[ 02 ] {site.name}</p>
-          <Scramble as="h1" className="display" text={d.perso.title} />
+          <DotTitle className="display" text={d.perso.title} />
           <p className="lead">{d.perso.lead}</p>
         </div>
         <div className="profile-side">
-          <div className="frame perso-portrait"><PixelPortrait src="/avatar.jpg" alt={site.name} /></div>
+          <div className="frame perso-portrait"><PixelPortrait src="/portrait-perso.jpg" alt={site.name} /></div>
         </div>
       </header>
 
@@ -57,7 +58,7 @@ export default async function PersoPage({ params }: { params: Promise<{ locale: 
           {list.map((a, i) => (
             <Link key={a.slug} href={`/${locale}/adventures/${a.slug}`} className="teaser">
               <div className="teaser-head">
-                <p className="label">[ {d.adv.adventure} {String(list.length - i).padStart(2, "0")} ] {a.meta.sport[locale]} · {fmtDate(a.summary.startDate, locale, { month: "long", year: "numeric" })}</p>
+                <p className="label">[ {d.adv.adventure} {String(list.length - i).padStart(2, "0")} ] <SportIcon kind={a.meta.kind} label={a.meta.sport[locale]} /> {fmtDate(a.summary.startDate, locale, { month: "long", year: "numeric" })}</p>
                 <h3 className="display small">{a.meta.title[locale]}</h3>
                 <p className="muted">{a.meta.tagline[locale]}</p>
               </div>

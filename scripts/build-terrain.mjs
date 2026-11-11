@@ -145,7 +145,59 @@ async function overview(days) {
   console.log(`overview.json: ${nu}x${nv} cells of ${out.cellKm} km`);
 }
 
+// ---------- minimap: the route inside a much wider frame, so the region can be recognised ----------
+// Land in grey by altitude, sea and big lakes left empty (a lake is where the elevation model is perfectly flat).
+const CITIES = [["Zürich", 47.37, 8.54], ["Genève", 46.2, 6.14], ["Milano", 45.46, 9.19], ["Innsbruck", 47.27, 11.39], ["Torino", 45.07, 7.69], ["Lyon", 45.76, 4.84], ["München", 48.14, 11.58], ["Venezia", 45.44, 12.33], ["Genova", 44.41, 8.93], ["Nice", 43.7, 7.27], ["Bern", 46.95, 7.45]];
+const LAKES = [
+  [[46.21, 6.15], [46.45, 6.5], [46.41, 6.9]], // Léman
+  [[47.5, 9.72], [47.62, 9.4], [47.74, 9.08]], // Bodensee
+  [[47.35, 8.55], [47.23, 8.8]], // Zürichsee
+  [[46.8, 6.68], [46.98, 7.0]], // Neuchâtel
+  [[45.74, 8.58], [45.98, 8.65], [46.15, 8.8]], // Maggiore
+  [[45.82, 9.08], [46.0, 9.27], [46.16, 9.4]], // Como
+  [[45.47, 10.65], [45.68, 10.72], [45.87, 10.86]], // Garda
+];
+async function minimap(days) {
+  const lat = days.flatMap((d) => d.lat), lon = days.flatMap((d) => d.lon);
+  const latC = (Math.min(...lat) + Math.max(...lat)) / 2, lonC = (Math.min(...lon) + Math.max(...lon)) / 2;
+  const kx = 111.32 * Math.cos(rad(latC)), ky = 110.57;
+  const spanKm = Math.max(660, (Math.max(...lon) - Math.min(...lon)) * kx * 1.75), nu = 120, cell = spanKm / nu;
+  const hKm = Math.max(500, (Math.max(...lat) - Math.min(...lat)) * ky * 2.6), nv = Math.round(hKm / cell);
+  const lo0 = lonC - spanKm / 2 / kx, la1 = latC + (nv * cell) / 2 / ky - 0.35; // a little more of the south: the coast is what one recognises
+  const z = 7, off = 1.6; // km between the probes of the flatness test
+  const h = new Uint8Array(nu * nv);
+  for (let j = 0; j < nv; j++)
+    for (let i = 0; i < nu; i++) {
+      const la = la1 - ((j + 0.5) * cell) / ky, lo = lo0 + ((i + 0.5) * cell) / kx;
+      const e = [await eleAt(la, lo, z), await eleAt(la + off / ky, lo, z), await eleAt(la - off / ky, lo, z), await eleAt(la, lo + off / kx, z), await eleAt(la, lo - off / kx, z)];
+      const water = e[0] <= 0.5 || Math.max(...e) - Math.min(...e) < 0.75;
+      h[j * nu + i] = water ? 0 : Math.max(1, Math.min(255, Math.round(1 + (Math.sqrt(Math.max(0, e[0])) / Math.sqrt(4200)) * 254)));
+    }
+  const uOf = (l) => r2(((l - lo0) * kx) / cell), vOf = (l) => r2(((la1 - l) * ky) / cell);
+  for (const line of LAKES) // the big lakes, drawn by hand along their axis (the elevation tiles do not single them out)
+    for (let k = 0; k < line.length - 1; k++)
+      for (let t = 0; t <= 1; t += 0.05) {
+        const i = Math.floor(uOf(line[k][1] + (line[k + 1][1] - line[k][1]) * t)), j = Math.floor(vOf(line[k][0] + (line[k + 1][0] - line[k][0]) * t));
+        if (i >= 0 && j >= 0 && i < nu && j < nv) h[j * nu + i] = 0;
+      }
+  const out = {
+    nu, nv, cellKm: r2(cell), h: b64(h),
+    days: days.map((d) => {
+      const idx = d.lat.map((_, i) => i).filter((i) => i % 4 === 0 || i === d.lat.length - 1);
+      return { n: d.n, at: idx.map((i) => r2(i / (d.lat.length - 1))), u: idx.map((i) => uOf(d.lon[i])), v: idx.map((i) => vOf(d.lat[i])) };
+    }),
+    cities: CITIES.map(([name, la, lo]) => ({ name, u: uOf(lo), v: vOf(la) })).filter((c) => c.u > 2 && c.u < nu - 2 && c.v > 2 && c.v < nv - 2),
+  };
+  fs.writeFileSync(path.join(OUT, "minimap.json"), JSON.stringify(out));
+  console.log(`minimap.json: ${nu}x${nv} cells of ${out.cellKm} km, ${[...h].filter((x) => !x).length} water cells, ${out.cities.length} cities`);
+}
+
 const files = fs.readdirSync(DAYS).filter((f) => /^day-\d+\.json$/.test(f)).sort();
+if (process.argv.includes("--minimap")) { // only the minimap (the stages are slow to rebuild)
+  await minimap(files.map((f) => { const d = JSON.parse(fs.readFileSync(path.join(DAYS, f), "utf8")); return { n: d.n, lat: d.profile.lat, lon: d.profile.lon }; }));
+  process.exit(0);
+}
 const days = [];
 for (const f of files) days.push(await stage(f));
 await overview(days);
+await minimap(days);

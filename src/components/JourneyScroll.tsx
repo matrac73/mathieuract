@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Summary } from "@/lib/adventures";
+import { useFitLine } from "@/lib/fit";
 import { fmtDate, fmtNum, type Dict, type Locale } from "@/lib/i18n";
 import { TRAIN, arc, sprite } from "@/lib/pixel";
 import { Scramble } from "./Scramble";
@@ -24,6 +25,8 @@ export function JourneyScroll({ src, summary, dict, locale }: { src: string; sum
   const kmEl = useRef<HTMLElement>(null), upEl = useRef<HTMLElement>(null), bar = useRef<HTMLDivElement>(null);
   const [di, setDi] = useState(0);
   const day = summary.days[di];
+  const title = useRef<HTMLParagraphElement>(null);
+  useFitLine(title, `${day.start.name} → ${day.end.name}`);
 
   useEffect(() => {
     const sec = section.current!, cv = canvas.current!, ctx = cv.getContext("2d")!;
@@ -149,7 +152,7 @@ export function JourneyScroll({ src, summary, dict, locale }: { src: string; sum
         <canvas ref={canvas} aria-hidden />
         <div className="journey-hud">
           <p className="label">[ {t.journey} ] {t.day} <Scramble text={pad(day.n)} /> / {pad(summary.days.length)} — <Scramble text={fmtDate(day.date, locale, { weekday: "short", day: "numeric", month: "short" })} /></p>
-          <p className="journey-title"><Scramble text={day.start.name ?? "—"} duration={420} /> <span className="to" aria-hidden>→</span> <Scramble text={day.end.name ?? "—"} duration={420} delay={80} /></p>
+          <p className="journey-title" ref={title}><Scramble text={day.start.name ?? "—"} duration={420} /> <span className="to" aria-hidden>→</span> <Scramble text={day.end.name ?? "—"} duration={420} delay={80} /></p>
           <p className="journey-count"><b className="num" ref={kmEl}>0</b><span className="unit">km</span> <b className="num" ref={upEl}>0</b><span className="unit">m ↑</span></p>
         </div>
         <div className="journey-foot">

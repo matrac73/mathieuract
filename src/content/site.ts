@@ -40,12 +40,12 @@ export const site = {
 export const summary: Record<"en" | "fr", string[]> = {
   en: [
     "I trained as an engineer at CentraleSupélec, with a focus on artificial intelligence, then added a business degree at ESSEC, split between Singapore and Paris. I like the place where those two worlds meet: turning a technical possibility into something a team actually uses on a Monday morning.",
-    "I learned to build at Safran, where I spent three years on data science and computer vision for landing systems; to structure a problem with BCG X; and to ship generative AI at scale at Onepoint, as tech lead of an internal copilot and right hand to the Chief AI Officer.",
+    "I learned to build at Safran, where I spent three years on data science and computer vision for landing systems; to structure a problem with BCG X, alongside my whole final year at CentraleSupélec; and to ship generative AI at scale at Onepoint, as tech lead of an internal copilot and right hand to the Chief AI Officer.",
     "Since October 2024 I have been part of Adagia Partners, a private equity firm, as Associate Tech & AI — building the tools and the habits that let an investment team work with AI every day.",
   ],
   fr: [
     "Ingénieur diplômé de CentraleSupélec, spécialisé en intelligence artificielle, j'ai complété mon parcours par le programme Grande École de l'ESSEC, entre Singapour et Paris. J'aime l'endroit où ces deux mondes se rencontrent : transformer une possibilité technique en un outil qu'une équipe utilise vraiment le lundi matin.",
-    "J'ai appris à construire chez Safran, pendant trois ans de data science et de vision par ordinateur sur les trains d'atterrissage ; à structurer un problème avec BCG X ; et à déployer l'IA générative à l'échelle chez Onepoint, comme tech lead d'un copilote interne et bras droit du Chief AI Officer.",
+    "J'ai appris à construire chez Safran, pendant trois ans de data science et de vision par ordinateur sur les trains d'atterrissage ; à structurer un problème avec BCG X, en parallèle de toute ma dernière année à CentraleSupélec ; et à déployer l'IA générative à l'échelle chez Onepoint, comme tech lead d'un copilote interne et bras droit du Chief AI Officer.",
     "Depuis octobre 2024, je fais partie d'Adagia Partners, société de private equity, en tant qu'Associate Tech & AI : j'y construis les outils et les réflexes qui permettent à une équipe d'investissement de travailler avec l'IA au quotidien.",
   ],
 };
@@ -56,7 +56,7 @@ export const about: Record<"en" | "fr", string[]> = {
   fr: ["Loin de l'écran, je cours et je roule. Longtemps, et de préférence en montée. Les aventures ci-dessous sont l'endroit où ces journées finissent."],
 };
 
-type Item = { org: string; role: L10n; place: string; from: string; to: string | null; bullets: Record<"en" | "fr", string[]>; wip?: boolean };
+type Item = { org: string; short?: string; role: L10n; place: string; from: string; to: string | null; bullets: Record<"en" | "fr", string[]>; wip?: boolean };
 
 export const experience: Item[] = [
   {
@@ -100,7 +100,8 @@ export const experience: Item[] = [
   },
   {
     org: "Boston Consulting Group — X",
-    role: { en: "End-of-studies project (CentraleSupélec)", fr: "Projet de fin d'études (CentraleSupélec)" },
+    short: "BCG X",
+    role: { en: "End-of-studies project, alongside the whole final year at CentraleSupélec", fr: "Projet de fin d'études, en parallèle de toute la dernière année à CentraleSupélec" },
     place: "Paris",
     from: "Sept 2021",
     to: "Jun 2022",
@@ -117,6 +118,7 @@ export const experience: Item[] = [
   },
   {
     org: "Safran — Landing Systems",
+    short: "Safran",
     role: { en: "Apprenticeship (with CentraleSupélec)", fr: "Apprentissage (avec CentraleSupélec)" },
     place: "Vélizy-Villacoublay",
     from: "Sept 2019",
@@ -274,36 +276,38 @@ export const projects: Project[] = [
 // [WIP] the first three periods (dates, wording) are assumptions to confirm.
 // ---------------------------------------------------------------------------
 export type Stage = { id: string; lane: "acad" | "pro"; start: string; end: string | null; level: number; row?: number; short: string; title: L10n; place: L10n; text: L10n; slug?: string; wip?: boolean };
+// One rule for every period: `short`/`title` say what kind of period it was (school, exchange, apprenticeship…),
+// `place` says where and with whom.
 export const life: Stage[] = [
-  { id: "ugine", lane: "acad", start: "2013-09", end: "2015-06", level: 1, short: "UGINE", wip: true,
-    title: { en: "High school in Savoie", fr: "Lycée en Savoie" }, place: { en: "Ugine, Savoie", fr: "Ugine, Savoie" },
+  { id: "ugine", lane: "acad", start: "2013-09", end: "2015-06", level: 1, short: "LYCÉE", wip: true,
+    title: { en: "High school", fr: "Lycée" }, place: { en: "Ugine, Savoie", fr: "Ugine, Savoie" },
     text: { en: "High school at the foot of the slopes. The skis are never far from the school bag.", fr: "Le lycée au pied des pistes. Les skis ne sont jamais loin du cartable." } },
-  { id: "usa", lane: "acad", start: "2015-08", end: "2016-06", level: 1, short: "USA", wip: true,
-    title: { en: "United States", fr: "États-Unis" }, place: { en: "United States", fr: "États-Unis" },
-    text: { en: "Off to the United States: high school in its original version.", fr: "Cap sur les États-Unis : le lycée en version originale." } },
-  { id: "lyon", lane: "acad", start: "2016-09", end: "2017-06", level: 1, short: "LYON", wip: true,
+  { id: "usa", lane: "acad", start: "2015-08", end: "2016-06", level: 1, short: "ÉCHANGE", wip: true,
+    title: { en: "Exchange year", fr: "Échange" }, place: { en: "United States", fr: "États-Unis" },
+    text: { en: "A year in the United States: high school in its original version.", fr: "Une année aux États-Unis : le lycée en version originale." } },
+  { id: "lyon", lane: "acad", start: "2016-09", end: "2017-06", level: 1, short: "TERMINALE", wip: true,
     title: { en: "Final year of high school", fr: "Terminale" }, place: { en: "Lyon", fr: "Lyon" },
-    text: { en: "Back in France for the final year, in Lyon. One target: the baccalauréat.", fr: "Retour en France pour la terminale, à Lyon. Un objectif : le bac." } },
+    text: { en: "Back in France for the final year. One target: the baccalauréat.", fr: "Retour en France pour la terminale. Un objectif : le bac." } },
   { id: "prepa", lane: "acad", start: "2017-09", end: "2019-06", level: 2, short: "PRÉPA", slug: "prepa",
-    title: { en: "Preparatory classes", fr: "Classes préparatoires" }, place: { en: "La Martinière Monplaisir, Lyon", fr: "La Martinière Monplaisir, Lyon" },
+    title: { en: "Preparatory classes", fr: "Classe prépa" }, place: { en: "La Martinière Monplaisir · Lyon", fr: "La Martinière Monplaisir · Lyon" },
     text: { en: "Two years of maths, physics and computer science — and oral exams at the blackboard.", fr: "Deux ans de maths, de physique et d'informatique — et de khôlles au tableau." } },
-  { id: "cs", lane: "acad", start: "2019-09", end: "2022-06", level: 3, short: "CENTRALESUPÉLEC", slug: "centralesupelec",
-    title: { en: "CentraleSupélec", fr: "CentraleSupélec" }, place: { en: "Rennes · Gif-sur-Yvette", fr: "Rennes · Gif-sur-Yvette" },
-    text: { en: "Engineering school, digital track, with a strong focus on artificial intelligence.", fr: "École d'ingénieur, filière numérique, forte dominante intelligence artificielle." } },
-  { id: "essec", lane: "acad", start: "2022-09", end: "2024-09", level: 3, short: "ESSEC", slug: "essec",
-    title: { en: "ESSEC Business School", fr: "ESSEC Business School" }, place: { en: "Singapore · Cergy", fr: "Singapour · Cergy" },
+  { id: "cs", lane: "acad", start: "2019-09", end: "2022-06", level: 3, short: "ÉCOLE D'INGÉNIEUR", slug: "centralesupelec",
+    title: { en: "Engineering school", fr: "École d'ingénieur" }, place: { en: "CentraleSupélec · Rennes, Gif-sur-Yvette", fr: "CentraleSupélec · Rennes, Gif-sur-Yvette" },
+    text: { en: "Digital track, with a strong focus on artificial intelligence.", fr: "Filière numérique, forte dominante intelligence artificielle." } },
+  { id: "essec", lane: "acad", start: "2022-09", end: "2024-09", level: 3, short: "ÉCOLE DE COMMERCE", slug: "essec",
+    title: { en: "Business school", fr: "École de commerce" }, place: { en: "ESSEC · Singapore, Cergy", fr: "ESSEC · Singapour, Cergy" },
     text: { en: "Business after engineering, between Singapore and Paris.", fr: "Le business après l'ingénierie, entre Singapour et Paris." } },
-  { id: "safran", lane: "pro", start: "2019-09", end: "2022-06", level: 2, short: "SAFRAN", slug: "safran",
-    title: { en: "Safran Landing Systems", fr: "Safran Landing Systems" }, place: { en: "Vélizy-Villacoublay", fr: "Vélizy-Villacoublay" },
-    text: { en: "Three years as an apprentice: data science and computer vision for landing gear.", fr: "Trois ans d'apprentissage : data science et vision par ordinateur pour les trains d'atterrissage." } },
-  { id: "bcg", lane: "pro", start: "2021-09", end: "2022-06", level: 1, row: 1, short: "BCG X", slug: "bcg-x",
-    title: { en: "BCG X", fr: "BCG X" }, place: { en: "Paris", fr: "Paris" },
-    text: { en: "End-of-studies project with a consulting team: BCG Greener IT.", fr: "Projet de fin d'études au sein d'une équipe de consultants : BCG Greener IT." } },
-  { id: "onepoint", lane: "pro", start: "2023-09", end: "2024-09", level: 2, short: "ONEPOINT", slug: "onepoint",
-    title: { en: "Onepoint", fr: "Onepoint" }, place: { en: "Paris", fr: "Paris" },
+  { id: "safran", lane: "pro", start: "2019-09", end: "2022-06", level: 2, short: "APPRENTISSAGE", slug: "safran",
+    title: { en: "Apprenticeship", fr: "Apprentissage" }, place: { en: "Safran · Vélizy-Villacoublay", fr: "Safran · Vélizy-Villacoublay" },
+    text: { en: "Three years alongside the engineering school: data science and computer vision for landing gear.", fr: "Trois ans en parallèle de l'école d'ingénieur : data science et vision par ordinateur pour les trains d'atterrissage." } },
+  { id: "bcg", lane: "pro", start: "2021-09", end: "2022-06", level: 1, row: 1, short: "PROJET DE FIN D'ÉTUDES", slug: "bcg-x",
+    title: { en: "End-of-studies project", fr: "Projet de fin d'études" }, place: { en: "BCG X · Paris", fr: "BCG X · Paris" },
+    text: { en: "Alongside the whole final year at CentraleSupélec, within a consulting team: BCG Greener IT.", fr: "En parallèle de toute la dernière année à CentraleSupélec, au sein d'une équipe de consultants : BCG Greener IT." } },
+  { id: "onepoint", lane: "pro", start: "2023-09", end: "2024-09", level: 2, short: "ALTERNANCE", slug: "onepoint",
+    title: { en: "Work-study year", fr: "Alternance" }, place: { en: "Onepoint · Paris", fr: "Onepoint · Paris" },
     text: { en: "Tech lead of Neo, a generative AI copilot, and right hand to the Chief AI Officer.", fr: "Tech lead de Neo, copilote d'IA générative, et bras droit du Chief AI Officer." } },
-  { id: "adagia", lane: "pro", start: "2024-10", end: null, level: 3, short: "ADAGIA", slug: "adagia",
-    title: { en: "Adagia Partners", fr: "Adagia Partners" }, place: { en: "Paris", fr: "Paris" },
+  { id: "adagia", lane: "pro", start: "2024-10", end: null, level: 3, short: "CDI", slug: "adagia",
+    title: { en: "Permanent position", fr: "CDI" }, place: { en: "Adagia Partners · Paris", fr: "Adagia Partners · Paris" },
     text: { en: "Associate Tech & AI in a private equity firm: AI tools an investment team uses every day.", fr: "Associate Tech & AI dans une société de private equity : des outils d'IA qu'une équipe d'investissement utilise au quotidien." } },
 ];
 
@@ -312,12 +316,11 @@ export const life: Stage[] = [
 export type CareerItem = Item & { slug: string; scene: string; start: string; end: string | null }; // start/end as YYYY-MM, used to place articles
 const withScene = (it: Item, slug: string, scene: string, start: string, end: string | null): CareerItem => ({ ...it, slug, scene, start, end });
 export const career: CareerItem[] = [
-  withScene(experience[0], "adagia", "bars", "2024-10", null),
-  withScene(experience[1], "onepoint", "chat", "2023-09", "2024-09"),
-  withScene(education[0], "essec", "skyline", "2022-09", "2023-08"),
-  withScene(experience[2], "bcg-x", "matrix", "2021-09", "2022-06"),
-  withScene(extras[0], "raid", "mountain", "2020-09", "2021-08"),
-  withScene(experience[3], "safran", "plane", "2019-09", "2022-06"),
-  withScene(education[1], "centralesupelec", "pyramid", "2019-09", "2022-06"),
-  withScene(education[2], "prepa", "books", "2017-09", "2019-06"),
+  withScene(experience[0], "adagia", "adagia", "2024-10", null),
+  withScene(experience[1], "onepoint", "onepoint", "2023-09", "2024-09"),
+  withScene(education[0], "essec", "essec", "2022-09", "2023-08"),
+  withScene(experience[2], "bcg-x", "bcg", "2021-09", "2022-06"),
+  withScene(experience[3], "safran", "safran", "2019-09", "2022-06"),
+  withScene(education[1], "centralesupelec", "centrale", "2019-09", "2022-06"),
+  withScene(education[2], "prepa", "prepa", "2017-09", "2019-06"),
 ];

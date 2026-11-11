@@ -59,25 +59,40 @@ export function Scramble({ text, as = "span", className, duration = 550, delay =
   return createElement(as, { ref, className, suppressHydrationWarning: true }, initial);
 }
 
-/** Link/label that re-scrambles on hover. */
-export function HoverScramble({ text, className }: { text: string; className?: string }) {
+/**
+ * Link/label that re-scrambles on hover. With `fixed`, the real text stays in the flow (invisible) and the
+ * flickering copy is laid over it: whatever the glyphs do, the box cannot change size.
+ */
+export function HoverScramble({ text, className, fixed }: { text: string; className?: string; fixed?: boolean }) {
   const ref = useRef<HTMLSpanElement>(null);
   const cancel = useRef(() => {});
+  const enter = () => {
+    cancel.current();
+    const el = ref.current;
+    if (!el) return;
+    const stop = scrambleTo(el, text, 380);
+    cancel.current = () => { stop(); el.textContent = text; };
+  };
+  if (fixed)
+    return (
+      <span className={`hs ${className ?? ""}`} aria-label={text} onPointerEnter={enter}>
+        <span className="hs-ghost" aria-hidden>{text}</span>
+        <span className="hs-live" aria-hidden ref={ref}>{text}</span>
+      </span>
+    );
+  return <span ref={ref} className={className} aria-label={text} onPointerEnter={enter}>{text}</span>;
+}
+/** Page title whose full stops are drawn as square pixels (the dot-matrix face draws them as a cross). */
+export function DotTitle({ text, className }: { text: string; className?: string }) {
+  const parts = text.split(".");
   return (
-    <span
-      ref={ref}
-      className={className}
-      aria-label={text}
-      onPointerEnter={() => {
-        cancel.current();
-        const el = ref.current;
-        if (!el) return;
-        cancel.current = scrambleTo(el, text, 380);
-        const stop = cancel.current;
-        cancel.current = () => { stop(); el.textContent = text; };
-      }}
-    >
-      {text}
-    </span>
+    <h1 className={className} aria-label={text}>
+      {parts.map((part, i) => (
+        <span key={i} aria-hidden>
+          {part && <Scramble text={part} />}
+          {i < parts.length - 1 && <i className="dot-sq" />}
+        </span>
+      ))}
+    </h1>
   );
 }

@@ -124,7 +124,10 @@ export function CubeProfile({ ele, shade, height = 340, minRange = 500, marks, c
       const final = geos[geos.length - 1];
       geoRef.current = final;
       setBox({ ox: final.ox, w: final.n * final.s });
-      if (trace) setCrest(Array.from({ length: final.n }, (_, c) => `${(final.ox + (c + 0.75) * final.s).toFixed(1)},${(final.oy - (final.heights[c * final.D] + 0.25) * final.s).toFixed(1)}`).join(" "));
+      if (trace) { // the line runs on top of the cubes, halfway into the depth of the relief
+        const km = final.D >> 1, off = (km + 0.5) * (final.s / 2);
+        setCrest(Array.from({ length: final.n }, (_, c) => `${(final.ox + (c + 0.5) * final.s + off).toFixed(1)},${(final.oy - final.heights[c * final.D + km] * final.s - off).toFixed(1)}`).join(" "));
+      }
       setFlags(
         (marks ?? []).map((m) => {
           const c = Math.min(final.n - 1, Math.max(0, Math.floor(m.at * final.n)));

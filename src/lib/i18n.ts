@@ -4,7 +4,7 @@ export const isLocale = (v: string): v is Locale => (locales as readonly string[
 export type L10n = Record<Locale, string>;
 
 const en = {
-  nav: { pro: "Pro / Academic", perso: "Personal" },
+  nav: { pro: "pro./acad.", perso: "perso." },
   intro: { label: "Meet me in brief", skip: "Skip", lines: ["Welcome"] },
   home: {
     kicker: "Portfolio / 2026",
@@ -19,7 +19,7 @@ const en = {
     latest: "Latest adventure",
   },
   pro: {
-    title: "Pro / Academic",
+    title: "pro./acad.",
     lead: "From a high school in Savoie to private equity: walk the path, then scroll back through it.",
     path: "The path",
     hint: "Mouse to scrub · Space for the next period",
@@ -45,7 +45,7 @@ const en = {
     cv: "CV",
     wip: "to confirm",
   },
-  perso: { title: "Personal", lead: "The person before the job title.", about: "About me", adventures: "Adventures" },
+  perso: { title: "perso.", lead: "The person before the job title.", about: "About me", adventures: "Adventures" },
   profile: {
     role: "Associate Tech & AI — Adagia Partners",
     title: "Profile",
@@ -78,8 +78,14 @@ const en = {
     journey: "The route",
     skipJourney: "Skip to the days",
     terrain: "The day, by scrolling",
-    terrainHint: "Scroll to ride · move the pointer to tilt",
-    terrainNote: "Real relief (open elevation data, vertically exaggerated). Grey streams: the wind where we were, when we were there (hourly reanalysis).",
+    terrainHint: "Scroll to ride · move the pointer to tilt · hover the dots for photos",
+    terrainNote: "Real relief (open elevation data, heights exaggerated). Streams on the ground: the wind where we were, when we were there; a cloud and falling streaks when it rained (hourly reanalysis). Power is an estimate (no power meter): weight, gradient, speed and wind.",
+    cumAscent: "Climbed so far",
+    power: "Power",
+    est: "est.",
+    avgPower: "Avg power (est.)",
+    minimap: "Where we are",
+    media: "Taken here",
     train: "Train",
     story: "The story of the day",
     storyEmpty: "The story of this day is still to be written",
@@ -143,7 +149,7 @@ const en = {
 };
 
 const fr: typeof en = {
-  nav: { pro: "Pro / Académique", perso: "Perso" },
+  nav: { pro: "pro./acad.", perso: "perso." },
   intro: { label: "Meet me in brief", skip: "Passer", lines: ["Bienvenue"] },
   home: {
     kicker: "Portfolio / 2026",
@@ -158,7 +164,7 @@ const fr: typeof en = {
     latest: "Dernière aventure",
   },
   pro: {
-    title: "Pro / Académique",
+    title: "pro./acad.",
     lead: "Du lycée en Savoie au private equity : parcourez le chemin, puis remontez-le en scrollant.",
     path: "Le parcours",
     hint: "Souris pour parcourir · Espace pour la période suivante",
@@ -184,7 +190,7 @@ const fr: typeof en = {
     cv: "CV",
     wip: "à confirmer",
   },
-  perso: { title: "Perso", lead: "La personne avant l'intitulé de poste.", about: "À propos de moi", adventures: "Aventures" },
+  perso: { title: "perso.", lead: "La personne avant l'intitulé de poste.", about: "À propos de moi", adventures: "Aventures" },
   profile: {
     role: "Associate Tech & AI — Adagia Partners",
     title: "Profil",
@@ -217,8 +223,14 @@ const fr: typeof en = {
     journey: "Le parcours",
     skipJourney: "Passer aux journées",
     terrain: "La journée, au fil du scroll",
-    terrainHint: "Scrollez pour rouler · bougez la souris pour incliner",
-    terrainNote: "Relief réel (données d'altitude ouvertes, hauteurs exagérées). Flux gris : le vent là où nous étions, à l'heure où nous y passions (réanalyse horaire).",
+    terrainHint: "Scrollez pour rouler · bougez la souris pour incliner · survolez les points pour les photos",
+    terrainNote: "Relief réel (données d'altitude ouvertes, hauteurs exagérées). Flux au sol : le vent là où nous étions, à l'heure où nous y passions ; un nuage et des traits qui tombent quand il pleuvait (réanalyse horaire). La puissance est estimée (pas de capteur) : poids, pente, vitesse et vent.",
+    cumAscent: "D+ cumulé",
+    power: "Puissance",
+    est: "est.",
+    avgPower: "Puissance moy. (est.)",
+    minimap: "Où nous sommes",
+    media: "Pris ici",
     train: "Train",
     story: "Le récit de la journée",
     storyEmpty: "Le récit de cette journée reste à écrire",

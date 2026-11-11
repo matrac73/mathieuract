@@ -1,7 +1,9 @@
 {
   "order": 1,
   "riders": 2,
-  "title": { "en": "Crossing the Alps", "fr": "La traversée des Alpes" },
+  "kind": "bike",
+  "massKg": 88,
+  "title": { "en": "X-Alpes", "fr": "X-Alpes" },
   "tagline": { "en": "Zurich → Albertville, two riders, nine days", "fr": "Zurich → Albertville, à deux, en neuf jours" },
   "intro": {
     "en": "[WIP] Nine days, four countries and a dozen passes — from the lakes of Zurich to the Arlberg, over the Brenner into Italy, up the Stelvio, across the Engadine and the Swiss high passes, then down into Savoie.",

@@ -2,11 +2,14 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Adventure, Day } from "@/lib/adventures";
+import { useFitLine } from "@/lib/fit";
 import { fmtDate, fmtDuration, fmtNum, type Dict, type Locale } from "@/lib/i18n";
+import { heat } from "@/lib/ride";
 import { CubeProfile } from "./CubeProfile";
 import { DayScene } from "./DayScene";
 import { JourneyScroll } from "./JourneyScroll";
 import { Scramble } from "./Scramble";
+import { SportIcon } from "./SportIcon";
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const localTime = (ts: number) => new Date((ts + 7200) * 1000).toISOString().slice(11, 16); // CEST all along the route
@@ -17,6 +20,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
   const { summary, meta } = adv;
   const [idx, setIdx] = useState(0);
   const explorer = useRef<HTMLElement>(null);
+  const title = useRef<HTMLHeadingElement>(null);
   const day = days[idx];
   const P = day.profile;
 
@@ -64,15 +68,22 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
   const hasTransfer = useMemo(() => P.lat.some((la, i) => i > 0 && Math.hypot((la - P.lat[i - 1]) * 111, (P.lon[i] - P.lon[i - 1]) * 78) > 2.5), [P]);
   const named = day.passes.filter((p) => p.name);
   const s = day.stats;
-  const stats: [string, string, string][] = [
-    [t.distance, fmtNum(s.distanceKm, locale, 1), "km"],
-    [t.ascent, fmtNum(s.ascent, locale), "m"],
-    [t.moving, fmtDuration(s.movingSec), ""],
-    [t.avgSpeed, fmtNum(s.avgSpeed, locale, 1), "km/h"],
-    [t.highPoint, fmtNum(s.maxAlt, locale), "m"],
-    [t.avgHr, s.avgHr ? String(s.avgHr) : "—", "bpm"],
-    [t.maxHr, s.maxHr ? String(s.maxHr) : "—", "bpm"],
-    [t.calories, fmtNum(s.calories, locale), "kcal"],
+  useFitLine(title, `${place(day.start)} → ${place(day.end)}`);
+  // each figure is tinted by where this day stands among the days of the trip: white = the lowest, yellow then orange = the highest
+  const rank = (pick: (d: Day) => number | null) => {
+    const all = days.map(pick).filter((v): v is number => v != null), lo = Math.min(...all), hi = Math.max(...all), v = pick(day);
+    return v == null || hi === lo ? 0 : (v - lo) / (hi - lo);
+  };
+  const stats: [string, string, string, number][] = [
+    [t.distance, fmtNum(s.distanceKm, locale, 1), "km", rank((d) => d.stats.distanceKm)],
+    [t.ascent, fmtNum(s.ascent, locale), "m", rank((d) => d.stats.ascent)],
+    [t.moving, fmtDuration(s.movingSec), "", rank((d) => d.stats.movingSec)],
+    [t.avgSpeed, fmtNum(s.avgSpeed, locale, 1), "km/h", rank((d) => d.stats.avgSpeed)],
+    [t.highPoint, fmtNum(s.maxAlt, locale), "m", rank((d) => d.stats.maxAlt)],
+    [t.avgHr, s.avgHr ? String(s.avgHr) : "—", "bpm", rank((d) => d.stats.avgHr)],
+    [t.maxHr, s.maxHr ? String(s.maxHr) : "—", "bpm", rank((d) => d.stats.maxHr)],
+    [t.avgPower, String(day.avgPower), "W", rank((d) => d.avgPower)],
+    [t.calories, fmtNum(s.calories, locale), "kcal", rank((d) => d.stats.calories)],
   ];
   const wx = day.weather;
   const tot = summary.totals;
@@ -91,7 +102,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
       <section className="adv-hero">
         <div className="adv-hero-grid">
           <div>
-            <p className="label">[ {t.adventure} {pad(index)} ] {meta.sport[locale]} · {fmtDate(summary.startDate, locale, { day: "numeric", month: "short" })} – {fmtDate(summary.endDate, locale)}</p>
+            <p className="label">[ {t.adventure} {pad(index)} ] <SportIcon kind={meta.kind} label={meta.sport[locale]} /> {fmtDate(summary.startDate, locale, { day: "numeric", month: "short" })} – {fmtDate(summary.endDate, locale)}</p>
             <Scramble as="h1" className="display" text={meta.title[locale]} duration={800} />
             <p className="lead">{meta.tagline[locale]}</p>
             <p className="muted adv-intro">{meta.intro[locale]}</p>
@@ -150,7 +161,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
             </p>
             <button className="arrow" onClick={() => go(idx + 1)} disabled={idx === days.length - 1} aria-label={t.next}>→</button>
           </div>
-          <h2 className="day-title">
+          <h2 className="day-title" ref={title}>
             <Scramble text={place(day.start)} duration={600} /> <span className="to" aria-hidden>→</span> <Scramble text={place(day.end)} duration={600} delay={120} />
           </h2>
           <p className="muted day-sub">
@@ -159,17 +170,17 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
           </p>
         </header>
 
-        <dl className="stat-grid">
-          {stats.map(([k, v, u], i) => (
+        <dl className="stat-grid nine">
+          {stats.map(([k, v, u, lvl], i) => (
             <div key={k} className="stat">
               <dt className="label">{k}</dt>
-              <dd><Scramble className="num" text={v} delay={i * 40} />{u && <span className="unit">{u}</span>}</dd>
+              <dd style={{ color: heat(lvl) }}><Scramble className="num" text={v} delay={i * 40} />{u && <span className="unit">{u}</span>}</dd>
             </div>
           ))}
         </dl>
 
         <p className="label scene-title">[ 01 ] {t.terrain}</p>
-        <DayScene key={day.slug} slug={adv.slug} day={day} dict={dict} locale={locale} />
+        <DayScene key={day.slug} slug={adv.slug} day={day} dict={dict} locale={locale} index={idx} mass={meta.massKg ?? 85} />
         <p className="note">{t.terrainNote}</p>
         {named.length > 0 && (
           <ol className="pass-list">
@@ -201,10 +212,10 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
         <div className="panel">
           <div className="panel-head"><h3 className="label">[ 03 ] {t.photos}</h3></div>
           <div className="photos">
-            {day.photos.length
-              ? day.photos.map((src) => <figure key={src} className="frame"><img src={src} alt="" loading="lazy" /></figure>)
+            {day.media.length
+              ? day.media.map((m) => <figure key={m.src} className="frame">{m.video ? <video src={m.src} controls muted playsInline preload="metadata" /> : <img src={m.src} alt="" loading="lazy" />}</figure>)
               : Array.from({ length: 6 }, (_, i) => (
-                  <div key={i} className="frame empty"><span className="label">{t.photoSlot} {pad(i + 1)}</span></div>
+                  <div key={i} className="frame empty"><span className="label">{t.photoSlot} {pad(i + 1)}{i === 0 && <><br /><span className="dim">public/adventures/{adv.slug}/{day.slug}/</span></>}</span></div>
                 ))}
           </div>
         </div>

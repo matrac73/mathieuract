@@ -10,7 +10,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dict }) {
   const rest = pathname.replace(/^\/(en|fr)/, "");
   const other: Locale = locale === "en" ? "fr" : "en";
   const items = (["pro", "perso"] as const).map((k) => ({ k, href: `/${locale}/${k}`, label: dict.nav[k] }));
-  const section = /^\/(articles|cv)/.test(rest) ? "pro" : /^\/adventures/.test(rest) ? "perso" : rest.split("/")[1];
+  const section = /^\/(articles|cv|experience)/.test(rest) ? "pro" : /^\/adventures/.test(rest) ? "perso" : rest.split("/")[1];
 
   const setLang = () => {
     document.cookie = `lang=${other}; path=/; max-age=31536000; samesite=lax`;
@@ -32,7 +32,7 @@ export function Header({ locale, dict }: { locale: Locale; dict: Dict }) {
         {items.map(({ k, href, label }, i) => (
           <Link key={k} href={href} className={section === k ? "active" : ""}>
             <span className="nav-n" aria-hidden>0{i + 1}</span>
-            <HoverScramble text={label} />
+            <HoverScramble text={label} fixed />
           </Link>
         ))}
       </nav>
