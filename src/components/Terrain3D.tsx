@@ -20,13 +20,14 @@ type Props = {
   towns?: Town[]; // named as the rider reaches them (`always`: start and finish, shown from the first frame)
   media?: Spot[]; // blinking dots on the route; hovering one shows the picture
   mediaLabel?: string;
+  clouds?: Cloud[]; // they stay where it rained, and fade in as the rider gets close
   fill?: boolean; // size to the parent box
 };
 
 const REST_YAW = -7, MAX_YAW = 8, MAX_PITCH = 5; // degrees
 const RISE = 420, FADE = 230, HOLD = 110, DRAW = 5000; // ms
 const RELIEF = 1.5; // extra vertical exaggeration, on top of the one chosen by build-terrain
-const CLOUD = ["..####....", ".#######..", "##########", ".########."];
+export type Cloud = { at: number; rain: number }; // where it rained on the route (0..1), and how hard (mm/h)
 const rad = (d: number) => (d * Math.PI) / 180;
 const hex = (c: string) => {
   const m = c.trim().replace("#", "");
@@ -35,15 +36,16 @@ const hex = (c: string) => {
 };
 const mix = (a: number[], b: number[], t: number) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(",")})`;
 
-export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, handle, towns, fill, media, mediaLabel }: Props) {
+export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, handle, towns, fill, media, mediaLabel, clouds }: Props) {
   const [tip, setTip] = useState<{ k: number; x: number; y: number } | null>(null);
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
-  const live = useRef({ cursor: null as number | null, marks: [] as number[], towns: [] as Town[], media: [] as Spot[], p: null as number | null, wind: null as Wind, kick: () => {} });
+  const live = useRef({ cursor: null as number | null, marks: [] as number[], towns: [] as Town[], media: [] as Spot[], clouds: [] as Cloud[], p: null as number | null, wind: null as Wind, kick: () => {} });
   live.current.cursor = cursor;
   live.current.marks = marks ?? [];
   live.current.towns = towns ?? [];
   live.current.media = media ?? [];
+  live.current.clouds = clouds ?? [];
 
   useEffect(() => { live.current.kick(); }, [cursor]);
 
@@ -54,12 +56,27 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
     let dead = false, raf = 0, data: Data | null = null;
     let W = 0, H = 0, S = 1, ox = 0, oy = 0, dpr = 1, zmax = 1;
     let zw = new Float32Array(0), levels: Level[] = [], zl = new Float32Array(0), gap = new Uint8Array(0);
-    let layers: (HTMLCanvasElement | null)[] = [], cache: HTMLCanvasElement | null = null, cachePose = "";
+    let layers: (HTMLCanvasElement | null)[] = [], cache: HTMLCanvasElement | null = null;
     let t0 = 0, started = false, vis = false, lastT = 0;
     const gusts = Array.from({ length: 54 }, (_, i) => ({ u: 0, v: 0, age: 1e9, life: 900 + ((i * 37) % 10) * 90, l: 0.6 + ((i * 53) % 10) / 12 }));
     const drops = Array.from({ length: 44 }, (_, i) => ({ a: ((i * 61) % 44) / 44, b: ((i * 29) % 44) / 44, ph: ((i * 17) % 44) / 44 }));
-    let spots: { k: number; x: number; y: number }[] = [], hot = -1;
-    let yaw = REST_YAW, pitch = 50, tYaw = REST_YAW, tPitch = 50;
+    let spots: { k: number; x: number; y: number }[] = [], hot = -1, lastDraw = 0;
+    let rc: { key: string; X: Float32Array; Y: Float32Array; vis: Uint8Array } | null = null; // the route on screen, computed once per pose
+    let puff: HTMLCanvasElement | null = null;
+    const cloudSprite = () => { // a soft cumulus: a few blurred balls on a flat base
+      const c = document.createElement("canvas"); c.width = 240; c.height = 130;
+      const g = c.getContext("2d")!, rgb = col.fg.join(",");
+      for (const [x, y, r] of [[52, 78, 30], [92, 56, 42], [140, 62, 40], [182, 80, 28], [118, 84, 34], [30, 90, 18], [208, 92, 16]]) {
+        const gr = g.createRadialGradient(x, y - r * 0.25, r * 0.1, x, y, r);
+        gr.addColorStop(0, `rgba(${rgb},0.95)`); gr.addColorStop(0.6, `rgba(${rgb},0.55)`); gr.addColorStop(1, `rgba(${rgb},0)`);
+        g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 6.283); g.fill();
+      }
+      g.globalCompositeOperation = "destination-out";
+      const cut = g.createLinearGradient(0, 88, 0, 112); cut.addColorStop(0, "rgba(0,0,0,0)"); cut.addColorStop(1, "rgba(0,0,0,1)");
+      g.fillStyle = cut; g.fillRect(0, 88, 240, 42);
+      return c;
+    };
+    let yaw = REST_YAW, pitch = 50;
     let col = { bg: [0, 0, 0], fg: [255, 255, 255], accent: "#ff5a1f", hot: [255, 90, 31], tones: [] as string[] };
 
     const colours = () => {
@@ -105,7 +122,7 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
       const bs = [8, 4, 2, 1].filter((b, i) => i === 0 || S * b >= 3.4);
       levels = bs.map(level);
       layers = levels.map(() => null);
-      cache = null;
+      cache = null; rc = null;
       // the route floats just above the cube tops, so it never cuts through them
       const fin = levels[levels.length - 1], n = d.u.length;
       const top = new Float32Array(n);
@@ -164,6 +181,8 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
     const route = (g: CanvasRenderingContext2D, yawD: number, pitchD: number, p: number, alpha: number) => {
       const d = data!, n = d.u.length, fin = levels[levels.length - 1];
       const c = Math.cos(rad(yawD)), s = Math.sin(rad(yawD)), sp = Math.sin(rad(pitchD)), cp = Math.cos(rad(pitchD)), tan = Math.tan(rad(pitchD));
+      const key = `${yawD}/${pitchD}`;
+      if (!rc || rc.key !== key) {
       const X = new Float32Array(n), Y = new Float32Array(n), vis = new Uint8Array(n);
       for (let i = 0; i < n; i++) {
         const du = d.u[i] - d.nu / 2, dv = d.v[i] - d.nv / 2;
@@ -177,6 +196,9 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
         }
         vis[i] = ok;
       }
+      rc = { key, X, Y, vis };
+      }
+      const { X, Y, vis } = rc;
       const lw = Math.max(2, Math.min(3.2, S * 0.42));
       g.lineJoin = g.lineCap = "round";
       const at = (f: number) => {
@@ -254,63 +276,68 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
       g.globalAlpha = 1;
     };
 
-    // The weather of the moment, only where the rider is: streams that hug the cubes around the point
-    // (longer and warmer when it blows), and, when it rained there, a small cloud with streaks falling on the road.
-    const weather = (wind: NonNullable<Wind>, p: number, dt: number) => {
+    // The weather of the moment. Wind: faint dashes lying on the cubes around the rider — almost nothing in a
+    // breeze, more of them, longer and more opaque as it blows. Rain: soft clouds that stay where it rained and
+    // fade in as the rider comes close, with a few translucent streaks underneath. Returns true while something moves.
+    const weather = (wind: Wind, p: number, dt: number) => {
       const d = data!, n = d.u.length, fin = levels[levels.length - 1];
       const f = Math.min(n - 1.001, Math.max(0, p) * (n - 1)), i0 = Math.floor(f), fr = f - i0;
       const ru = d.u[i0] + (d.u[i0 + 1] - d.u[i0]) * fr, rv = d.v[i0] + (d.v[i0 + 1] - d.v[i0]) * fr;
       const c = Math.cos(rad(yaw)), s = Math.sin(rad(yaw)), sp = Math.sin(rad(pitch)), cp = Math.cos(rad(pitch));
       const proj = (u: number, v: number, z: number) => { const du = u - d.nu / 2, dv = v - d.nv / 2; return [ox + (du * c - dv * s) * S, oy - ((du * s + dv * c) * sp + z * cp) * S] as const; };
       const ground = (u: number, v: number) => zAt(fin, u, v) + 0.35 * fin.b;
-      const skim = (u: number, v: number) => Math.max(ground(u, v), ground(u + 1.5, v), ground(u - 1.5, v), ground(u, v + 1.5), ground(u, v - 1.5)); // just above the cubes around
-      const th = rad(wind.dir + 180 - d.bearing), wu = Math.cos(th), wv = -Math.sin(th); // where the air goes, in grid cells
-      const R = Math.max(7, d.nu * 0.085), strong = Math.min(1, Math.max(0, (wind.speed - 7) / 14));
-      const len = 1.6 + wind.speed * 0.42, run = (2.2 + wind.speed * 0.55) * (dt / 1000);
-      ctx.lineCap = "round"; ctx.lineJoin = "round";
-      for (const pass of [0, 1]) { // a dark underlay first, so the streams read on light cubes too
-        for (const q of gusts) {
-          if (pass === 0) {
-            q.age += dt; q.u += wu * run * q.l; q.v += wv * run * q.l;
-            if (q.age > q.life || Math.hypot(q.u - ru, q.v - rv) > R * 1.25) { // born again around the rider, a little upwind
-              const a = Math.random() * 6.283, r = Math.sqrt(Math.random()) * R;
-              q.u = ru + Math.cos(a) * r - wu * R * 0.35; q.v = rv + Math.sin(a) * r - wv * R * 0.35; q.age = 0;
-            }
+      let live2 = false;
+      const act = wind ? Math.min(1, Math.max(0, (wind.speed - 1.5) / 12)) : 0; // 2 km/h: next to nothing
+      if (wind && act > 0) {
+        live2 = true;
+        const th = rad(wind.dir + 180 - d.bearing), wu = Math.cos(th), wv = -Math.sin(th); // where the air goes, in grid cells
+        const R = Math.max(7, d.nu * 0.085), strong = Math.min(1, Math.max(0, (wind.speed - 9) / 12));
+        const len = 1.2 + wind.speed * 0.4, run = (1.8 + wind.speed * 0.5) * (dt / 1000), count = Math.max(2, Math.ceil(act * gusts.length));
+        ctx.lineCap = "round"; ctx.lineWidth = 1.1 + strong * 0.7;
+        ctx.strokeStyle = mix(col.fg, col.hot, strong);
+        for (let j = 0; j < count; j++) {
+          const q = gusts[j];
+          q.age += dt; q.u += wu * run * q.l; q.v += wv * run * q.l;
+          if (q.age > q.life || Math.hypot(q.u - ru, q.v - rv) > R * 1.25) { // born again around the rider, a little upwind
+            const a = Math.random() * 6.283, r = Math.sqrt(Math.random()) * R;
+            q.u = ru + Math.cos(a) * r - wu * R * 0.35; q.v = rv + Math.sin(a) * r - wv * R * 0.35; q.age = 0;
           }
           const k = Math.sin(Math.PI * Math.min(1, q.age / q.life)), edge = 1 - Math.min(1, Math.hypot(q.u - ru, q.v - rv) / (R * 1.25));
-          if (k * edge < 0.03) continue;
-          const tu = q.u - wu * len * q.l, tv = q.v - wv * len * q.l, z = Math.max(skim(q.u, q.v), ground(tu, tv)); // one straight dash, lying on the surface
+          if (k * edge < 0.05) continue;
+          const tu = q.u - wu * len * q.l, tv = q.v - wv * len * q.l;
+          const z = Math.max(ground(q.u, q.v), ground(tu, tv), ground(q.u + 1.5, q.v), ground(q.u - 1.5, q.v), ground(q.u, q.v - 1.5)); // one straight dash, lying on the surface
           const [x1, y1] = proj(q.u, q.v, z), [x2, y2] = proj(tu, tv, z);
-          ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
-          ctx.globalAlpha = Math.min(1, k * (0.35 + edge) * (pass ? 0.95 : 0.55));
-          ctx.strokeStyle = pass ? mix(col.fg, col.hot, strong) : tone(0);
-          ctx.lineWidth = pass ? 1.6 + strong * 0.8 : 3.6;
-          ctx.stroke();
+          ctx.globalAlpha = k * edge * (0.1 + 0.55 * act); // translucent in a breeze, firmer when it blows
+          ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
         }
       }
-      const rain = wind.rain ?? 0;
-      if (rain > 0.04) {
-        const heavy = Math.min(1, Math.max(0, (rain - 1) / 3)), top = zl[i0] + Math.max(9, d.nu * 0.1), t = performance.now() / 1000;
-        const count = Math.min(drops.length, Math.round(7 + rain * 16)), spread = Math.max(3.2, d.nu * 0.035);
-        ctx.lineCap = "butt"; ctx.lineWidth = 1.4 + heavy;
-        ctx.strokeStyle = mix(col.bg.map((v, i) => v + (col.fg[i] - v) * 0.8), col.hot, heavy);
-        ctx.globalAlpha = 0.75;
+      const t = performance.now() / 1000;
+      live.current.clouds.forEach((cl, k) => {
+        const near = 1 - Math.abs(p - cl.at) / 0.085;
+        if (near <= 0) return;
+        const a = near * near * (3 - 2 * near), i = Math.round(cl.at * (n - 1)), h1 = ((k * 73 + 11) % 17) / 17, h2 = ((k * 41 + 5) % 13) / 13;
+        const u = d.u[i] + (h1 - 0.5) * 7, v = d.v[i] + (h2 - 0.5) * 5, top = zl[i] + Math.max(10, d.nu * 0.11) + h1 * 3;
+        const heavy = Math.min(1, Math.max(0, (cl.rain - 1) / 3)), spread = Math.max(3, d.nu * 0.03), count = Math.min(drops.length, Math.round(4 + cl.rain * 9));
+        ctx.lineCap = "butt"; ctx.lineWidth = 1 + heavy * 0.6;
+        ctx.strokeStyle = mix(col.fg, col.hot, heavy);
+        ctx.globalAlpha = a * (0.2 + 0.25 * heavy);
         ctx.beginPath();
         for (let j = 0; j < count; j++) {
-          const q = drops[j], u = ru + (q.a - 0.5) * 2 * spread, v = rv + (q.b - 0.5) * 2 * spread * 0.7, z0 = ground(u, v);
-          const k = (q.ph + t * (0.9 + heavy * 0.6)) % 1, z = top - (top - z0) * k, tail = Math.min(1.4 + heavy, top - z);
-          const [x1, y1] = proj(u, v, z), [x2, y2] = proj(u, v, z + tail);
+          const q = drops[(j + k * 7) % drops.length], du = u + (q.a - 0.5) * 2 * spread, dv = v + (q.b - 0.5) * 2 * spread * 0.7, z0 = ground(du, dv);
+          const ph = (q.ph + t * (0.7 + heavy * 0.5)) % 1, z = top - (top - z0) * ph, tail = Math.min(1.6 + heavy, top - z);
+          const [x1, y1] = proj(du, dv, z), [x2, y2] = proj(du, dv, z + tail);
           ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
         }
         ctx.stroke();
-        const [cx, cy] = proj(ru, rv, top), px = Math.max(5, S * spread * 0.24), bob = Math.round(Math.sin(t * 0.8) * 2);
-        ctx.globalAlpha = 0.34 + Math.min(0.3, rain * 0.2);
-        ctx.fillStyle = tone(0.92);
-        CLOUD.forEach((row, r) => [...row].forEach((ch, q) => { if (ch === "#") ctx.fillRect(Math.round(cx + (q - row.length / 2) * px), Math.round(cy + (r - CLOUD.length) * px) + bob, px - 1, px - 1); }));
-      }
+        puff ??= cloudSprite();
+        const [cx, cy] = proj(u, v, top), cw = S * d.nu * (0.13 + 0.07 * h2), chh = cw * (130 / 240);
+        ctx.globalAlpha = a * (0.42 + Math.min(0.2, cl.rain * 0.15));
+        ctx.drawImage(puff, cx - cw / 2, cy - chh * 0.8, cw, chh);
+        live2 = true;
+      });
       ctx.globalAlpha = 1;
+      return live2;
     };
-
     const offscreen = (L: Level, yawD: number, pitchD: number) => {
       const off = document.createElement("canvas");
       off.width = cv.width; off.height = cv.height;
@@ -327,6 +354,8 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
       const t = reduce ? Infinity : now - t0, last = levels.length - 1, dt = Math.min(60, now - (lastT || now));
       lastT = now;
       const refine = RISE + last * (FADE + HOLD);
+      if (t >= refine && now - lastDraw < 30) { raf = requestAnimationFrame(frame); return; } // once built, 30 frames a second are plenty
+      lastDraw = now;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(0, 0, cv.width, cv.height);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -341,21 +370,14 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
         if (i === last) route(ctx, REST_YAW, data.pitch, 0, p);
         again = true;
       } else {
-        yaw += (tYaw - yaw) * 0.14; pitch += (tPitch - pitch) * 0.14;
-        const moving = Math.abs(tYaw - yaw) > 0.04 || Math.abs(tPitch - pitch) > 0.04;
-        if (moving) terrain(ctx, levels[last], yaw, pitch); // same cubes while it turns: the resolution never drops
-        else {
-          if (!moving) { yaw = tYaw; pitch = tPitch; }
-          const pose = `${yaw.toFixed(2)}/${pitch.toFixed(2)}`;
-          if (!cache || cachePose !== pose) { cache = offscreen(levels[last], yaw, pitch); cachePose = pose; }
-          blit(cache, 1);
-        }
+        // the pose never changes: the cubes are painted once and kept; the pointer tilts the picture itself (CSS, on the GPU)
+        if (!cache) cache = offscreen(levels[last], yaw, pitch);
+        blit(cache, 1);
         const ext = live.current.p, p = ext != null ? ext : Math.min(1, (t - refine) / DRAW);
         route(ctx, yaw, pitch, p, 1);
-        const wind = live.current.wind;
-        if (wind && !reduce && ext != null) weather(wind, p, dt);
+        const moving = !reduce && ext != null && weather(live.current.wind, p, dt);
         const pings = live.current.media.length > 0 && !reduce;
-        again = moving || pings || (ext != null ? !!wind && !reduce : p < 1);
+        again = moving || pings || (ext == null && p < 1);
       }
       if (again) raf = requestAnimationFrame(frame);
     };
@@ -388,7 +410,7 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
             zw[y * d.nu + x] = sum / wt;
           }
         zmax = 1 + 255 * k;
-        pitch = tPitch = d.pitch;
+        pitch = d.pitch;
         colours();
         layout();
         io.observe(el);
@@ -397,22 +419,20 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
 
     const move = (e: PointerEvent) => {
       if (!data) return;
-      const r = el.getBoundingClientRect();
-      tYaw = REST_YAW + (0.5 - (e.clientX - r.left) / r.width) * 2 * MAX_YAW;
-      tPitch = data.pitch + ((e.clientY - r.top) / r.height - 0.5) * 2 * MAX_PITCH;
-      const mx = e.clientX - r.left, my = e.clientY - r.top;
+      const r = el.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width - 0.5, fy = (e.clientY - r.top) / r.height - 0.5;
+      if (!reduce) cv.style.transform = `perspective(1500px) rotateY(${(fx * 2 * MAX_YAW).toFixed(2)}deg) rotateX(${(-fy * 2 * MAX_PITCH).toFixed(2)}deg)`;
+      const local = e.target === cv, mx = local ? e.offsetX : e.clientX - r.left, my = local ? e.offsetY : e.clientY - r.top; // offsetX/Y are already un-tilted
       let best = -1, bd = 18;
       for (const q of spots) { const dd = Math.hypot(q.x - mx, q.y - my); if (dd < bd) { bd = dd; best = q.k; } }
-      if (best !== hot) { hot = best; const q = spots.find((x) => x.k === best); setTip(q ? { k: q.k, x: q.x, y: q.y } : null); }
-      kick();
+      if (best !== hot) { hot = best; const q = spots.find((x) => x.k === best); setTip(q ? { k: q.k, x: q.x, y: q.y } : null); kick(); }
     };
-    const leave = () => { if (!data) return; tYaw = REST_YAW; tPitch = data.pitch; hot = -1; setTip(null); kick(); };
+    const leave = () => { cv.style.transform = ""; if (hot !== -1) { hot = -1; setTip(null); kick(); } };
     el.addEventListener("pointermove", move);
     el.addEventListener("pointerleave", leave);
     let lastW = el.clientWidth;
     const ro = new ResizeObserver(() => { if (data && el.clientWidth !== lastW) { lastW = el.clientWidth; layout(); kick(); } });
     ro.observe(el);
-    const mo = new MutationObserver(() => { if (!data) return; colours(); layers = levels.map(() => null); cache = null; kick(); });
+    const mo = new MutationObserver(() => { if (!data) return; colours(); layers = levels.map(() => null); cache = null; puff = null; kick(); });
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
 
     return () => {

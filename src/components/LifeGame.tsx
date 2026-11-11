@@ -135,7 +135,10 @@ export function LifeGame({ stages, locale, labels }: { stages: Stage[]; locale: 
         if (reach > 0) {
           ctx.globalAlpha = reach * (on ? 1 : 0.55);
           ctx.font = `600 ${W < 620 ? 9 : 10}px ${pal.mono}`; ctx.textAlign = "left"; ctx.fillStyle = on ? pal.accent : tone(1);
-          ctx.fillText(b.s.short, b.x0, axis + dir * (band + (b.base + b.h + 1.1) * cell));
+          const ly = axis + dir * (band + (b.base + b.h + 1.1) * cell);
+          ctx.fillText(b.s.short, b.x0, ly); // what kind of period…
+          ctx.globalAlpha = reach * (on ? 0.85 : 0.4); ctx.font = `500 ${W < 620 ? 8 : 9}px ${pal.mono}`; ctx.fillStyle = tone(1);
+          ctx.fillText(b.s.where, b.x0, ly + dir * cell * 1.5); // …and where
         }
       }
       ctx.globalAlpha = 1;
@@ -198,25 +201,50 @@ export function LifeGame({ stages, locale, labels }: { stages: Stage[]; locale: 
     };
     const kick = () => { if (!raf && visible) { last = 0; raf = requestAnimationFrame(draw); } };
 
+    // Scroll drives the timeline: the block stays pinned (sticky) inside a tall track, and the page only
+    // moves on once the cubes have reached "coming soon".
+    const track = el.parentElement!;
+    const END = 0.92; // the last stretch of the track holds the final picture
+    const pinned = () => {
+      const span = track.offsetHeight - el.offsetHeight;
+      return span > 40 ? { span, stick: parseFloat(getComputedStyle(el).top) || 0, top: track.getBoundingClientRect().top } : null;
+    };
+    const onScroll = () => {
+      const pin = pinned();
+      if (!pin) return;
+      auto = null; played = true;
+      const p = Math.min(1, Math.max(0, (pin.stick - pin.top) / (pin.span * END)));
+      target = startX() + (endX() - startX()) * p;
+      kick();
+    };
+    const scrollToX = (x: number) => {
+      const pin = pinned();
+      if (!pin) return false;
+      const p = (x - startX()) / (endX() - startX());
+      window.scrollTo({ top: window.scrollY + pin.top - pin.stick + p * pin.span * END, behavior: "smooth" });
+      return true;
+    };
     const stops = () => [...new Set([startX(), ...blocks.map((b) => b.x0 + cell), endX()])].sort((x, y) => x - y);
     api.current.step = (d) => {
       auto = null;
       const s = stops();
       const nxt = d > 0 ? s.find((v) => v > Math.max(px, target) + 2) : [...s].reverse().find((v) => v < Math.min(px, target) - 2);
-      if (nxt != null) target = nxt;
+      if (nxt != null && !scrollToX(nxt)) target = nxt;
       kick();
       return nxt != null;
     };
-    api.current.replay = () => { px = target = startX(); auto = performance.now(); kick(); };
+    api.current.replay = () => { if (scrollToX(startX())) return; px = target = startX(); auto = performance.now(); kick(); };
 
     size();
     px = target = reduce ? endX() : startX();
     const io = new IntersectionObserver((es) => {
       visible = es.some((e) => e.isIntersecting);
-      if (visible && !played && !reduce) { played = true; auto = performance.now() + 500; }
+      if (visible && !played && !reduce && !pinned()) { played = true; auto = performance.now() + 500; }
       if (visible) kick();
     }, { threshold: 0.35 });
     io.observe(el);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       const r = el.getBoundingClientRect();
@@ -227,6 +255,7 @@ export function LifeGame({ stages, locale, labels }: { stages: Stage[]; locale: 
       else if (e.key === "ArrowLeft") { api.current.step(-1); e.preventDefault(); }
     };
     const point = (e: PointerEvent) => {
+      if (pinned()) return; // the scroll is in charge
       if (e.pointerType !== "mouse" && e.type === "pointermove") return;
       const r = cv.getBoundingClientRect();
       auto = null;
@@ -244,6 +273,7 @@ export function LifeGame({ stages, locale, labels }: { stages: Stage[]; locale: 
       visible = false; cancelAnimationFrame(raf);
       io.disconnect(); ro.disconnect(); mut.disconnect();
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", onScroll);
       cv.removeEventListener("pointermove", point);
       cv.removeEventListener("pointerdown", point);
     };
@@ -264,6 +294,7 @@ export function LifeGame({ stages, locale, labels }: { stages: Stage[]; locale: 
   };
 
   return (
+    <div className="game-track">
     <div className="game" ref={wrap}>
       <div className="game-stage">
         <canvas ref={canvas} className="game-canvas" role="img" aria-label={stages.map((s) => `${years(s)} ${s.title[locale]}`).join(", ")} />
@@ -280,6 +311,7 @@ export function LifeGame({ stages, locale, labels }: { stages: Stage[]; locale: 
         {slot("acad")}
         {slot("pro")}
       </div>
+    </div>
     </div>
   );
 }

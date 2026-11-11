@@ -675,3 +675,15 @@ html { scroll-snap-type: none; }
 @media (max-width: 620px) { .minimap { width: 104px; bottom: 56px; left: 8px; } .wind-gauge { width: 44px; } .wind-ends { display: none; } }
 @media (max-height: 640px) { .minimap { width: 112px; } }
 .dot-sq { display: inline-block; width: 0.15em; height: 0.15em; background: currentColor; margin: 0 0.07em 0 0.05em; }
+
+/* =====================================================================
+   v5 — lighter rendering, timeline driven by the scroll
+   ===================================================================== */
+.terrain canvas { transition: transform 0.22s ease-out; transform-origin: 50% 60%; will-change: transform; }
+.game-track::after { content: ""; display: block; height: 170vh; }
+.game { position: sticky; top: calc(var(--header-h) + 10px); }
+.game-canvas { cursor: default; }
+.minimap-here { position: absolute; width: 8px; height: 8px; margin: -4px 0 0 -4px; background: var(--accent); outline: 2px solid var(--bg); pointer-events: none; }
+.minimap-here::after { content: ""; position: absolute; inset: -3px; border: 1.5px solid var(--accent); animation: here 1.4s steps(8) infinite; }
+@keyframes here { from { transform: scale(1); opacity: 1; } to { transform: scale(3.2); opacity: 0; } }
+@media (max-width: 700px) { .game-slot { height: 168px; } }

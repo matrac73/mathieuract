@@ -31,6 +31,12 @@ export function DayScene({ slug, day, dict, locale, index, mass }: { slug: strin
   ], [day, n]);
   const marks = useMemo(() => day.passes.filter((p) => p.name).map((p) => Math.min(0.999, (p.km * 1000) / P.d[n - 1])), [day, P, n]);
   const watts = useMemo(() => estimatePower(P, day.weather, mass), [P, day, mass]);
+  // where it rained that day: one cloud every few percent of the route, as long as the hourly rain is not nil
+  const clouds = useMemo(() => {
+    const out: { at: number; rain: number }[] = [], total = P.d[n - 1] / 1000;
+    for (let at = 0.02; at < 1; at += 0.04) { const w = weatherAt(day.weather, at * total); if (w && w.precip > 0.05) out.push({ at, rain: w.precip }); }
+    return out;
+  }, [P, n, day]);
   const climbed = useMemo(() => cumulativeAscent(P.e, day.stats.ascent), [P, day]);
   const elePath = useMemo(() => {
     const lo = Math.min(...P.e), hi = Math.max(...P.e);
@@ -96,7 +102,7 @@ export function DayScene({ slug, day, dict, locale, index, mass }: { slug: strin
     <section className="scene" ref={section} aria-label={t.terrain}>
       <div className="scene-stick" ref={stick}>
         <div className="scene-map">
-          <Terrain3D key={day.slug} fill handle={handle} towns={towns} marks={marks} media={day.media} mediaLabel={t.media} src={`/adventures/${slug}/terrain/${day.slug}.json`} label={`${day.start.name ?? ""} → ${day.end.name ?? ""}`} />
+          <Terrain3D key={day.slug} fill handle={handle} towns={towns} marks={marks} media={day.media} mediaLabel={t.media} clouds={clouds} src={`/adventures/${slug}/terrain/${day.slug}.json`} label={`${day.start.name ?? ""} → ${day.end.name ?? ""}`} />
         </div>
         <dl className="scene-hud left">
           <div><dt className="label">{t.distance}</dt><dd><b className="num" ref={set("km")}>0</b><span className="unit">km</span></dd></div>

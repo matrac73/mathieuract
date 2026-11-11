@@ -59,10 +59,8 @@ export function cumulativeAscent(e: number[], total: number): number[] {
   return out.map((v) => v * k);
 }
 
-/** Low is white (the text colour), high leans yellow, the very top turns orange. `t` in 0..1. */
+/** White (the text colour) most of the time; only the top of the range turns orange. `t` in 0..1. */
 export function heat(t: number): string {
-  const v = Math.min(1, Math.max(0, Number.isFinite(t) ? t : 0));
-  return v <= 0.6
-    ? `color-mix(in srgb, var(--warm) ${Math.round((v / 0.6) * 100)}%, var(--fg))`
-    : `color-mix(in srgb, var(--accent) ${Math.round(((v - 0.6) / 0.4) * 100)}%, var(--warm))`;
+  const v = Math.min(1, Math.max(0, Number.isFinite(t) ? t : 0)), k = Math.pow(Math.max(0, (v - 0.55) / 0.45), 1.4);
+  return k <= 0 ? "var(--fg)" : `color-mix(in srgb, var(--accent) ${Math.round(k * 100)}%, var(--fg))`;
 }
