@@ -45,7 +45,7 @@ const en = {
     cv: "CV",
     wip: "to confirm",
   },
-  perso: { title: "perso.", lead: "The person before the job title.", about: "About me", adventures: "Adventures" },
+  perso: { title: "perso.", lead: "Everything that does not fit on a CV.", about: "About me", adventures: "Adventures" },
   profile: {
     role: "Associate Tech & AI — Adagia Partners",
     title: "Profile",
@@ -78,7 +78,7 @@ const en = {
     journey: "The route",
     skipJourney: "Skip to the days",
     terrain: "The day, by scrolling",
-    terrainHint: "Scroll to ride · move the pointer to tilt · hover the dots for photos",
+    terrainHint: "Scroll to ride · hover the dots for photos",
     terrainNote: "Real relief (open elevation data, heights exaggerated). Streams on the ground: the wind where we were, when we were there; a cloud and falling streaks when it rained (hourly reanalysis). Power is an estimate (no power meter): weight, gradient, speed and wind.",
     cumAscent: "Climbed so far",
     power: "Power",
@@ -150,7 +150,7 @@ const en = {
 
 const fr: typeof en = {
   nav: { pro: "pro./acad.", perso: "perso." },
-  intro: { label: "Meet me in brief", skip: "Passer", lines: ["Bienvenue"] },
+  intro: { label: "Meet me in brief", skip: "Passer", lines: ["Welcome"] },
   home: {
     kicker: "Portfolio / 2026",
     description: "Site personnel de Mathieu Ract : le parcours, des articles, des projets et de longues sorties en montagne.",
@@ -190,7 +190,7 @@ const fr: typeof en = {
     cv: "CV",
     wip: "à confirmer",
   },
-  perso: { title: "perso.", lead: "La personne avant l'intitulé de poste.", about: "À propos de moi", adventures: "Aventures" },
+  perso: { title: "perso.", lead: "Tout ce qui ne rentre pas dans un CV.", about: "À propos de moi", adventures: "Aventures" },
   profile: {
     role: "Associate Tech & AI — Adagia Partners",
     title: "Profil",
@@ -223,7 +223,7 @@ const fr: typeof en = {
     journey: "Le parcours",
     skipJourney: "Passer aux journées",
     terrain: "La journée, au fil du scroll",
-    terrainHint: "Scrollez pour rouler · bougez la souris pour incliner · survolez les points pour les photos",
+    terrainHint: "Scrollez pour rouler · survolez les points pour les photos",
     terrainNote: "Relief réel (données d'altitude ouvertes, hauteurs exagérées). Flux au sol : le vent là où nous étions, à l'heure où nous y passions ; un nuage et des traits qui tombent quand il pleuvait (réanalyse horaire). La puissance est estimée (pas de capteur) : poids, pente, vitesse et vent.",
     cumAscent: "D+ cumulé",
     power: "Puissance",

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 // Elevation profile built out of cubes. It first appears as a handful of big
 // blocks, then refines level by level (each level halves the cube size) until
@@ -35,6 +35,8 @@ type Geo = { n: number; s: number; D: number; ox: number; oy: number; heights: I
 
 export function CubeProfile({ ele, shade, height = 340, minRange = 500, marks, cursor, onHover, onPick, label, trace }: Props) {
   const [crest, setCrest] = useState("");
+  const [seen, setSeen] = useState(""), [seenW, setSeenW] = useState(1);
+  const maskId = `trace-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const lastEle = useRef<number[] | null>(null);
@@ -127,6 +129,18 @@ export function CubeProfile({ ele, shade, height = 340, minRange = 500, marks, c
       if (trace) { // the line runs on top of the cubes, halfway into the depth of the relief
         const km = final.D >> 1, off = (km + 0.5) * (final.s / 2);
         setCrest(Array.from({ length: final.n }, (_, c) => `${(final.ox + (c + 0.5) * final.s + off).toFixed(1)},${(final.oy - final.heights[c * final.D + km] * final.s - off).toFixed(1)}`).join(" "));
+        // a point of the line is hidden when, in a row nearer to the viewer, the column standing at the same x rises above it
+        let d = "";
+        for (let c = 0; c < final.n; c++) {
+          const x = final.ox + (c + 0.5) * final.s + off, up = final.heights[c * final.D + km] * final.s + off;
+          let hidden = false;
+          for (let k = 0; k < km && !hidden; k++) {
+            const c2 = Math.floor((x - final.ox - k * (final.s / 2)) / final.s);
+            if (c2 >= 0 && c2 < final.n && final.heights[c2 * final.D + k] * final.s + k * (final.s / 2) > up + 1) hidden = true;
+          }
+          if (!hidden) d += `M${x.toFixed(1)} 0V${H}`;
+        }
+        setSeen(d); setSeenW(final.s + 0.6);
       }
       setFlags(
         (marks ?? []).map((m) => {
@@ -219,7 +233,16 @@ export function CubeProfile({ ele, shade, height = 340, minRange = 500, marks, c
       style={{ cursor: onPick ? "pointer" : onHover ? "crosshair" : undefined }}
     >
       <canvas ref={canvas} style={{ width: "100%", height }} />
-      {trace && crest && <svg className="cubes-trace" aria-hidden><polyline points={crest} pathLength={1} /></svg>}
+      {trace && crest && (
+        <svg className="cubes-trace" aria-hidden>
+          <mask id={maskId} maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%">
+            <rect x="0" y="0" width="100%" height="100%" fill="#fff" fillOpacity="0.3" />
+            <path d={seen} stroke="#fff" strokeWidth={seenW} fill="none" />
+          </mask>
+          {/* full strength where the line is in view, translucent where a climb in front hides it */}
+          <polyline points={crest} pathLength={1} mask={`url(#${maskId})`} />
+        </svg>
+      )}
       {cursor != null && <div className="cubes-cursor" style={{ left: box.ox + cursor * box.w }} />}
       {marks?.map((m, i) =>
         flags[i] ? (

@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -77,6 +79,10 @@ export default async function ProPage({ params }: { params: Promise<{ locale: st
                 ))}
               </div>
               <div className="career-body">
+                {fs.existsSync(path.join(process.cwd(), "public", "logos", `${it.slug}.png`)) && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img className="career-logo" src={`/logos/${it.slug}.png`} alt="" />
+                )}
                 <p className="label">{it.from === it.to ? it.from : `${it.from} — ${it.to ?? d.profile.present}`}</p>
                 <h3><Link href={`/${locale}/experience/${it.slug}`} className="career-link">{it.short ?? it.org}</Link>{it.wip && <span className="tag">WIP</span>}</h3>
                 <p className="tl-role">{it.role[locale]} · <span className="dim">{it.place}</span></p>

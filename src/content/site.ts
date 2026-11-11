@@ -13,7 +13,6 @@ export const site = {
       "Between code and PowerPoint.",
       "Between 2,000 m of climbing and the office lift.",
       "Between artificial intelligence and mountain common sense.",
-      "Between serious and slightly mad.",
     ],
     fr: [
       "Entre Savoie et Paris.",
@@ -23,7 +22,6 @@ export const site = {
       "Entre code et PowerPoint.",
       "Entre 2 000 m de D+ et l'ascenseur du bureau.",
       "Entre intelligence artificielle et bon sens paysan.",
-      "Entre sérieux et brin de folie.",
     ],
   } as Record<"en" | "fr", string[]>,
   url: "https://mathieuract.vercel.app",
@@ -101,7 +99,7 @@ export const experience: Item[] = [
   {
     org: "Boston Consulting Group — X",
     short: "BCG X",
-    role: { en: "End-of-studies project, alongside the whole final year at CentraleSupélec", fr: "Projet de fin d'études, en parallèle de toute la dernière année à CentraleSupélec" },
+    role: { en: "End-of-studies project, alongside the whole final year at CentraleSupélec", fr: "PFE, en parallèle de toute la dernière année à CentraleSupélec" },
     place: "Paris",
     from: "Sept 2021",
     to: "Jun 2022",
@@ -150,6 +148,7 @@ export const education: Item[] = [
   },
   {
     org: "CentraleSupélec — Université Paris-Saclay",
+    short: "CentraleSupélec",
     role: { en: "Master of Engineering", fr: "Diplôme d'ingénieur" },
     place: "Rennes · Gif-sur-Yvette",
     from: "2019",
@@ -279,8 +278,8 @@ export type Stage = { id: string; lane: "acad" | "pro"; start: string; end: stri
 // One rule for every period: `short`/`title` say what kind of period it was (school, exchange, apprenticeship…),
 // `place` says where and with whom.
 export const life: Stage[] = [
-  { id: "ugine", lane: "acad", start: "2013-09", end: "2015-06", level: 1, short: "LYCÉE", where: "UGINE", wip: true,
-    title: { en: "High school", fr: "Lycée" }, place: { en: "Ugine, Savoie", fr: "Ugine, Savoie" },
+  { id: "ugine", lane: "acad", start: "2013-09", end: "2015-06", level: 1, short: "SECONDE & PREMIÈRE", where: "UGINE", wip: true,
+    title: { en: "High school, first two years", fr: "Seconde & Première" }, place: { en: "Ugine, Savoie", fr: "Ugine, Savoie" },
     text: { en: "High school at the foot of the slopes. The skis are never far from the school bag.", fr: "Le lycée au pied des pistes. Les skis ne sont jamais loin du cartable." } },
   { id: "usa", lane: "acad", start: "2015-08", end: "2016-06", level: 1, short: "ÉCHANGE", where: "USA", wip: true,
     title: { en: "Exchange year", fr: "Échange" }, place: { en: "United States", fr: "États-Unis" },
@@ -300,8 +299,8 @@ export const life: Stage[] = [
   { id: "safran", lane: "pro", start: "2019-09", end: "2022-06", level: 2, short: "APPRENTISSAGE", where: "PARIS", slug: "safran",
     title: { en: "Apprenticeship", fr: "Apprentissage" }, place: { en: "Safran · Vélizy-Villacoublay", fr: "Safran · Vélizy-Villacoublay" },
     text: { en: "Three years alongside the engineering school: data science and computer vision for landing gear.", fr: "Trois ans en parallèle de l'école d'ingénieur : data science et vision par ordinateur pour les trains d'atterrissage." } },
-  { id: "bcg", lane: "pro", start: "2021-09", end: "2022-06", level: 1, row: 1, short: "PROJET DE FIN D'ÉTUDES", where: "PARIS", slug: "bcg-x",
-    title: { en: "End-of-studies project", fr: "Projet de fin d'études" }, place: { en: "BCG X · Paris", fr: "BCG X · Paris" },
+  { id: "bcg", lane: "pro", start: "2021-09", end: "2022-06", level: 1, row: 1, short: "PFE", where: "PARIS", slug: "bcg-x",
+    title: { en: "Final-year project", fr: "PFE" }, place: { en: "BCG X · Paris", fr: "BCG X · Paris" },
     text: { en: "Alongside the whole final year at CentraleSupélec, within a consulting team: BCG Greener IT.", fr: "En parallèle de toute la dernière année à CentraleSupélec, au sein d'une équipe de consultants : BCG Greener IT." } },
   { id: "onepoint", lane: "pro", start: "2023-09", end: "2024-09", level: 2, short: "ALTERNANCE", where: "PARIS", slug: "onepoint",
     title: { en: "Work-study year", fr: "Alternance" }, place: { en: "Onepoint · Paris", fr: "Onepoint · Paris" },

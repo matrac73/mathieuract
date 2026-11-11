@@ -687,3 +687,10 @@ html { scroll-snap-type: none; }
 .minimap-here::after { content: ""; position: absolute; inset: -3px; border: 1.5px solid var(--accent); animation: here 1.4s steps(8) infinite; }
 @keyframes here { from { transform: scale(1); opacity: 1; } to { transform: scale(3.2); opacity: 0; } }
 @media (max-width: 700px) { .game-slot { height: 168px; } }
+
+/* v6 */
+.career-logo { display: block; height: 46px; width: auto; max-width: 220px; object-fit: contain; object-position: left center; margin-bottom: 14px; opacity: 0.92; }
+:root[data-theme="light"] .career-logo { filter: invert(1); }
+.exp-head .career-logo { height: 56px; }
+.terrain canvas { transition: none; transform: none; will-change: auto; }
+.terrain { cursor: default; }

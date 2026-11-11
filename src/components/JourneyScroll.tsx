@@ -26,7 +26,7 @@ export function JourneyScroll({ src, summary, dict, locale }: { src: string; sum
   const [di, setDi] = useState(0);
   const day = summary.days[di];
   const title = useRef<HTMLParagraphElement>(null);
-  useFitLine(title, `${day.start.name} → ${day.end.name}`);
+  useFitLine(title, summary.days.map((d) => `${d.start.name} → ${d.end.name}`));
 
   useEffect(() => {
     const sec = section.current!, cv = canvas.current!, ctx = cv.getContext("2d")!;

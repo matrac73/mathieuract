@@ -68,7 +68,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
   const hasTransfer = useMemo(() => P.lat.some((la, i) => i > 0 && Math.hypot((la - P.lat[i - 1]) * 111, (P.lon[i] - P.lon[i - 1]) * 78) > 2.5), [P]);
   const named = day.passes.filter((p) => p.name);
   const s = day.stats;
-  useFitLine(title, `${place(day.start)} → ${place(day.end)}`);
+  useFitLine(title, days.map((d) => `${place(d.start)} → ${place(d.end)}`));
   // each figure is tinted by where this day stands among the days of the trip: white = the lowest, yellow then orange = the highest
   const rank = (pick: (d: Day) => number | null) => {
     const all = days.map(pick).filter((v): v is number => v != null), lo = Math.min(...all), hi = Math.max(...all), v = pick(day);

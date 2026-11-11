@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { CubeProfile } from "@/components/CubeProfile";
 import { Intro } from "@/components/Intro";
 import { NoiseTrack } from "@/components/NoiseTrack";
 import { PixelPortrait } from "@/components/PixelPortrait";
 import { Rotator } from "@/components/Rotator";
 import { HoverScramble, Scramble } from "@/components/Scramble";
 import { listAdventures } from "@/lib/adventures";
-import { fmtDate, fmtNum, getDict, isLocale } from "@/lib/i18n";
+import { getDict, isLocale } from "@/lib/i18n";
 import { site } from "@/content/site";
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
@@ -17,7 +16,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const adventures = listAdventures();
   const latest = adventures[0];
   const tiles = ["pro", "perso"] as const;
-  const tripEle = latest?.summary.days.flatMap((x) => x.ele) ?? [];
 
   return (
     <>
@@ -57,28 +55,6 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           ))}
         </div>
       </section>
-
-      {latest && (
-        <section className="section">
-          <p className="label">[ {d.home.latest} ]</p>
-          <Link href={`/${locale}/adventures/${latest.slug}`} className="teaser">
-            <div className="teaser-head">
-              <h2 className="display small">{latest.meta.title[locale]}</h2>
-              <p className="muted">
-                {latest.meta.tagline[locale]} — {fmtDate(latest.summary.startDate, locale, { month: "long", year: "numeric" })}
-              </p>
-            </div>
-            <CubeProfile ele={tripEle} height={180} minRange={1500} trace label={latest.meta.title[locale]} />
-            <div className="teaser-stats">
-              <span><b className="num">{fmtNum(latest.summary.totals.distanceKm, locale)}</b> km</span>
-              <span><b className="num">{fmtNum(latest.summary.totals.ascent, locale)}</b> m ↑</span>
-              <span><b className="num">{latest.summary.totals.days}</b> {d.adv.days.toLowerCase()}</span>
-              <span><b className="num">{latest.summary.totals.passes}</b> {d.adv.passes.toLowerCase()}</span>
-              <span className="teaser-go">{d.adv.open} →</span>
-            </div>
-          </Link>
-        </section>
-      )}
     </>
   );
 }

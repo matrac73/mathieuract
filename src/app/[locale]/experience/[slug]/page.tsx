@@ -54,6 +54,10 @@ export default async function ExperiencePage({ params }: P) {
       <header className="exp-head">
         <div>
           <p className="label">[ {String(career.length - i).padStart(2, "0")} / {String(career.length).padStart(2, "0")} ] {it.from === it.to ? it.from : `${it.from} — ${it.to ?? d.profile.present}`} · {it.place}</p>
+          {fs.existsSync(path.join(process.cwd(), "public", "logos", `${slug}.png`)) && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="career-logo" src={`/logos/${slug}.png`} alt="" />
+          )}
           <Scramble as="h1" className="display small" text={it.org} />
           <p className="lead">{it.role[locale]}{it.wip && <span className="tag">WIP</span>}</p>
           <ul className="exp-bullets">{it.bullets[locale].map((b) => <li key={b}>{b}</li>)}</ul>

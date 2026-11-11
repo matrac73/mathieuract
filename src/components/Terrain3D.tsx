@@ -24,7 +24,7 @@ type Props = {
   fill?: boolean; // size to the parent box
 };
 
-const REST_YAW = -7, MAX_YAW = 8, MAX_PITCH = 5; // degrees
+const REST_YAW = -7; // degrees: the model is seen from one fixed angle
 const RISE = 420, FADE = 230, HOLD = 110, DRAW = 5000; // ms
 const RELIEF = 1.5; // extra vertical exaggeration, on top of the one chosen by build-terrain
 export type Cloud = { at: number; rain: number }; // where it rained on the route (0..1), and how hard (mm/h)
@@ -419,14 +419,13 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
 
     const move = (e: PointerEvent) => {
       if (!data) return;
-      const r = el.getBoundingClientRect(), fx = (e.clientX - r.left) / r.width - 0.5, fy = (e.clientY - r.top) / r.height - 0.5;
-      if (!reduce) cv.style.transform = `perspective(1500px) rotateY(${(fx * 2 * MAX_YAW).toFixed(2)}deg) rotateX(${(-fy * 2 * MAX_PITCH).toFixed(2)}deg)`;
+      const r = el.getBoundingClientRect(); // the model itself does not move: the pointer only finds the photo dots
       const local = e.target === cv, mx = local ? e.offsetX : e.clientX - r.left, my = local ? e.offsetY : e.clientY - r.top; // offsetX/Y are already un-tilted
       let best = -1, bd = 18;
       for (const q of spots) { const dd = Math.hypot(q.x - mx, q.y - my); if (dd < bd) { bd = dd; best = q.k; } }
       if (best !== hot) { hot = best; const q = spots.find((x) => x.k === best); setTip(q ? { k: q.k, x: q.x, y: q.y } : null); kick(); }
     };
-    const leave = () => { cv.style.transform = ""; if (hot !== -1) { hot = -1; setTip(null); kick(); } };
+    const leave = () => { if (hot !== -1) { hot = -1; setTip(null); kick(); } };
     el.addEventListener("pointermove", move);
     el.addEventListener("pointerleave", leave);
     let lastW = el.clientWidth;
