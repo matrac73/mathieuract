@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import exifr from "exifr";
 import { marked } from "marked";
+import { monoEmoji } from "./emoji";
 import type { L10n, Locale } from "./i18n";
 import { averagePower, estimatePower } from "./ride";
 
@@ -110,7 +111,7 @@ export async function getDays(slug: string, locale: Locale): Promise<Day[]> {
       const f = path.join(DIR, slug, "notes", `${c.slug}.${l}.md`);
       if (fs.existsSync(f)) {
         const md = fs.readFileSync(f, "utf8").trim();
-        if (md) { notesHtml = marked.parse(md, { async: false }) as string; break; }
+        if (md) { notesHtml = monoEmoji(marked.parse(md, { async: false }) as string); break; }
       }
     }
     const avgPower = averagePower(day.profile, estimatePower(day.profile, day.weather, adv.meta.massKg ?? 85));

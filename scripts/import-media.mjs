@@ -78,36 +78,54 @@ const files = fs.readdirSync(src).filter((f) => IMG.test(f) || VID.test(f)).sort
 const stills = new Set(files.filter((f) => IMG.test(f)).map((f) => path.parse(f).name.toLowerCase()));
 const mediaFile = path.join(DIR, "media.json");
 const known = fs.existsSync(mediaFile) ? JSON.parse(fs.readFileSync(mediaFile, "utf8")) : {};
+// Corrections by hand, keyed by the original file name (content/adventures/<slug>/media-fixes.json):
+//   { "skip": true }                         leave the file out
+//   { "day": "day-04", "time": "12:54" }     it was taken that day at that time (for files that lost their date or position)
+//   { "start": 0 }                           a video: where the 3 seconds begin
+//   { "blur": [[x, y, w, h, strength]] }     soften a zone (fractions of the picture; strength ≈ 6 light, 14 strong)
+const fixFile = path.join(DIR, "media-fixes.json"), fixes = fs.existsSync(fixFile) ? JSON.parse(fs.readFileSync(fixFile, "utf8")) : {};
 const out = {}, skipped = [];
 
 for (const f of files) {
   const base = path.parse(f).name;
   if (VID.test(f) && stills.has(base.toLowerCase())) continue; // the moving half of a Live Photo
-  const m = await read(path.join(src, f)), day = m.ts != null ? dayOf(m.ts) : null, spot = day && place(day, m);
+  const fix = fixes[f] ?? {};
+  if (fix.skip) continue;
+  const m = await read(path.join(src, f));
+  if (fix.day && fix.time) { // placed by hand: that day, at that time, wherever the route was then
+    const d = days.find((x) => x.slug === fix.day), [hh, mm] = fix.time.split(":").map(Number);
+    m.ts = Date.parse(`${d.date}T00:00:00Z`) / 1000 + hh * 3600 + mm * 60 - TZ; m.lat = m.lon = null;
+  }
+  const day = fix.day ? days.find((x) => x.slug === fix.day) : m.ts != null ? dayOf(m.ts) : null, spot = day && place(day, m);
   if (!day || !spot) { skipped.push(`${f} — ${m.ts ? new Date((m.ts + TZ) * 1000).toISOString().slice(0, 16).replace("T", " ") : "no date"}${m.lat != null ? ` @ ${m.lat.toFixed(3)},${m.lon.toFixed(3)}` : ""}`); continue; }
   const P = day.profile, time = new Date((m.ts + TZ) * 1000).toISOString().slice(11, 16), video = VID.test(f);
   const file = `${time.replace(":", "")}_${base.replace(/[^\w-]+/g, "-").slice(0, 24)}.${video ? "mp4" : "jpg"}`;
-  const rec = { file, at: +(spot.i / (P.d.length - 1)).toFixed(4), km: +(P.d[spot.i] / 1000).toFixed(1), time, by: spot.by, video, title: known[day.slug]?.find((k) => k.file === file)?.title ?? { en: "", fr: "" } };
+  const rec = { file, at: +(spot.i / (P.d.length - 1)).toFixed(4), km: +(P.d[spot.i] / 1000).toFixed(1), time, by: spot.by, video, from: f, title: Object.values(known).flat().find((k) => (k.from ?? "") === f || k.file === file)?.title ?? { en: "", fr: "" } };
   (out[day.slug] ??= []).push(rec);
   console.log(`${day.slug}  ${time}  km ${String(rec.km).padStart(5)}  ${spot.by.padEnd(4)} ${spot.off != null ? `${spot.off.toFixed(2)} km off` : "           "}  ${f}${m.ts < day.startTs - 600 ? "  (before the start)" : m.ts > day.endTs + 600 ? "  (after the finish)" : ""}`);
   if (dry) continue;
   const dir = path.join(PUB, day.slug), dst = path.join(dir, file);
   fs.mkdirSync(dir, { recursive: true });
-  if (!fs.existsSync(dst)) convert(path.join(src, f), dst, dir, video, m);
+  if (!fs.existsSync(dst)) convert(path.join(src, f), dst, dir, video, m, fix);
   const size = probe(dst).streams.find((x) => x.codec_type === "video"); // kept so the page can reserve the room before the picture loads
   rec.w = size.width; rec.h = size.height;
 }
 
-function convert(from, dst, dir, video, m) {
+function convert(from, dst, dir, video, m, fix) {
   if (video) {
-    const start = Math.max(0, m.duration / 2 - 1.5).toFixed(2);
+    const start = (fix.start ?? Math.max(0, m.duration / 2 - 1.5)).toFixed(2);
     const tone = m.hdr ? "zscale=t=linear:npl=100,format=gbrpf32le,zscale=p=bt709,tonemap=hable:desat=0,zscale=t=bt709:m=bt709:r=tv," : "";
     run("ffmpeg", ["-v", "error", "-y", "-ss", start, "-i", from, "-t", "3", "-an", "-vf", `${tone}scale=-2:'min(720,ih)',format=yuv420p`, "-c:v", "libx264", "-crf", "27", "-preset", "slow", "-movflags", "+faststart", dst]);
   } else {
     // two steps: an iPhone HEIC is a grid of tiles that ffmpeg assembles itself, and that cannot be combined with a filter
     const tmp = path.join(dir, "_tmp.png");
     run("ffmpeg", ["-v", "error", "-y", "-i", from, "-frames:v", "1", "-update", "1", tmp]);
-    run("ffmpeg", ["-v", "error", "-y", "-i", tmp, "-vf", "scale='min(1600,iw)':'min(1600,ih)':force_original_aspect_ratio=decrease", "-frames:v", "1", "-update", "1", "-q:v", "5", "-map_metadata", "-1", dst]);
+    // each zone to soften: a blurred copy of it, feathered into an ellipse, laid back over the picture
+    let graph = "[0:v]scale='min(1600,iw)':'min(1600,ih)':force_original_aspect_ratio=decrease[v0]";
+    (fix.blur ?? []).forEach(([x, y, w, h, s = 8], i) => {
+      graph += `;[v${i}]split[a${i}][b${i}];[b${i}]crop=iw*${w}:ih*${h}:iw*${x}:ih*${y},gblur=sigma=${s},format=yuva444p,geq=lum='p(X,Y)':cb='cb(X,Y)':cr='cr(X,Y)':a='255*clip(2.2*(1-hypot((X-W/2)/(W/2),(Y-H/2)/(H/2))),0,1)'[c${i}];[a${i}][c${i}]overlay=W*${x}:H*${y}[v${i + 1}]`;
+    });
+    run("ffmpeg", ["-v", "error", "-y", "-i", tmp, "-filter_complex", graph, "-map", `[v${(fix.blur ?? []).length}]`, "-frames:v", "1", "-update", "1", "-q:v", "5", "-map_metadata", "-1", dst]);
     fs.rmSync(tmp);
   }
 }
@@ -115,4 +133,11 @@ function convert(from, dst, dir, video, m) {
 for (const k of Object.keys(out)) out[k].sort((a, b) => a.at - b.at || a.time.localeCompare(b.time));
 console.log(`\n${Object.values(out).flat().length} placed — ${Object.entries(out).sort().map(([k, v]) => `${k}: ${v.length}`).join(", ")}`);
 if (skipped.length) console.log(`\nnot placed (${skipped.length}):\n  ${skipped.join("\n  ")}`);
-if (!dry) fs.writeFileSync(mediaFile, JSON.stringify(Object.fromEntries(Object.entries(out).sort()), null, 1) + "\n");
+if (!dry) {
+  fs.writeFileSync(mediaFile, JSON.stringify(Object.fromEntries(Object.entries(out).sort()), null, 1) + "\n");
+  for (const d of days) { // what is no longer wanted there (left out, or moved to another day) goes away
+    const dir = path.join(PUB, d.slug), keep = new Set((out[d.slug] ?? []).map((r) => r.file));
+    if (fs.existsSync(dir)) for (const x of fs.readdirSync(dir)) if (/\.(jpg|mp4)$/.test(x) && !keep.has(x)) { fs.rmSync(path.join(dir, x)); console.log(`removed ${d.slug}/${x}`); }
+  }
+}
+

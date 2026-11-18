@@ -7,6 +7,7 @@
    "time": "00:53",
    "by": "time",
    "video": false,
+   "from": "IMG_6985.HEIC",
    "title": {
     "en": "Everything fits on one bike",
     "fr": "Tout tient sur un vélo"
@@ -21,6 +22,7 @@
    "time": "18:23",
    "by": "time",
    "video": false,
+   "from": "E6F1FE80-52B3-407C-AD24-965D28F4747F.jpg",
    "title": {
     "en": "Bikes on the train",
     "fr": "Les vélos dans le train"
@@ -29,26 +31,13 @@
    "h": 900
   },
   {
-   "file": "2032_IMG_0215.jpg",
-   "at": 0,
-   "km": 0,
-   "time": "20:32",
-   "by": "time",
-   "video": false,
-   "title": {
-    "en": "Before setting off",
-    "fr": "Avant le départ"
-   },
-   "w": 1200,
-   "h": 1600
-  },
-  {
    "file": "2325_IMG_7012.jpg",
    "at": 0.572,
    "km": 13.9,
    "time": "23:25",
    "by": "gps",
    "video": false,
+   "from": "IMG_7012.HEIC",
    "title": {
     "en": "By night, under the moon",
     "fr": "De nuit, sous la lune"
@@ -65,9 +54,10 @@
    "time": "07:03",
    "by": "gps",
    "video": false,
+   "from": "IMG_7014.HEIC",
    "title": {
-    "en": "Waking up at camp",
-    "fr": "Réveil au bivouac"
+    "en": "Waking up at our host's",
+    "fr": "Réveil chez notre hôte"
    },
    "w": 1600,
    "h": 1200
@@ -79,9 +69,10 @@
    "time": "07:48",
    "by": "gps",
    "video": false,
+   "from": "IMG_7019.HEIC",
    "title": {
-    "en": "The watch, on waking",
-    "fr": "La montre, au réveil"
+    "en": "Quality sleep 🙃",
+    "fr": "Sommeil de qualité 🙃"
    },
    "w": 1200,
    "h": 1600
@@ -93,6 +84,7 @@
    "time": "08:54",
    "by": "gps",
    "video": false,
+   "from": "IMG_9838.HEIC",
    "title": {
     "en": "Breakfast",
     "fr": "Petit-déjeuner"
@@ -107,6 +99,7 @@
    "time": "09:25",
    "by": "gps",
    "video": true,
+   "from": "IMG_7025.MOV",
    "title": {
     "en": "A proper coffee",
     "fr": "Un vrai café"
@@ -121,6 +114,7 @@
    "time": "10:19",
    "by": "gps",
    "video": true,
+   "from": "IMG_7032.MOV",
    "title": {
     "en": "Off we go",
     "fr": "C'est parti"
@@ -135,9 +129,10 @@
    "time": "10:51",
    "by": "gps",
    "video": false,
+   "from": "IMG_9843.HEIC",
    "title": {
-    "en": "The tree on the hill",
-    "fr": "L'arbre sur la colline"
+    "en": "The lime trees of the drumlins",
+    "fr": "Les tilleuls des drumlins"
    },
    "w": 1200,
    "h": 1600
@@ -149,9 +144,10 @@
    "time": "14:13",
    "by": "gps",
    "video": true,
+   "from": "IMG_9847.MOV",
    "title": {
-    "en": "On the wheel",
-    "fr": "Dans la roue"
+    "en": "On the road",
+    "fr": "En route"
    },
    "w": 406,
    "h": 720
@@ -163,6 +159,7 @@
    "time": "14:36",
    "by": "gps",
    "video": false,
+   "from": "IMG_9848.HEIC",
    "title": {
     "en": "By Lake Walen",
     "fr": "Au bord du Walensee"
@@ -177,6 +174,7 @@
    "time": "14:45",
    "by": "gps",
    "video": false,
+   "from": "IMG_7066.HEIC",
    "title": {
     "en": "Tunnel along the lake",
     "fr": "Tunnel le long du lac"
@@ -191,9 +189,10 @@
    "time": "16:22",
    "by": "time",
    "video": false,
+   "from": "IMG_0223.HEIC",
    "title": {
-    "en": "In the rain",
-    "fr": "Sous la pluie"
+    "en": "Soaked",
+    "fr": "Rincées"
    },
    "w": 1200,
    "h": 1600
@@ -205,6 +204,7 @@
    "time": "17:28",
    "by": "gps",
    "video": false,
+   "from": "IMG_7081.HEIC",
    "title": {
     "en": "The Rhine",
     "fr": "Le Rhin"
@@ -219,6 +219,7 @@
    "time": "19:12",
    "by": "gps",
    "video": false,
+   "from": "IMG_9862.HEIC",
    "title": {
     "en": "Arriving in Feldkirch",
     "fr": "Arrivée à Feldkirch"
@@ -235,6 +236,7 @@
    "time": "08:18",
    "by": "time",
    "video": false,
+   "from": "46E889F9-AD0B-458C-A7B0-FD6EBF7B70A5.jpg",
    "title": {
     "en": "Stocking up at the bakery",
     "fr": "Ravitaillement à la boulangerie"
@@ -249,6 +251,7 @@
    "time": "11:17",
    "by": "gps",
    "video": false,
+   "from": "IMG_7139.HEIC",
    "title": {
     "en": "Climbing towards the Arlberg",
     "fr": "La montée vers l'Arlberg"
@@ -257,12 +260,28 @@
    "h": 1600
   },
   {
+   "file": "1121_IMG_7387.jpg",
+   "at": 0.3695,
+   "km": 42.8,
+   "time": "11:21",
+   "by": "time",
+   "video": false,
+   "from": "IMG_7387.PNG",
+   "title": {
+    "en": "In the grass",
+    "fr": "Dans l'herbe"
+   },
+   "w": 1170,
+   "h": 1532
+  },
+  {
    "file": "1133_IMG_9879.jpg",
    "at": 0.3716,
    "km": 43,
    "time": "11:33",
    "by": "gps",
    "video": false,
+   "from": "IMG_9879.HEIC",
    "title": {
     "en": "The sky closes in",
     "fr": "Le ciel se charge"
@@ -277,6 +296,7 @@
    "time": "12:47",
    "by": "gps",
    "video": false,
+   "from": "IMG_7152.HEIC",
    "title": {
     "en": "Up to the Arlbergpass",
     "fr": "Vers l'Arlbergpass"
@@ -291,6 +311,7 @@
    "time": "13:05",
    "by": "gps",
    "video": false,
+   "from": "IMG_9883.HEIC",
    "title": {
     "en": "Peaks in the clouds",
     "fr": "Les sommets dans les nuages"
@@ -305,9 +326,10 @@
    "time": "16:36",
    "by": "gps",
    "video": true,
+   "from": "IMG_7183.MOV",
    "title": {
-    "en": "On the cycle path",
-    "fr": "Sur la piste cyclable"
+    "en": "Did you spot the buzzard",
+    "fr": "T'as spotté la buse"
    },
    "w": 406,
    "h": 720
@@ -319,6 +341,7 @@
    "time": "17:58",
    "by": "gps",
    "video": true,
+   "from": "IMG_9890.MOV",
    "title": {
     "en": "The Inn valley",
     "fr": "La vallée de l'Inn"
@@ -329,12 +352,28 @@
  ],
  "day-04": [
   {
+   "file": "0830_IMG_7385.jpg",
+   "at": 0,
+   "km": 0.1,
+   "time": "08:30",
+   "by": "time",
+   "video": false,
+   "from": "IMG_7385.PNG",
+   "title": {
+    "en": "Resting at camp",
+    "fr": "Repos au camp"
+   },
+   "w": 1170,
+   "h": 844
+  },
+  {
    "file": "1250_IMG_7248.jpg",
    "at": 0.5616,
    "km": 63,
    "time": "12:50",
    "by": "gps",
    "video": false,
+   "from": "IMG_7248.HEIC",
    "title": {
     "en": "Innsbruck, the old town",
     "fr": "Innsbruck, la vieille ville"
@@ -343,18 +382,64 @@
    "h": 1600
   },
   {
+   "file": "1254_IMG_7378.jpg",
+   "at": 0.5616,
+   "km": 63,
+   "time": "12:54",
+   "by": "time",
+   "video": false,
+   "from": "IMG_7378.PNG",
+   "title": {
+    "en": "Tyrolean façades",
+    "fr": "Façades tyroliennes"
+   },
+   "w": 1170,
+   "h": 1529
+  },
+  {
+   "file": "2052_IMG_7381.jpg",
+   "at": 1,
+   "km": 112.1,
+   "time": "20:52",
+   "by": "time",
+   "video": false,
+   "from": "IMG_7381.PNG",
+   "title": {
+    "en": "Evening light",
+    "fr": "Lumière du soir"
+   },
+   "w": 1170,
+   "h": 1530
+  },
+  {
    "file": "2100_IMG_7304.jpg",
    "at": 1,
    "km": 112.1,
    "time": "21:00",
    "by": "gps",
    "video": false,
+   "from": "IMG_7304.HEIC",
    "title": {
     "en": "Flat out at the Brenner",
     "fr": "À plat, au Brenner"
    },
    "w": 1200,
    "h": 1600
+  },
+  {
+   "file": "2108_IMG_7380.jpg",
+   "at": 1,
+   "km": 112.1,
+   "time": "21:08",
+   "by": "time",
+   "video": false,
+   "from": "IMG_7380.PNG",
+   "title": {
+    "en": "Sunset at camp",
+    "fr": "Coucher de soleil au bivouac"
+   },
+   "w": 1170,
+   "h": 1523
   }
  ],
  "day-05": [
@@ -365,6 +450,7 @@
    "time": "07:58",
    "by": "gps",
    "video": false,
+   "from": "IMG_7318.HEIC",
    "title": {
     "en": "Roadside camp",
     "fr": "Bivouac au bord de la route"
@@ -379,6 +465,7 @@
    "time": "12:51",
    "by": "gps",
    "video": false,
+   "from": "IMG_7325.HEIC",
    "title": {
     "en": "On top of the Jaufenpass",
     "fr": "Au sommet du Jaufenpass"
@@ -393,6 +480,7 @@
    "time": "13:16",
    "by": "gps",
    "video": false,
+   "from": "IMG_7332.HEIC",
    "title": {
     "en": "The Jaufenpass hairpins",
     "fr": "Les lacets du Jaufenpass"
@@ -407,6 +495,7 @@
    "time": "19:41",
    "by": "gps",
    "video": true,
+   "from": "IMG_7363.MOV",
    "title": {
     "en": "The Val Venosta cycle path",
     "fr": "La piste cyclable du Val Venosta"
@@ -415,88 +504,19 @@
    "h": 720
   },
   {
-   "file": "2256_IMG_7378.jpg",
-   "at": 1,
-   "km": 122.9,
-   "time": "22:56",
-   "by": "time",
-   "video": false,
-   "title": {
-    "en": "Tyrolean façades",
-    "fr": "Façades tyroliennes"
-   },
-   "w": 1170,
-   "h": 1529
-  },
-  {
-   "file": "2257_IMG_7380.jpg",
-   "at": 1,
-   "km": 122.9,
-   "time": "22:57",
-   "by": "time",
-   "video": false,
-   "title": {
-    "en": "Sunset at camp",
-    "fr": "Coucher de soleil au bivouac"
-   },
-   "w": 1170,
-   "h": 1523
-  },
-  {
-   "file": "2257_IMG_7381.jpg",
-   "at": 1,
-   "km": 122.9,
-   "time": "22:57",
-   "by": "time",
-   "video": false,
-   "title": {
-    "en": "Evening light",
-    "fr": "Lumière du soir"
-   },
-   "w": 1170,
-   "h": 1530
-  },
-  {
-   "file": "2302_IMG_7385.jpg",
-   "at": 1,
-   "km": 122.9,
-   "time": "23:02",
-   "by": "time",
-   "video": false,
-   "title": {
-    "en": "Resting at camp",
-    "fr": "Repos au camp"
-   },
-   "w": 1170,
-   "h": 844
-  },
-  {
    "file": "2302_ScreenRecording_08-03-20.mp4",
    "at": 1,
    "km": 122.9,
    "time": "23:02",
    "by": "time",
    "video": true,
+   "from": "ScreenRecording_08-03-2026 23-02-22_1.mp4",
    "title": {
-    "en": "Hairpins",
-    "fr": "Les épingles"
+    "en": "Spot Mathieu",
+    "fr": "Spot Mathieu"
    },
    "w": 414,
    "h": 720
-  },
-  {
-   "file": "2304_IMG_7387.jpg",
-   "at": 1,
-   "km": 122.9,
-   "time": "23:04",
-   "by": "time",
-   "video": false,
-   "title": {
-    "en": "In the grass",
-    "fr": "Dans l'herbe"
-   },
-   "w": 1170,
-   "h": 1532
   }
  ],
  "day-06": [
@@ -507,6 +527,7 @@
    "time": "06:33",
    "by": "gps",
    "video": false,
+   "from": "IMG_7391.HEIC",
    "title": {
     "en": "A night in the stadium stand",
     "fr": "Une nuit dans la tribune du stade"
@@ -521,9 +542,10 @@
    "time": "08:58",
    "by": "gps",
    "video": false,
+   "from": "IMG_7400.HEIC",
    "title": {
-    "en": "Hairpin 47",
-    "fr": "Virage 47"
+    "en": "Only 47 hairpins to go",
+    "fr": "Plus que 47 virages"
    },
    "w": 1200,
    "h": 1600
@@ -535,6 +557,7 @@
    "time": "09:58",
    "by": "gps",
    "video": false,
+   "from": "IMG_7407.HEIC",
    "title": {
     "en": "The Stelvio hairpins",
     "fr": "Les lacets du Stelvio"
@@ -549,6 +572,7 @@
    "time": "10:25",
    "by": "gps",
    "video": true,
+   "from": "IMG_7415.MOV",
    "title": {
     "en": "The last kilometres of the Stelvio",
     "fr": "Les derniers kilomètres du Stelvio"
@@ -563,6 +587,7 @@
    "time": "11:04",
    "by": "gps",
    "video": false,
+   "from": "IMG_7422.HEIC",
    "title": {
     "en": "On top of the Stelvio",
     "fr": "Au sommet du Stelvio"
@@ -577,9 +602,10 @@
    "time": "11:07",
    "by": "gps",
    "video": false,
+   "from": "IMG_7427.HEIC",
    "title": {
-    "en": "The hairpins, from above",
-    "fr": "Les lacets, vus d'en haut"
+    "en": "The Stelvio's Instagram-ready hairpins",
+    "fr": "Les lacets instagrammables du Stelvio"
    },
    "w": 1200,
    "h": 1600
@@ -591,6 +617,7 @@
    "time": "11:59",
    "by": "time",
    "video": false,
+   "from": "IMG_0272.HEIC",
    "title": {
     "en": "Down to Bormio",
     "fr": "La descente vers Bormio"
@@ -605,6 +632,7 @@
    "time": "14:54",
    "by": "gps",
    "video": false,
+   "from": "IMG_7460.HEIC",
    "title": {
     "en": "Passo di Foscagno",
     "fr": "Passo di Foscagno"
@@ -619,6 +647,7 @@
    "time": "17:17",
    "by": "gps",
    "video": false,
+   "from": "IMG_7474.HEIC",
    "title": {
     "en": "Forcola di Livigno",
     "fr": "Forcola di Livigno"
@@ -633,6 +662,7 @@
    "time": "17:55",
    "by": "gps",
    "video": false,
+   "from": "IMG_7479.HEIC",
    "title": {
     "en": "Passo del Bernina",
     "fr": "Passo del Bernina"
@@ -647,6 +677,7 @@
    "time": "18:00",
    "by": "time",
    "video": false,
+   "from": "IMG_0309.HEIC",
    "title": {
     "en": "Lago Bianco",
     "fr": "Lago Bianco"
@@ -661,6 +692,7 @@
    "time": "19:42",
    "by": "gps",
    "video": false,
+   "from": "IMG_7497.HEIC",
    "title": {
     "en": "St. Moritz, end of the day",
     "fr": "St. Moritz, fin de journée"
@@ -675,6 +707,7 @@
    "time": "21:11",
    "by": "time",
    "video": false,
+   "from": "IMG_0325.HEIC",
    "title": {
     "en": "Camp above the lake",
     "fr": "Bivouac au-dessus du lac"
@@ -691,6 +724,7 @@
    "time": "08:39",
    "by": "gps",
    "video": false,
+   "from": "IMG_7543.HEIC",
    "title": {
     "en": "Waking up facing St. Moritz",
     "fr": "Réveil face à St. Moritz"
@@ -705,6 +739,7 @@
    "time": "11:59",
    "by": "gps",
    "video": false,
+   "from": "IMG_7558.HEIC",
    "title": {
     "en": "Albulapass",
     "fr": "Albulapass"
@@ -719,6 +754,7 @@
    "time": "16:34",
    "by": "time",
    "video": false,
+   "from": "IMG_7585.HEIC",
    "title": {
     "en": "Through the galleries",
     "fr": "Dans les galeries"
@@ -733,6 +769,7 @@
    "time": "16:38",
    "by": "gps",
    "video": false,
+   "from": "IMG_7587.HEIC",
    "title": {
     "en": "A stop on the bridge",
     "fr": "Pause sur le pont"
@@ -747,9 +784,10 @@
    "time": "16:50",
    "by": "gps",
    "video": false,
+   "from": "IMG_7591.HEIC",
    "title": {
-    "en": "The road winds on",
-    "fr": "La route serpente"
+    "en": "Who mows the lawn?",
+    "fr": "Qui passe la tondeuse ?"
    },
    "w": 1200,
    "h": 1600
@@ -761,6 +799,7 @@
    "time": "19:55",
    "by": "time",
    "video": false,
+   "from": "IMG_0341.HEIC",
    "title": {
     "en": "The red train of Graubünden",
     "fr": "Le train rouge des Grisons"
@@ -777,6 +816,7 @@
    "time": "10:39",
    "by": "gps",
    "video": false,
+   "from": "IMG_7620.HEIC",
    "title": {
     "en": "Oberalppass",
     "fr": "Oberalppass"
@@ -791,9 +831,10 @@
    "time": "12:34",
    "by": "gps",
    "video": false,
+   "from": "IMG_7644.HEIC",
    "title": {
-    "en": "A cow in the fog",
-    "fr": "Une vache dans le brouillard"
+    "en": "The mist",
+    "fr": "The mist"
    },
    "w": 1200,
    "h": 1600
@@ -805,6 +846,7 @@
    "time": "12:55",
    "by": "gps",
    "video": false,
+   "from": "IMG_7652.HEIC",
    "title": {
     "en": "The Furka in the fog",
     "fr": "La Furka dans le brouillard"
@@ -819,6 +861,7 @@
    "time": "13:26",
    "by": "gps",
    "video": false,
+   "from": "IMG_7655.HEIC",
    "title": {
     "en": "Furkapass",
     "fr": "Furkapass"
@@ -833,6 +876,7 @@
    "time": "13:48",
    "by": "gps",
    "video": false,
+   "from": "IMG_7666.HEIC",
    "title": {
     "en": "Down from the Furka",
     "fr": "La descente de la Furka"
@@ -849,9 +893,10 @@
    "time": "07:27",
    "by": "gps",
    "video": false,
+   "from": "IMG_7709.HEIC",
    "title": {
-    "en": "Last camp",
-    "fr": "Dernier bivouac"
+    "en": "Last camp, in a local's garden",
+    "fr": "Dernier bivouac chez l'habitant"
    },
    "w": 1200,
    "h": 1600
@@ -863,6 +908,7 @@
    "time": "09:35",
    "by": "gps",
    "video": false,
+   "from": "IMG_7715.HEIC",
    "title": {
     "en": "Croissant stop at the Forclaz",
     "fr": "Pause croissant à la Forclaz"
@@ -877,6 +923,7 @@
    "time": "10:08",
    "by": "gps",
    "video": false,
+   "from": "IMG_7719.HEIC",
    "title": {
     "en": "Col de la Forclaz",
     "fr": "Col de la Forclaz"
@@ -891,6 +938,7 @@
    "time": "11:08",
    "by": "gps",
    "video": false,
+   "from": "IMG_7724.HEIC",
    "title": {
     "en": "Col des Montets",
     "fr": "Col des Montets"

@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import type { Day } from "@/lib/adventures";
+import { EMOJI } from "@/lib/emoji";
 import { fmtNum, type Dict, type Locale } from "@/lib/i18n";
 import { cumulativeAscent, estimatePower, heat, weatherAt } from "@/lib/ride";
 import { MiniMap, type MiniHandle } from "./MiniMap";
@@ -168,7 +169,7 @@ export function DayScene({ slug, day, dict, locale, index, mass }: { slug: strin
                 // eslint-disable-next-line @next/next/no-img-element
                 : <img src={m.src} alt={m.title} loading="lazy" width={m.w} height={m.h} />}
               <figcaption>
-                {m.title && <span className="shot-title">{m.title}</span>}
+                {m.title && <span className="shot-title">{m.title.split(EMOJI).map((part, j) => (j % 2 ? <span key={j} className="emo">{part}</span> : part))}</span>}
                 <span className="label dim">km {fmtNum(m.km, locale, 0)}{m.time && ` · ${m.time}`}</span>
               </figcaption>
             </figure>

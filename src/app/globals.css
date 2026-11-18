@@ -764,3 +764,15 @@ html { scroll-snap-type: none; }
 @media (prefers-reduced-motion: reduce) { .shot img, .shot video, .shot figcaption { transition: none; } }
 .shot img, .shot video { height: auto; }
 @media (max-width: 860px) { .scene.duo .scene-hud.right { display: none; } }
+
+/* ---------- v9: more room between the photos and the map; emojis in black and white ---------- */
+.emo { filter: grayscale(1); font-style: normal; }
+.scene.duo { grid-template-columns: minmax(0, 33%) minmax(0, 1fr); margin-inline: calc((100% - min(100vw - 2 * var(--pad) - 16px, 1640px)) / 2); }
+.scene.duo .scene-stick { margin-left: -24px; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 120px); mask-image: linear-gradient(90deg, transparent 0, #000 120px); }
+.scene.duo .scene-hud.left, .scene.duo .minimap { left: 128px; }
+.scene.duo .scene-foot { padding-left: 128px; }
+@media (max-width: 860px) {
+  .scene.duo { margin-inline: 0; }
+  .scene.duo .scene-stick { margin-left: 0; -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(180deg, #000 calc(100% - 44px), transparent); }
+  .scene.duo .scene-hud.left { left: 8px; }
+}

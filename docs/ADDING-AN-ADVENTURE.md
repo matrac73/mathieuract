@@ -108,3 +108,20 @@ corrected by hand (`at` = 0..1 along the day, `km` = what the caption says). Run
 
 On the day page the photos scroll on the left, black and white until the rider reaches the place where they were taken;
 the 3D map stays on the right and the orange trace follows.
+
+### Corrections by hand
+
+`content/adventures/<slug>/media-fixes.json`, keyed by the original file name, is applied by every import:
+
+```json
+{
+  "IMG_0215.HEIC": { "skip": true },
+  "IMG_7378.PNG":  { "day": "day-04", "time": "12:54" },
+  "IMG_7415.MOV":  { "start": 0 },
+  "IMG_7620.HEIC": { "blur": [[0.195, 0.248, 0.125, 0.112, 14]] }
+}
+```
+
+`skip` leaves a file out; `day` + `time` place a file that lost its date or position (it goes where the route was at that
+time); `start` says where a video's 3 seconds begin; `blur` softens zones (x, y, width, height as fractions of the picture,
+then the strength). After changing `start` or `blur`, delete the converted file so the import makes it again.
