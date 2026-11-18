@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420">
+  <rect x="24" y="30" width="752" height="360" class="f-none s-mid" stroke-width="2"/>
+  <line x1="250" y1="30" x2="250" y2="390" class="s-mid" stroke-width="2"/>
+  <line x1="513" y1="30" x2="513" y2="390" class="s-mid" stroke-width="2"/>
+  <line x1="24" y1="120" x2="776" y2="120" class="s-mid" stroke-width="2"/>
+  <line x1="24" y1="255" x2="776" y2="255" class="s-mid" stroke-width="2"/>
+  <text x="238" y="62" font-size="16" text-anchor="end" class="t-mid">réalité →</text>
+  <text x="36" y="106" font-size="16" text-anchor="start" class="t-mid">décision ↓</text>
+
+  <g data-step="1">
+    <text x="381" y="70" font-size="19" text-anchor="middle">Trop risqué</text>
+    <text x="381" y="98" font-size="17" text-anchor="middle" class="t-mid">(H0 vraie)</text>
+    <text x="644" y="70" font-size="19" text-anchor="middle">Risque acceptable</text>
+    <text x="644" y="98" font-size="17" text-anchor="middle" class="t-mid">(H1 vraie)</text>
+  </g>
+
+  <g data-step="2">
+    <text x="137" y="182" font-size="19" text-anchor="middle">On garde H0</text>
+    <text x="137" y="210" font-size="16" text-anchor="middle" class="t-mid">(pas de feu vert)</text>
+    <text x="137" y="317" font-size="19" text-anchor="middle">On rejette H0</text>
+    <text x="137" y="345" font-size="16" text-anchor="middle" class="t-mid">(feu vert)</text>
+    <text x="381" y="194" font-size="18" text-anchor="middle" class="t-mid">Décision juste</text>
+    <text x="644" y="329" font-size="18" text-anchor="middle" class="t-mid">Décision juste</text>
+  </g>
+
+  <g data-step="3">
+    <rect x="256" y="261" width="251" height="123" class="f-panel s-acc" stroke-width="3"/>
+    <text x="381" y="300" font-size="19" text-anchor="middle" class="t-acc">Erreur de 1re espèce</text>
+    <text x="381" y="330" font-size="16" text-anchor="middle">produit risqué autorisé</text>
+    <text x="381" y="358" font-size="16" text-anchor="middle" class="t-acc">plafonnée à α</text>
+  </g>
+
+  <g data-step="4">
+    <rect x="519" y="126" width="251" height="123" class="f-panel s-fg" stroke-width="2"/>
+    <text x="644" y="165" font-size="19" text-anchor="middle">Erreur de 2e espèce</text>
+    <text x="644" y="195" font-size="16" text-anchor="middle">bon produit bloqué</text>
+    <text x="644" y="223" font-size="16" text-anchor="middle" class="t-mid">selon la taille de l'essai</text>
+  </g>
+</svg>

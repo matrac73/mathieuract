@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420">
+  <rect x="24" y="30" width="752" height="360" class="f-none s-mid" stroke-width="2"/>
+  <line x1="250" y1="30" x2="250" y2="390" class="s-mid" stroke-width="2"/>
+  <line x1="513" y1="30" x2="513" y2="390" class="s-mid" stroke-width="2"/>
+  <line x1="24" y1="120" x2="776" y2="120" class="s-mid" stroke-width="2"/>
+  <line x1="24" y1="255" x2="776" y2="255" class="s-mid" stroke-width="2"/>
+  <text x="238" y="62" font-size="16" text-anchor="end" class="t-mid">reality →</text>
+  <text x="36" y="106" font-size="16" text-anchor="start" class="t-mid">decision ↓</text>
+
+  <g data-step="1">
+    <text x="381" y="70" font-size="19" text-anchor="middle">Too risky</text>
+    <text x="381" y="98" font-size="17" text-anchor="middle" class="t-mid">(H0 true)</text>
+    <text x="644" y="70" font-size="19" text-anchor="middle">Acceptable risk</text>
+    <text x="644" y="98" font-size="17" text-anchor="middle" class="t-mid">(H1 true)</text>
+  </g>
+
+  <g data-step="2">
+    <text x="137" y="182" font-size="19" text-anchor="middle">We keep H0</text>
+    <text x="137" y="210" font-size="16" text-anchor="middle" class="t-mid">(no green light)</text>
+    <text x="137" y="317" font-size="19" text-anchor="middle">We reject H0</text>
+    <text x="137" y="345" font-size="16" text-anchor="middle" class="t-mid">(green light)</text>
+    <text x="381" y="194" font-size="18" text-anchor="middle" class="t-mid">Right decision</text>
+    <text x="644" y="329" font-size="18" text-anchor="middle" class="t-mid">Right decision</text>
+  </g>
+
+  <g data-step="3">
+    <rect x="256" y="261" width="251" height="123" class="f-panel s-acc" stroke-width="3"/>
+    <text x="381" y="300" font-size="19" text-anchor="middle" class="t-acc">Type I error</text>
+    <text x="381" y="330" font-size="16" text-anchor="middle">risky product approved</text>
+    <text x="381" y="358" font-size="16" text-anchor="middle" class="t-acc">capped at α</text>
+  </g>
+
+  <g data-step="4">
+    <rect x="519" y="126" width="251" height="123" class="f-panel s-fg" stroke-width="2"/>
+    <text x="644" y="165" font-size="19" text-anchor="middle">Type II error</text>
+    <text x="644" y="195" font-size="16" text-anchor="middle">good product blocked</text>
+    <text x="644" y="223" font-size="16" text-anchor="middle" class="t-mid">depends on trial size</text>
+  </g>
+</svg>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440">
+  <!-- log axis: x = 300 + 542.9 * (ln(HR) + 0.5108), from 0.6 to 1.4 -->
+  <!-- half-width in log: 1.96 * sqrt(1/136 + 1/76) * sqrt(212 / n) -->
+  <line x1="300" y1="320" x2="760" y2="320" class="s-fg" stroke-width="2"/>
+  <line x1="300" y1="320" x2="300" y2="328" class="s-fg" stroke-width="2"/>
+  <line x1="456" y1="320" x2="456" y2="328" class="s-fg" stroke-width="2"/>
+  <line x1="577" y1="320" x2="577" y2="328" class="s-fg" stroke-width="2"/>
+  <line x1="676" y1="320" x2="676" y2="328" class="s-fg" stroke-width="2"/>
+  <line x1="760" y1="320" x2="760" y2="328" class="s-fg" stroke-width="2"/>
+  <text x="300" y="350" font-size="17" text-anchor="middle" class="t-mono">0.6</text>
+  <text x="456" y="350" font-size="17" text-anchor="middle" class="t-mono">0.8</text>
+  <text x="577" y="350" font-size="17" text-anchor="middle" class="t-mono">1</text>
+  <text x="676" y="350" font-size="17" text-anchor="middle" class="t-mono">1.2</text>
+  <text x="760" y="350" font-size="17" text-anchor="middle" class="t-mono">1.4</text>
+  <text x="530" y="382" font-size="17" text-anchor="middle" class="t-mid">hazard ratio (log scale)</text>
+  <line x1="577" y1="70" x2="577" y2="320" class="s-mid" stroke-width="2" stroke-dasharray="6 6"/>
+  <text x="577" y="56" font-size="17" text-anchor="middle" class="t-mid">same risk</text>
+  <text x="28" y="56" font-size="17" text-anchor="start" class="t-mid">events observed</text>
+
+  <g data-step="1">
+    <text x="28" y="116" font-size="18" text-anchor="start">212 (actual trial)</text>
+    <line x1="362" y1="110" x2="666" y2="110" class="s-fg" stroke-width="3"/>
+    <line x1="362" y1="99" x2="362" y2="121" class="s-fg" stroke-width="3"/>
+    <line x1="666" y1="99" x2="666" y2="121" class="s-fg" stroke-width="3"/>
+    <circle cx="514" cy="110" r="7" class="f-fg"/>
+  </g>
+
+  <g data-step="2">
+    <text x="28" y="171" font-size="18" text-anchor="start">424 (twice as many)</text>
+    <line x1="406" y1="165" x2="622" y2="165" class="s-fg" stroke-width="3"/>
+    <line x1="406" y1="154" x2="406" y2="176" class="s-fg" stroke-width="3"/>
+    <line x1="622" y1="154" x2="622" y2="176" class="s-fg" stroke-width="3"/>
+    <circle cx="514" cy="165" r="7" class="f-fg"/>
+  </g>
+
+  <g data-step="3">
+    <text x="28" y="226" font-size="18" text-anchor="start">848 (four times)</text>
+    <line x1="438" y1="220" x2="590" y2="220" class="s-fg" stroke-width="3"/>
+    <line x1="438" y1="209" x2="438" y2="231" class="s-fg" stroke-width="3"/>
+    <line x1="590" y1="209" x2="590" y2="231" class="s-fg" stroke-width="3"/>
+    <circle cx="514" cy="220" r="7" class="f-fg"/>
+  </g>
+
+  <g data-step="4">
+    <text x="28" y="281" font-size="18" text-anchor="start" class="t-acc">1,696 (eight times)</text>
+    <line x1="460" y1="275" x2="568" y2="275" class="s-acc" stroke-width="3"/>
+    <line x1="460" y1="264" x2="460" y2="286" class="s-acc" stroke-width="3"/>
+    <line x1="568" y1="264" x2="568" y2="286" class="s-acc" stroke-width="3"/>
+    <circle cx="514" cy="275" r="7" class="f-acc"/>
+    <text x="400" y="418" font-size="19" text-anchor="middle" class="t-acc">The interval finally sits entirely below 1</text>
+  </g>
+</svg>
