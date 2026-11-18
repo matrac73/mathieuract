@@ -64,7 +64,9 @@ const en = {
   articles: {
     title: "Articles",
     lead: "Short write-ups distilled from my own learning notes.",
-    categories: { "data-science": "Data science", consulting: "Case interviews" } as Record<string, string>,
+    categories: { "data-science": "Data science", consulting: "Case interviews", perspective: "News × course" } as Record<string, string>,
+    news: "The news",
+    course: "The course",
     min: "min read",
     back: "Pro / Academic",
     next: "Next",
@@ -209,7 +211,9 @@ const fr: typeof en = {
   articles: {
     title: "Articles",
     lead: "Des synthèses courtes tirées de mes propres notes d'apprentissage.",
-    categories: { "data-science": "Data science", consulting: "Entretiens de cas" },
+    categories: { "data-science": "Data science", consulting: "Entretiens de cas", perspective: "Actu × cours" },
+    news: "L'actu",
+    course: "Le cours",
     min: "min de lecture",
     back: "Pro / Académique",
     next: "Suivant",
