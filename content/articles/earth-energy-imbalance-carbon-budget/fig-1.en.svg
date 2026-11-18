@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="24" y="44" font-size="20">Earth's mean radiation budget (W/m²)</text>
+  <line x1="24" y1="96" x2="776" y2="96" class="s-mid" stroke-width="2" stroke-dasharray="8 8"/>
+  <text x="776" y="84" font-size="16" text-anchor="end" class="t-mid">top of the atmosphere</text>
+  <rect x="24" y="380" width="752" height="46" class="f-panel"/>
+  <text x="400" y="409" font-size="16" text-anchor="middle" class="t-mid" data-hide="4">surface and oceans</text>
+
+  <g data-step="1">
+    <line x1="60" y1="96" x2="60" y2="358" class="s-fg" stroke-width="4"/>
+    <polygon points="50,356 70,356 60,378" class="f-fg"/>
+    <text x="80" y="180" font-size="18">from the Sun</text>
+    <text x="80" y="210" font-size="22" class="t-mono">342</text>
+
+    <line x1="290" y1="378" x2="290" y2="118" class="s-mid" stroke-width="4"/>
+    <polygon points="280,120 300,120 290,98" class="f-mid"/>
+    <text x="310" y="180" font-size="18">reflected (albedo)</text>
+    <text x="310" y="210" font-size="22" class="t-mono">107</text>
+
+    <text x="80" y="300" font-size="18">absorbed: 235</text>
+  </g>
+
+  <g data-step="2">
+    <line x1="540" y1="378" x2="540" y2="118" class="s-fg" stroke-width="4"/>
+    <polygon points="530,120 550,120 540,98" class="f-fg"/>
+    <text x="560" y="180" font-size="18">emitted as infrared</text>
+    <text x="560" y="210" font-size="22" class="t-mono">235</text>
+    <text x="560" y="236" font-size="16" class="t-mid">at equilibrium</text>
+  </g>
+
+  <g data-step="3">
+    <text x="560" y="286" font-size="16" class="t-mid">more greenhouse effect</text>
+    <text x="560" y="316" font-size="20" class="t-acc">234 emitted</text>
+    <text x="560" y="348" font-size="18" class="t-acc">left over: +1 W/m²</text>
+  </g>
+
+  <g data-step="4">
+    <rect x="24" y="380" width="752" height="46" fill="none" class="s-acc" stroke-width="3"/>
+    <text x="400" y="409" font-size="18" text-anchor="middle" class="t-acc">91% of the excess heats the ocean</text>
+  </g>
+</svg>
