@@ -91,3 +91,20 @@ Cover of the adventure: `public/adventures/<slug>/cover.jpg`.
 
 `node scripts/build-terrain.mjs <slug> --minimap` rebuilds only `terrain/minimap.json` (wide frame, coast, lakes, cities).
 A full run of `build-terrain.mjs` rebuilds it too.
+
+## Importing photos and videos straight from the phone
+
+```
+node scripts/import-media.mjs <slug> <folder with the originals>     # add --dry to only see where each file would go
+```
+
+Needs `ffmpeg` on the PATH. For each file (HEIC, JPG, PNG, MOV, MP4) the script reads when and where it was taken,
+picks the day and the spot on that day's route (GPS first, capture time otherwise), writes a web-sized JPEG — or a
+3-second silent MP4 for a video — to `public/adventures/<slug>/day-NN/`, and records the result in
+`content/adventures/<slug>/media.json`. The Live Photo clip that comes with a picture is ignored.
+
+`media.json` is where the titles live (`title.fr` / `title.en`, shown under the picture) and where a position can be
+corrected by hand (`at` = 0..1 along the day, `km` = what the caption says). Running the import again keeps the titles.
+
+On the day page the photos scroll on the left, black and white until the rider reaches the place where they were taken;
+the 3D map stays on the right and the orange trace follows.

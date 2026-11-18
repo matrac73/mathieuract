@@ -210,18 +210,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
         </div>
 
         <div className="panel">
-          <div className="panel-head"><h3 className="label">[ 03 ] {t.photos}</h3></div>
-          <div className="photos">
-            {day.media.length
-              ? day.media.map((m) => <figure key={m.src} className="frame">{m.video ? <video src={m.src} controls muted playsInline preload="metadata" /> : <img src={m.src} alt="" loading="lazy" />}</figure>)
-              : Array.from({ length: 6 }, (_, i) => (
-                  <div key={i} className="frame empty"><span className="label">{t.photoSlot} {pad(i + 1)}{i === 0 && <><br /><span className="dim">public/adventures/{adv.slug}/{day.slug}/</span></>}</span></div>
-                ))}
-          </div>
-        </div>
-
-        <div className="panel">
-          <div className="panel-head"><h3 className="label">[ 04 ] {t.weather}</h3></div>
+          <div className="panel-head"><h3 className="label">[ 03 ] {t.weather}</h3></div>
           <div className="table-scroll">
             <table className="wx">
               <thead>

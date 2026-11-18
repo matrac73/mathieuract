@@ -12,7 +12,7 @@ type Data = { nu: number; nv: number; cellKm: number; min: number; step: number;
 export type Wind = { dir: number; speed: number; rain?: number } | null; // dir = where it blows from (degrees), speed in km/h, rain in mm/h
 export type Spot = { src: string; at: number; video: boolean }; // a photo or a video, `at` = 0..1 along the route
 type Town = { name: string; at: number; always?: boolean };
-export type TerrainHandle = { set: (progress: number, wind?: Wind) => void };
+export type TerrainHandle = { set: (progress: number, wind?: Wind, active?: number) => void }; // `active`: the photo being looked at (-1: none)
 type Level = { b: number; n: number; m: number; z: Float32Array };
 type Props = {
   src: string; cursor?: number | null; marks?: number[]; label?: string; maxHeight?: number;
@@ -40,7 +40,7 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
   const [tip, setTip] = useState<{ k: number; x: number; y: number } | null>(null);
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
-  const live = useRef({ cursor: null as number | null, marks: [] as number[], towns: [] as Town[], media: [] as Spot[], clouds: [] as Cloud[], p: null as number | null, wind: null as Wind, kick: () => {} });
+  const live = useRef({ cursor: null as number | null, marks: [] as number[], towns: [] as Town[], media: [] as Spot[], clouds: [] as Cloud[], p: null as number | null, wind: null as Wind, active: -1, kick: () => {} });
   live.current.cursor = cursor;
   live.current.marks = marks ?? [];
   live.current.towns = towns ?? [];
@@ -261,11 +261,11 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
       spots = live.current.media.map((m, k) => { const [x, y] = at(Math.min(n - 1.001, Math.max(0, m.at) * (n - 1))); return { k, x, y }; });
       const beat = (performance.now() % 1600) / 1600;
       for (const q of spots) { // where a photo or a video was taken: a dot that pings
-        const r = 3.5 + (q.k === hot ? 2 : 0), ring = r + 3 + beat * 9;
+        const on = q.k === hot || q.k === live.current.active, r = 3.5 + (on ? 2.5 : 0), ring = r + 3 + beat * 9;
         g.globalAlpha = alpha * (1 - beat) * 0.9; g.strokeStyle = tone(1); g.lineWidth = 1.5; g.strokeRect(q.x - ring, q.y - ring, ring * 2, ring * 2);
         g.globalAlpha = alpha; g.fillStyle = tone(0); g.fillRect(q.x - r - 2, q.y - r - 2, 2 * r + 4, 2 * r + 4);
-        g.fillStyle = tone(1); g.fillRect(q.x - r, q.y - r, 2 * r, 2 * r);
-        g.fillStyle = col.accent; g.fillRect(q.x - 1.5, q.y - 1.5, 3, 3);
+        g.fillStyle = on ? col.accent : tone(1); g.fillRect(q.x - r, q.y - r, 2 * r, 2 * r);
+        g.fillStyle = on ? tone(1) : col.accent; g.fillRect(q.x - 1.5, q.y - 1.5, 3, 3);
       }
       const cu = live.current.cursor;
       if (cu != null) {
@@ -383,7 +383,7 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
     };
     const kick = () => { if (!raf && started) raf = requestAnimationFrame(frame); };
     live.current.kick = kick;
-    if (handle) handle.current = { set: (p, w) => { live.current.p = p; if (w !== undefined) live.current.wind = w; kick(); } };
+    if (handle) handle.current = { set: (p, w, a) => { live.current.p = p; if (w !== undefined) live.current.wind = w; if (a !== undefined) live.current.active = a; kick(); } };
 
     const start = () => { if (started || !data) return; started = true; t0 = performance.now(); kick(); };
     const io = new IntersectionObserver((es) => { vis = es.some((e) => e.isIntersecting); if (vis) { lastT = 0; start(); kick(); } }, { threshold: 0.2 });

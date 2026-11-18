@@ -28,7 +28,8 @@ export type Day = {
   avgPower: number; // estimated (no power meter)
   towns: { name: string; i: number }[]; // main towns on the way, `i` = index of the nearest profile point (towns.json)
 };
-export type Media = { src: string; at: number; video: boolean }; // `at` = 0..1 along the day's route
+export type Media = { src: string; at: number; video: boolean; title: string; km: number; time: string | null; w?: number; h?: number }; // `at` = 0..1 along the day's route
+type Recorded = { file: string; at: number; km: number; time: string; video: boolean; title: L10n; w?: number; h?: number }; // media.json, written by scripts/import-media.mjs
 export type DayCard = { n: number; slug: string; date: string; start: Place; end: Place; stats: Stats; passes: Pass[]; ele: number[]; track: [number, number][] };
 export type Summary = {
   slug: string; startDate: string; endDate: string; countries: string[];
@@ -94,10 +95,16 @@ export async function getDays(slug: string, locale: Locale): Promise<Day[]> {
     const towns = fs.existsSync(townsFile) ? (json<Record<string, { name: string; i: number }[]>>(townsFile)[c.slug] ?? []) : [];
     const photoDir = path.join(PUB, slug, c.slug);
     const files = fs.existsSync(photoDir) ? fs.readdirSync(photoDir).filter((f) => IMG.test(f) || VIDEO.test(f)).sort() : [];
-    const media: Media[] = await Promise.all(files.map(async (f, i) => ({
-      src: `/adventures/${slug}/${c.slug}/${f}`, video: VIDEO.test(f),
-      at: await locate(path.join(photoDir, f), f, day.profile, (i + 1) / (files.length + 1)),
-    })));
+    // media.json knows where each imported file was taken; a file dropped by hand is located on the spot
+    const recFile = path.join(DIR, slug, "media.json");
+    const recorded = fs.existsSync(recFile) ? (json<Record<string, Recorded[]>>(recFile)[c.slug] ?? []) : [];
+    const total = day.profile.d[day.profile.d.length - 1] / 1000;
+    const media: Media[] = (await Promise.all(files.map(async (f, i) => {
+      const src = `/adventures/${slug}/${c.slug}/${f}`, r = recorded.find((x) => x.file === f);
+      if (r) return { src, video: r.video, at: r.at, km: r.km, time: r.time, title: r.title[locale] || r.title.en || "", w: r.w, h: r.h };
+      const at = await locate(path.join(photoDir, f), f, day.profile, (i + 1) / (files.length + 1));
+      return { src, video: VIDEO.test(f), at, km: Math.round(at * total * 10) / 10, time: null, title: "" };
+    }))).sort((a, b) => a.at - b.at || a.src.localeCompare(b.src));
     let notesHtml: string | null = null;
     for (const l of [locale, "en"]) {
       const f = path.join(DIR, slug, "notes", `${c.slug}.${l}.md`);

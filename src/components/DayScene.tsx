@@ -21,6 +21,8 @@ export function DayScene({ slug, day, dict, locale, index, mass }: { slug: strin
   const section = useRef<HTMLElement>(null), stick = useRef<HTMLDivElement>(null);
   const handle = useRef<TerrainHandle | null>(null), mini = useRef<MiniHandle | null>(null);
   const els = useRef<Record<string, HTMLElement | null>>({});
+  const shots = useRef<(HTMLElement | null)[]>([]);
+  const media = day.media;
   const set = (k: string) => (el: HTMLElement | null) => { els.current[k] = el; };
 
   // start and finish are always named; the towns in between appear on the way
@@ -52,7 +54,33 @@ export function DayScene({ slug, day, dict, locale, index, mass }: { slug: strin
       const sec = section.current, st = stick.current;
       if (!sec || !st) return;
       const r = sec.getBoundingClientRect(), s = st.getBoundingClientRect();
-      const p = Math.min(1, Math.max(0, (s.top - r.top) / Math.max(1, r.height - s.height)));
+      let p = Math.min(1, Math.max(0, (s.top - r.top) / Math.max(1, r.height - s.height))), active = -1;
+      if (media.length) {
+        // With photos, they set the pace: the rider is where a photo was taken when that photo crosses the reading line
+        // (the middle of the map; under the map on a phone), and moves evenly along the route between two photos.
+        const top = parseFloat(getComputedStyle(st).top) || 0, side = s.width < r.width - 40;
+        const line = side ? top + s.height / 2 : (top + s.height + window.innerHeight) / 2;
+        const pts: [number, number][] = [[line - top, 0]];
+        shots.current.forEach((el, k) => {
+          if (!el) return;
+          const b = el.getBoundingClientRect(), y = b.top + b.height / 2 - r.top, on = Math.abs(b.top + b.height / 2 - line) < b.height / 2 + 24;
+          if (on && active < 0) active = k;
+          if (y > pts[pts.length - 1][0]) pts.push([y, media[k].at]);
+        });
+        const end = line - top - s.height + r.height;
+        if (end > pts[pts.length - 1][0]) pts.push([end, 1]);
+        const y = line - r.top;
+        let k = 1;
+        while (k < pts.length - 1 && pts[k][0] < y) k++;
+        const [y0, a0] = pts[k - 1], [y1, a1] = pts[k];
+        p = Math.min(1, Math.max(0, a0 + (a1 - a0) * Math.min(1, Math.max(0, (y - y0) / Math.max(1, y1 - y0)))));
+        shots.current.forEach((el, j) => {
+          if (!el || el.classList.contains("on") === (j === active)) return;
+          el.classList.toggle("on", j === active);
+          const v = el.querySelector("video");
+          if (v) { if (j === active) v.play().catch(() => {}); else v.pause(); }
+        });
+      }
       const i = Math.round(p * (n - 1)), e = els.current;
       // text + colour: low is white, high goes yellow then orange
       const show = (k: string, v: string, level: number | null = null) => {
@@ -87,7 +115,7 @@ export function DayScene({ slug, day, dict, locale, index, mass }: { slug: strin
         e.windBar.style.setProperty("--c", heat(w ? w.wind / 22 : 0));
       }
       if (e.cursor) e.cursor.style.left = `${p * 100}%`;
-      handle.current?.set(p, w ? { dir: w.windDir, speed: w.wind, rain: w.precip } : null);
+      handle.current?.set(p, w ? { dir: w.windDir, speed: w.wind, rain: w.precip } : null, active);
       mini.current?.set(p);
     };
     const kick = () => { if (!raf) raf = requestAnimationFrame(update); };
@@ -96,10 +124,10 @@ export function DayScene({ slug, day, dict, locale, index, mass }: { slug: strin
     window.addEventListener("scroll", kick, { passive: true });
     window.addEventListener("resize", kick);
     return () => { cancelAnimationFrame(raf); clearTimeout(boot); window.removeEventListener("scroll", kick); window.removeEventListener("resize", kick); };
-  }, [day, P, n, watts, climbed, locale, t]);
+  }, [day, media, P, n, watts, climbed, locale, t]);
 
   return (
-    <section className="scene" ref={section} aria-label={t.terrain}>
+    <section className={`scene ${media.length ? "duo" : ""}`} ref={section} aria-label={t.terrain}>
       <div className="scene-stick" ref={stick}>
         <div className="scene-map">
           <Terrain3D key={day.slug} fill handle={handle} towns={towns} marks={marks} media={day.media} mediaLabel={t.media} clouds={clouds} src={`/adventures/${slug}/terrain/${day.slug}.json`} label={`${day.start.name ?? ""} → ${day.end.name ?? ""}`} />
@@ -131,6 +159,22 @@ export function DayScene({ slug, day, dict, locale, index, mass }: { slug: strin
           <span className="label dim scene-hint">↕ {t.terrainHint}</span>
         </div>
       </div>
+      {media.length > 0 && (
+        <div className="scene-photos">
+          {media.map((m, k) => (
+            <figure key={m.src} className="shot" ref={(el) => { shots.current[k] = el; }}>
+              {m.video
+                ? <video src={m.src} muted loop playsInline preload="metadata" width={m.w} height={m.h} />
+                // eslint-disable-next-line @next/next/no-img-element
+                : <img src={m.src} alt={m.title} loading="lazy" width={m.w} height={m.h} />}
+              <figcaption>
+                {m.title && <span className="shot-title">{m.title}</span>}
+                <span className="label dim">km {fmtNum(m.km, locale, 0)}{m.time && ` · ${m.time}`}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

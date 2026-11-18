@@ -733,3 +733,33 @@ html { scroll-snap-type: none; }
 .cards.compact .card { grid-template-rows: auto auto 1fr auto; }
 .card-img { display: block; width: 100%; aspect-ratio: 4 / 3; margin-bottom: 4px; }
 @media print { .flag, .card-img { display: none; } }
+
+/* ---------- v8: the day told by its photos — they scroll on the left, the 3D map stays on the right ---------- */
+.scene.duo { height: auto; display: grid; grid-template-columns: minmax(0, 38%) minmax(0, 1fr); }
+.scene.duo .scene-stick { grid-column: 2; grid-row: 1; align-self: start; border: 0; margin-left: -110px; -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 170px); mask-image: linear-gradient(90deg, transparent 0, #000 170px); }
+.scene.duo .scene-hud.left { left: 178px; }
+.scene.duo .minimap { left: 178px; }
+.scene.duo .scene-foot { border-top: 0; background: none; padding-left: 178px; }
+.scene-photos { grid-column: 1; grid-row: 1; position: relative; z-index: 2; display: grid; gap: 26vh; align-content: start; padding: 42vh 0 60vh; }
+.shot { margin: 0; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 46px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 46px), transparent); }
+.shot img, .shot video { display: block; width: 100%; max-height: 74svh; object-fit: cover; background: var(--panel); filter: grayscale(1) contrast(1.08) brightness(0.72); transition: filter 0.7s ease; }
+.shot.on img, .shot.on video { filter: none; }
+.shot figcaption { display: grid; gap: 2px; padding-top: 10px; opacity: 0; transform: translateY(-6px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.shot.on figcaption { opacity: 1; transform: none; }
+.shot-title { font-family: var(--font-mono), monospace; font-size: 14px; font-weight: 600; }
+.shot-title::before { content: ""; display: inline-block; width: 7px; height: 7px; background: var(--accent); margin-right: 8px; }
+@media (max-width: 860px) {
+  .scene.duo { display: block; }
+  .scene.duo .scene-stick { z-index: 3; height: 46svh; min-height: 0; margin-left: 0; -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - 44px), transparent); mask-image: linear-gradient(180deg, #000 calc(100% - 44px), transparent); }
+  .scene.duo .scene-hud.left { left: 8px; }
+  .scene.duo .scene-hud { gap: 2px; }
+  .scene.duo .scene-hud .num { font-size: 15px; }
+  .scene.duo .minimap, .scene.duo .scene-foot, .scene.duo .wind-ends { display: none; }
+  .scene.duo .scene-map { inset: 0; }
+  .scene-photos { gap: 18vh; padding: 8vh 0 40vh; }
+  .shot { -webkit-mask-image: none; mask-image: none; }
+  .shot img, .shot video { max-height: 44svh; }
+}
+@media (prefers-reduced-motion: reduce) { .shot img, .shot video, .shot figcaption { transition: none; } }
+.shot img, .shot video { height: auto; }
+@media (max-width: 860px) { .scene.duo .scene-hud.right { display: none; } }
