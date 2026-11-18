@@ -34,7 +34,6 @@ export default async function PersoPage({ params }: { params: Promise<{ locale: 
         <div>
           <p className="label">[ 02 ] {site.name}</p>
           <DotTitle className="display" text={d.perso.title} />
-          <p className="lead">{d.perso.lead}</p>
         </div>
         <div className="profile-side">
           <div className="frame perso-portrait"><PixelPortrait src="/portrait-perso.jpg" alt={site.name} /></div>

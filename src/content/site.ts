@@ -203,11 +203,11 @@ export const skills: { label: L10n; items: string[] }[] = [
   { label: { en: "Business", fr: "Business" }, items: ["Strategy & problem structuring", "Private equity workflows", "Project management", "PowerPoint", "Excel"] },
 ];
 
-export const languages: { name: L10n; level: L10n }[] = [
-  { name: { en: "French", fr: "Français" }, level: { en: "Native", fr: "Langue maternelle" } },
-  { name: { en: "English", fr: "Anglais" }, level: { en: "Fluent — IELTS 7.5, Cambridge C1+", fr: "Courant — IELTS 7,5, Cambridge C1+" } },
-  { name: { en: "Spanish", fr: "Espagnol" }, level: { en: "Intermediate", fr: "Intermédiaire" } },
-  { name: { en: "Chinese", fr: "Chinois" }, level: { en: "Beginner — HSK 2", fr: "Débutant — HSK 2" } },
+export const languages: { flag: string; name: L10n; level: L10n }[] = [
+  { flag: "fr", name: { en: "French", fr: "Français" }, level: { en: "Native", fr: "Langue maternelle" } },
+  { flag: "gb", name: { en: "English", fr: "Anglais" }, level: { en: "Fluent — IELTS 7.5, Cambridge C1+", fr: "Courant — IELTS 7,5, Cambridge C1+" } },
+  { flag: "es", name: { en: "Spanish", fr: "Espagnol" }, level: { en: "Intermediate", fr: "Intermédiaire" } },
+  { flag: "cn", name: { en: "Chinese", fr: "Chinois" }, level: { en: "Beginner — HSK 2", fr: "Débutant — HSK 2" } },
 ];
 
 export const interests: { label: L10n; text: L10n; cvOnly?: boolean }[] = [
@@ -239,16 +239,17 @@ export const interests: { label: L10n; text: L10n; cvOnly?: boolean }[] = [
   },
 ];
 
-export type Project = { name: string; desc: L10n; lang: string; url: string; live?: string; updated: string };
+// The first four projects with a `scene` (their cube illustration, see VoxelScene) are shown on the site; the others stay on GitHub.
+export type Project = { name: string; scene?: string; desc: L10n; lang: string; url: string; live?: string; updated: string };
 const gh = (n: string) => `https://github.com/matrac73/${n}`;
 export const projects: Project[] = [
-  { name: "daily-builds", lang: "JavaScript", url: gh("daily-builds"), live: "https://matrac73.github.io/daily-builds/", updated: "2026-11",
+  { name: "daily-builds", scene: "builds", lang: "JavaScript", url: gh("daily-builds"), live: "https://matrac73.github.io/daily-builds/", updated: "2026-11",
     desc: { en: "One small app shipped every day by an autonomous coding agent, with a live showcase.", fr: "Une petite application livrée chaque jour par un agent de code autonome, avec une vitrine en ligne." } },
-  { name: "wisprMR", lang: "Python", url: gh("wisprMR"), updated: "2026-10",
+  { name: "wisprMR", scene: "voice", lang: "Python", url: gh("wisprMR"), updated: "2026-10",
     desc: { en: "Local, offline push-to-talk dictation for Windows and macOS: streaming faster-whisper transcription with optional Ollama polishing.", fr: "Dictée push-to-talk locale et hors ligne pour Windows et macOS : transcription faster-whisper en continu, reformulation Ollama en option." } },
-  { name: "case-me-now", lang: "Python", url: gh("case-me-now"), updated: "2026-10",
+  { name: "case-me-now", scene: "chat", lang: "Python", url: gh("case-me-now"), updated: "2026-10",
     desc: { en: "AI sparring partner for consulting case interviews: a Mistral-powered interviewer with retrieval and voice in/out.", fr: "Partenaire d'entraînement IA pour les entretiens de cas : un intervieweur propulsé par Mistral, avec recherche documentaire et voix." } },
-  { name: "xlsx_analyser_llm", lang: "Python", url: gh("xlsx_analyser_llm"), updated: "2026-10",
+  { name: "xlsx_analyser_llm", scene: "sheet", lang: "Python", url: gh("xlsx_analyser_llm"), updated: "2026-10",
     desc: { en: "Upload an Excel workbook, get an LLM-written analysis: map-reduce summarisation with LangChain and Azure OpenAI.", fr: "Déposez un classeur Excel, recevez une analyse rédigée par un LLM : synthèse map-reduce avec LangChain et Azure OpenAI." } },
   { name: "siteweb_creator", lang: "TypeScript", url: gh("siteweb_creator"), live: "https://sitewebcreator.vercel.app", updated: "2026-10",
     desc: { en: "Premium showcase website for an interior-design studio, built with Next.js, TypeScript and Framer Motion.", fr: "Site vitrine haut de gamme pour un studio d'architecture d'intérieur, en Next.js, TypeScript et Framer Motion." } },

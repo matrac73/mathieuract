@@ -3,6 +3,7 @@ import path from "node:path";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Flag } from "@/components/Flag";
 import { LifeGame } from "@/components/LifeGame";
 import { DotTitle, HoverScramble } from "@/components/Scramble";
 import { PixelPortrait } from "@/components/PixelPortrait";
@@ -25,6 +26,7 @@ export default async function ProPage({ params }: { params: Promise<{ locale: st
   const d = getDict(locale);
   const t = d.pro;
   const now = new Date().toISOString().slice(0, 7);
+  const featured = projects.filter((p) => p.scene).slice(0, 4); // the rest stays on GitHub
 
   // each article sits on the rail of the period it was written in, at the height of its date
   const articles = listArticles(locale);
@@ -44,7 +46,6 @@ export default async function ProPage({ params }: { params: Promise<{ locale: st
         <div>
           <p className="label">[ 01 ] {site.name}</p>
           <DotTitle className="display" text={t.title} />
-          <p className="lead">{t.lead}</p>
         </div>
         <div className="profile-side">
           <div className="frame perso-portrait"><PixelPortrait src="/portrait-pro.jpg" alt={site.name} /></div>
@@ -86,7 +87,6 @@ export default async function ProPage({ params }: { params: Promise<{ locale: st
                 <p className="label">{it.from === it.to ? it.from : `${it.from} — ${it.to ?? d.profile.present}`}</p>
                 <h3><Link href={`/${locale}/experience/${it.slug}`} className="career-link">{it.short ?? it.org}</Link>{it.wip && <span className="tag">WIP</span>}</h3>
                 <p className="tl-role">{it.role[locale]} · <span className="dim">{it.place}</span></p>
-                <ul>{it.bullets[locale].map((b) => <li key={b}>{b}</li>)}</ul>
                 <Link href={`/${locale}/experience/${it.slug}`} className="label career-more">{t.details} →</Link>
               </div>
               <Link href={`/${locale}/experience/${it.slug}`} className="career-scene-link" aria-label={it.org} tabIndex={-1}><VoxelScene scene={it.scene} scroll className="career-scene" /></Link>
@@ -107,16 +107,17 @@ export default async function ProPage({ params }: { params: Promise<{ locale: st
           ))}
           <div className="skill-group wide">
             <h3>{d.profile.languages}</h3>
-            <ul className="langs">{languages.map((l) => <li key={l.name.en}><b>{l.name[locale]}</b> <span className="dim">{l.level[locale]}</span></li>)}</ul>
+            <ul className="langs">{languages.map((l) => <li key={l.name.en}><Flag code={l.flag} /><span><b>{l.name[locale]}</b> <span className="dim">{l.level[locale]}</span></span></li>)}</ul>
           </div>
         </div>
       </section>
 
       <section className="block" id="projects">
-        <h2 className="label">[ {d.projects.title} ] {String(projects.length).padStart(2, "0")} repos</h2>
+        <h2 className="label">[ {d.projects.title} ] {String(featured.length).padStart(2, "0")} repos</h2>
         <ul className="cards compact">
-          {projects.map((p) => (
+          {featured.map((p) => (
             <li key={p.name} className="card">
+              <a href={p.live ?? p.url} target="_blank" rel="noreferrer" aria-label={p.name} tabIndex={-1}><VoxelScene scene={p.scene!} className="card-img" /></a>
               <div className="card-top"><h3><HoverScramble text={p.name} /></h3><span className="label dim">{p.lang}</span></div>
               <p>{p.desc[locale]}</p>
               <div className="card-links">

@@ -6,6 +6,7 @@ import { PixelPortrait } from "@/components/PixelPortrait";
 import { Rotator } from "@/components/Rotator";
 import { HoverScramble, Scramble } from "@/components/Scramble";
 import { listAdventures } from "@/lib/adventures";
+import { listArticles } from "@/lib/articles";
 import { getDict, isLocale } from "@/lib/i18n";
 import { site } from "@/content/site";
 
@@ -15,6 +16,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
   const d = getDict(locale);
   const adventures = listAdventures();
   const latest = adventures[0];
+  // the most recently written article (ties: the last one in the reading order)
+  const when = (a: { written?: string; date: string }) => a.written ?? a.date.slice(0, 7);
+  const article = listArticles(locale).sort((a, b) => when(b).localeCompare(when(a)) || (b.order ?? 0) - (a.order ?? 0))[0];
   const tiles = ["pro", "perso"] as const;
 
   return (
@@ -32,8 +36,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           </h1>
           <p className="hero-role"><Rotator items={site.taglines[locale]} /></p>
           <div className="hero-cta">
-            <Link className="btn" href={`/${locale}/pro`}>{d.home.ctaPro} <span aria-hidden>→</span></Link>
-            {latest && <Link className="btn ghost" href={`/${locale}/adventures/${latest.slug}`}>{d.home.ctaAdventure} <span aria-hidden>→</span></Link>}
+            {latest && <Link className="btn" href={`/${locale}/adventures/${latest.slug}`}>{d.home.ctaAdventure} <span aria-hidden>→</span></Link>}
+            {article && <Link className="btn ghost" href={`/${locale}/articles/${article.slug}`}>{d.home.ctaArticle} <span aria-hidden>→</span></Link>}
           </div>
         </div>
         <div className="hero-portrait frame">

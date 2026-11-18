@@ -9,7 +9,7 @@ const en = {
   home: {
     kicker: "Portfolio / 2026",
     description: "Personal site of Mathieu Ract: the path so far, articles, projects and long rides in the mountains.",
-    ctaPro: "The path so far",
+    ctaArticle: "Latest article",
     ctaAdventure: "Latest adventure",
     index: "Index",
     tiles: {
@@ -154,7 +154,7 @@ const fr: typeof en = {
   home: {
     kicker: "Portfolio / 2026",
     description: "Site personnel de Mathieu Ract : le parcours, des articles, des projets et de longues sorties en montagne.",
-    ctaPro: "Le parcours",
+    ctaArticle: "Dernier article",
     ctaAdventure: "Dernière aventure",
     index: "Index",
     tiles: {

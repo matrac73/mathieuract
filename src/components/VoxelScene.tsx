@@ -27,19 +27,22 @@ const ring = (x: number, y: number) => Math.max(Math.abs(x - 3.5), Math.abs(y - 
 // The viewer stands towards +x / +y: a wall along x shows its face, the nose of the plane points at you.
 const MODELS: Record<string, Model> = {
   // ---- career ----
-  // Adagia: a scattered market, a filter, one neat stack — sourcing deals with AI
+  // Adagia: the Arc de Triomphe at the end of an avenue whose buildings rise like a chart, and a stream of data going through the arch
   adagia: model(10, (v) => {
-    for (let x = 6; x <= 9; x++) for (let y = 0; y <= 9; y++) if ((x * 7 + y * 5 + x * y) % 3 === 0) box(v, x, y, 0, x, y, (x + y) % 4 === 0 ? 1 : 0); // the market, in front
-    box(v, 4, 0, 0, 4, 3, 2); box(v, 4, 6, 0, 4, 9, 2); box(v, 4, 0, 3, 4, 9, 3); // the gate
-    box(v, 4, 4, 0, 5, 5, 0, true); // what goes through
-    box(v, 1, 4, 0, 2, 5, 6); box(v, 1, 4, 7, 2, 5, 7, true); // the stack behind it
+    box(v, 2, 0, 0, 3, 1, 4); box(v, 6, 0, 0, 7, 1, 4); // the two piers
+    box(v, 2, 0, 5, 7, 1, 6); // the attic
+    for (const y of [0, 2, 4, 6, 8]) box(v, 4, y, 0, 5, y, 0, true); // data, up the avenue
+    for (const [y, h] of [[5, 3], [7, 2], [9, 1]]) { box(v, 0, y, 0, 0, y, h - 1); box(v, 9, y, 0, 9, y, h - 1); } // the chart
   }),
-  // Onepoint: a copilot — a question, and the answer being typed
-  onepoint: model(10, (v) => {
-    box(v, 1, 3, 3, 8, 4, 8);
-    box(v, 2, 3, 2, 3, 4, 2); box(v, 2, 3, 1, 2, 4, 1); // the tail of the bubble
-    for (const x of [3, 5, 7]) box(v, x - 1, 4, 5, x - 1, 4, 6, true); // …
-    box(v, 5, 8, 0, 9, 8, 2); box(v, 9, 8, 3, 9, 8, 3);
+  // Onepoint: an AI agent, handing over what it has just built
+  onepoint: model(8, (v) => {
+    v.push({ x: 2, y: 2, z: 0 }, { x: 2, y: 3, z: 0 }, { x: 4, y: 2, z: 0 }, { x: 4, y: 3, z: 0 }); // feet
+    box(v, 2, 2, 1, 4, 3, 2); v.push({ x: 3, y: 3, z: 1, a: true }); // body, and its light
+    box(v, 1, 2, 1, 1, 3, 2); box(v, 5, 2, 2, 5, 5, 2); // one arm down, one held out
+    v.push({ x: 5, y: 6, z: 2, a: true }); // the result
+    box(v, 3, 2, 3, 3, 3, 3); // neck
+    box(v, 1, 1, 4, 5, 4, 6); v.push({ x: 2, y: 4, z: 5, a: true }, { x: 4, y: 4, z: 5, a: true }); // head, eyes
+    v.push({ x: 3, y: 3, z: 7 }, { x: 3, y: 3, z: 8, a: true }); // antenna
   }),
   // ESSEC, Singapore: three towers and the deck that joins them
   essec: model(10, (v) => {
@@ -47,11 +50,13 @@ const MODELS: Record<string, Model> = {
     box(v, 0, 3, 7, 9, 4, 7, true);
     box(v, 1, 7, 0, 1, 8, 1); box(v, 3, 8, 0, 4, 8, 0); box(v, 6, 7, 0, 6, 7, 2); box(v, 8, 8, 0, 9, 8, 0);
   }),
-  // BCG X: the 2×2 matrix, and something green growing out of the tallest quadrant (Greener IT)
-  bcg: model(10, (v) => {
-    box(v, 0, 0, 0, 3, 3, 2); box(v, 6, 0, 0, 9, 3, 4); box(v, 0, 6, 0, 3, 9, 0); box(v, 6, 6, 0, 9, 9, 1);
-    box(v, 7, 1, 5, 7, 1, 6); // trunk
-    box(v, 6, 0, 7, 8, 2, 7, true); box(v, 7, 1, 8, 7, 1, 8, true);
+  // BCG X: strategy on a chessboard — the king in the middle, and a back rank that reads as a rising chart
+  bcg: model(8, (v) => {
+    box(v, 0, 0, 0, 7, 7, 0); // the board
+    for (const [x, h] of [[1, 2], [3, 3], [5, 4], [7, 6]]) { box(v, x, 0, 1, x, 0, h); if (x === 7) v.push({ x, y: 0, z: h + 1, a: true }); } // the data
+    box(v, 3, 4, 1, 5, 6, 1); box(v, 4, 5, 2, 4, 5, 5); v.push({ x: 3, y: 5, z: 4 }, { x: 5, y: 5, z: 4 }, { x: 4, y: 4, z: 4 }, { x: 4, y: 6, z: 4 }); // the king
+    box(v, 4, 5, 6, 4, 5, 8, true); v.push({ x: 3, y: 5, z: 7, a: true }, { x: 5, y: 5, z: 7, a: true }); // its cross
+    box(v, 1, 5, 1, 1, 5, 2); box(v, 6, 2, 1, 6, 2, 2); // two pawns
   }),
   // Safran Landing Systems: an aircraft standing on its gear
   safran: model(10, (v) => {
@@ -61,20 +66,39 @@ const MODELS: Record<string, Model> = {
     box(v, 8, 4, 1, 8, 5, 2); box(v, 8, 4, 0, 8, 5, 0, true); // nose gear
     for (const y of [2, 7]) { box(v, 5, y, 1, 5, y, 2); box(v, 4, y, 0, 5, y, 0, true); } // main gear
   }),
-  // CentraleSupélec: an engineer's cog, with something bright at its centre
-  centrale: model(10, (v) => {
-    for (let x = 0; x < 10; x++) for (let y = 0; y < 10; y++) {
-      const r = Math.hypot(x - 4.5, y - 4.5), tooth = ((x === 4 || x === 5) && (y === 0 || y === 9)) || ((y === 4 || y === 5) && (x === 0 || x === 9)) || ((x === 1 || x === 8) && (y === 1 || y === 8));
-      if (r < 1) box(v, x, y, 0, x, y, 3, true);
-      else if ((r > 1.9 && r < 4.1) || tooth) box(v, x, y, 0, x, y, 1);
-    }
+  // CentraleSupélec: a graduate's cap resting on a chip — an engineering degree, digital track
+  centrale: model(12, (v) => {
+    box(v, 3, 3, 0, 8, 8, 1); // the chip
+    for (const i of [3, 5, 7]) { v.push({ x: 2, y: i + 1, z: 0 }, { x: 9, y: i, z: 0 }, { x: i + 1, y: 2, z: 0 }, { x: i, y: 9, z: 0 }); } // its pins
+    box(v, 4, 4, 2, 7, 7, 3); // the cap
+    box(v, 2, 2, 4, 9, 9, 4); // the board
+    box(v, 5, 5, 5, 6, 6, 5, true); box(v, 7, 6, 5, 9, 6, 5, true); box(v, 10, 6, 2, 10, 6, 4, true); // button, cord, tassel
   }),
-  // Prépa: a blackboard with a curve in chalk, and the pile of books
+  // Prépa: the khôlle — a student at the blackboard, chalk in hand, and the examiner at the desk
   prepa: model(10, (v) => {
-    box(v, 0, 1, 1, 9, 1, 6); box(v, 0, 1, 0, 0, 1, 0); box(v, 9, 1, 0, 9, 1, 0);
-    for (const [x, z] of [[1, 2], [2, 2], [3, 3], [4, 4], [5, 4], [6, 5], [7, 5], [8, 5]]) v.push({ x, y: 1, z, a: true });
-    box(v, 5, 5, 0, 8, 7, 0); box(v, 6, 5, 1, 8, 7, 1); box(v, 6, 6, 2, 8, 7, 2); box(v, 7, 6, 3, 8, 7, 3, true);
+    box(v, 0, 1, 1, 9, 1, 6); v.push({ x: 0, y: 1, z: 0 }, { x: 9, y: 1, z: 0 });
+    for (const [x, z] of [[1, 2], [2, 2], [3, 3], [4, 3], [5, 4], [6, 5], [7, 5]]) v.push({ x, y: 1, z, a: true }); // the curve, in chalk
+    box(v, 6, 5, 0, 6, 5, 1); box(v, 8, 5, 0, 8, 5, 1); box(v, 6, 5, 2, 8, 5, 4); v.push({ x: 7, y: 5, z: 5 }); // the student
+    box(v, 8, 2, 4, 8, 4, 4); // the arm, up to the board
+    box(v, 0, 7, 0, 2, 8, 1); box(v, 1, 9, 0, 1, 9, 2); // the desk, the examiner
   }),
+  // ---- projects ----
+  // daily-builds: one small block a day
+  builds: heights((x, y) => (x % 2 || y % 2 ? { h: 0 } : { h: 1 + (((x * 5 + y * 3) / 2) % 3), accent: x === 6 && y === 6 })),
+  // wisprMR: a voice, as a waveform
+  voice: heights((x, y) => (y >= 3 && y <= 4 ? { h: [1, 2, 4, 7, 3, 5, 2, 1][x], accent: x === 3 } : { h: 0 })),
+  // case-me-now: a question, and the answer being typed
+  chat: model(10, (v) => {
+    box(v, 0, 2, 4, 5, 2, 7); v.push({ x: 1, y: 2, z: 3 });
+    box(v, 3, 6, 1, 9, 6, 4); v.push({ x: 8, y: 6, z: 0 });
+    for (const x of [4, 6, 8]) v.push({ x, y: 6, z: 3, a: true });
+  }),
+  // xlsx_analyser_llm: a sheet, its headers, and what comes out of it
+  sheet: model(8, (v) => {
+    box(v, 0, 0, 0, 7, 7, 0); box(v, 0, 0, 1, 7, 0, 1); box(v, 0, 0, 1, 0, 7, 1);
+    box(v, 2, 3, 1, 2, 3, 2); box(v, 4, 3, 1, 4, 3, 3); box(v, 4, 3, 4, 4, 3, 4, true); box(v, 6, 3, 1, 6, 3, 3);
+  }),
+  bars: heights((x, y) => (y >= 3 && y <= 4 && x % 2 === 0 ? { h: [2, 4, 3, 6][x / 2], accent: x === 6 } : { h: 0 })),
   // ---- articles & fallbacks ----
   pyramid: heights((x, y) => ({ h: 1 + Math.round((3.5 - ring(x, y)) * 1.6), accent: ring(x, y) < 1 })),
   mountain: heights((x, y) => ({ h: Math.max(1, Math.round(7 - 1.15 * (Math.abs(x - 3.5) + Math.abs(y - 3.5)))), accent: ring(x, y) < 1 })),

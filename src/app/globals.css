@@ -694,3 +694,12 @@ html { scroll-snap-type: none; }
 .exp-head .career-logo { height: 56px; }
 .terrain canvas { transition: none; transform: none; will-change: auto; }
 .terrain { cursor: default; }
+
+/* ---------- v7: flags, illustrated repos ---------- */
+.langs li { display: flex; align-items: center; gap: 10px; }
+.flag { width: 26px; height: 26px; flex: none; border-radius: 50%; box-shadow: 0 0 0 1px var(--line); filter: grayscale(1) contrast(1.15); transition: filter 0.3s; }
+.langs li:hover .flag { filter: none; }
+.skill-group.wide .langs { gap: 12px 32px; }
+.cards.compact .card { grid-template-rows: auto auto 1fr auto; }
+.card-img { display: block; width: 100%; aspect-ratio: 4 / 3; margin-bottom: 4px; }
+@media print { .flag, .card-img { display: none; } }
