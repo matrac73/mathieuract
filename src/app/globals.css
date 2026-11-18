@@ -281,6 +281,7 @@ ul, ol { list-style: none; }
 .prose .scrolly-steps { list-style: none; padding: 0; margin: 14px 0 0; display: grid; gap: 14px; }
 .scrolly-steps li { display: grid; gap: 6px; padding: 14px 16px; border: 1px solid var(--line); background: var(--panel); }
 .scrolly-steps li p { margin: 0; }
+.scrolly:not(.js) .scrolly-svg [data-hide] { display: none; }
 .scrolly.js .scrolly-fig { position: sticky; top: calc(var(--header-h) + 8px); z-index: 2; box-shadow: 0 -60px 0 var(--bg); }
 .prose .scrolly.js .scrolly-steps { display: block; margin: 0; }
 .scrolly.js .scrolly-steps li { margin: 14px 0 46vh; opacity: 0.35; transition: opacity 0.3s, border-color 0.3s; }
