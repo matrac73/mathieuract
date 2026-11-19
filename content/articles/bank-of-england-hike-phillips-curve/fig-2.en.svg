@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 470">
+  <text x="36" y="40" font-size="18">Inflation (%)</text>
+  <text x="770" y="440" font-size="18" text-anchor="end">Unemployment (%)</text>
+  <line class="s-fg" x1="100" y1="60" x2="100" y2="400" stroke-width="2"/>
+  <line class="s-fg" x1="100" y1="400" x2="750" y2="400" stroke-width="2"/>
+  <text class="t-mid" x="88" y="406" font-size="16" text-anchor="end">0</text>
+  <text class="t-mid" x="88" y="321" font-size="16" text-anchor="end">2</text>
+  <text class="t-mid" x="88" y="236" font-size="16" text-anchor="end">4</text>
+  <text class="t-mid" x="88" y="151" font-size="16" text-anchor="end">6</text>
+  <text class="t-mid" x="88" y="66" font-size="16" text-anchor="end">8</text>
+  <text class="t-mid" x="100" y="422" font-size="16" text-anchor="middle">2</text>
+  <text class="t-mid" x="228" y="422" font-size="16" text-anchor="middle">4</text>
+  <text class="t-mid" x="356" y="422" font-size="16" text-anchor="middle">6</text>
+  <text class="t-mid" x="484" y="422" font-size="16" text-anchor="middle">8</text>
+  <text class="t-mid" x="612" y="422" font-size="16" text-anchor="middle">10</text>
+  <text class="t-mid" x="740" y="422" font-size="16" text-anchor="middle">12</text>
+  <line class="s-mid" x1="100" y1="315" x2="750" y2="315" stroke-width="2" stroke-dasharray="8 6"/>
+  <text class="t-mid" x="108" y="306" font-size="16">2% target</text>
+
+  <g data-step="1">
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="3" d="M100 60 L116 107.200 L132 145 L148 175.900 L164 201.700 L196 242.100 L228 272.500 L292 315 L356 343.300 L420 363.600 L484 378.800 L548 390.600 L612 400"/>
+    <line class="s-fg" x1="440" y1="84" x2="480" y2="84" stroke-width="3"/>
+    <text x="490" y="90" font-size="16">expected prices: +2% a year</text>
+    <circle class="f-fg" cx="292" cy="315" r="7"/>
+    <text x="262" y="346" font-size="18">A</text>
+  </g>
+
+  <g data-step="2">
+    <circle class="f-fg" cx="228" cy="272.500" r="7"/>
+    <text x="198" y="296" font-size="18">A′</text>
+  </g>
+
+  <g data-step="3">
+    <path class="draw s-acc" pathLength="1" fill="none" stroke-width="3" d="M132 60 L148 90.900 L164 116.700 L180 138.500 L196 157.100 L228 187.500 L292 230 L356 258.300 L420 278.600 L484 293.800 L548 305.600 L612 315 L676 322.700 L740 329.200"/>
+    <line class="s-acc" x1="440" y1="119" x2="480" y2="119" stroke-width="3"/>
+    <text class="t-acc" x="490" y="125" font-size="16">expected prices: +4% a year</text>
+    <line class="s-acc" x1="292" y1="305" x2="292" y2="250" stroke-width="2"/>
+    <polygon class="f-acc" points="285,252 299,252 292,240"/>
+    <circle class="f-acc" cx="292" cy="230" r="7"/>
+    <text class="t-acc" x="304" y="220" font-size="18">B</text>
+  </g>
+
+  <g data-step="4">
+    <line class="s-acc" x1="302" y1="315" x2="592" y2="315" stroke-width="3"/>
+    <polygon class="f-acc" points="590,308 590,322 602,315"/>
+    <circle class="f-acc" cx="612" cy="315" r="7"/>
+    <text class="t-acc" x="606" y="350" font-size="18">C</text>
+    <text class="t-acc" x="400" y="338" font-size="16">+5 points of unemployment</text>
+  </g>
+</svg>
