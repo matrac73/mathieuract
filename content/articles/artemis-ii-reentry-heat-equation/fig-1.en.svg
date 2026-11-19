@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <line class="s-line" x1="90" y1="94" x2="770" y2="94" stroke-width="1"/>
+  <line class="s-mid" x1="90" y1="60" x2="90" y2="360" stroke-width="2"/>
+  <line class="s-mid" x1="90" y1="360" x2="770" y2="360" stroke-width="2"/>
+  <line class="s-mid" x1="313" y1="360" x2="313" y2="368" stroke-width="2"/>
+  <line class="s-mid" x1="537" y1="360" x2="537" y2="368" stroke-width="2"/>
+  <line class="s-mid" x1="760" y1="360" x2="760" y2="368" stroke-width="2"/>
+  <text class="t-mid" x="24" y="40" font-size="17">altitude (km)</text>
+  <text class="t-mid" x="80" y="100" font-size="16" text-anchor="end">120</text>
+  <text class="t-mid" x="80" y="366" font-size="16" text-anchor="end">0</text>
+  <text class="t-mid" x="90" y="390" font-size="16" text-anchor="middle">0</text>
+  <text class="t-mid" x="313" y="390" font-size="16" text-anchor="middle">2,000</text>
+  <text class="t-mid" x="537" y="390" font-size="16" text-anchor="middle">4,000</text>
+  <text class="t-mid" x="776" y="390" font-size="16" text-anchor="end">6,000</text>
+  <text class="t-mid" x="776" y="424" font-size="17" text-anchor="end">distance flown through the atmosphere (km)</text>
+
+  <g data-step="1">
+    <circle class="f-fg" cx="90" cy="90" r="6"/>
+    <text x="104" y="78" font-size="17">entry: 40,000 km/h</text>
+  </g>
+
+  <g data-step="2">
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="3" d="M90,90 C170,145 210,225 270,225 C330,225 350,170 420,170 C520,170 640,265 747,360"/>
+    <circle class="f-fg" cx="747" cy="360" r="6"/>
+    <text x="500" y="120" font-size="17">Artemis I: with a skip</text>
+    <text class="t-mid" x="500" y="144" font-size="17">5,900 km, ≈ 20 min</text>
+  </g>
+
+  <g data-step="3">
+    <line class="s-mid" x1="430" y1="218" x2="430" y2="178" stroke-width="2"/>
+    <text class="t-mid" x="440" y="238" font-size="17" text-anchor="middle">here, heating drops</text>
+  </g>
+
+  <g data-step="4">
+    <path class="draw s-acc" pathLength="1" fill="none" stroke-width="4" d="M90,90 C140,150 260,265 311,360"/>
+    <circle class="f-acc" cx="311" cy="360" r="7"/>
+    <text class="t-acc" x="335" y="296" font-size="17">Artemis II: direct entry</text>
+    <text class="t-acc" x="335" y="320" font-size="17">2,000 km, ≈ 14 min</text>
+  </g>
+</svg>
