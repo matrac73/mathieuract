@@ -22,6 +22,7 @@ type Props = {
   mediaLabel?: string;
   clouds?: Cloud[]; // they stay where it rained, and fade in as the rider gets close
   fill?: boolean; // size to the parent box
+  train?: boolean; // the unrecorded stretches were train rides: a tiny train sits on the dotted arc
 };
 
 const REST_YAW = -7; // degrees: the model is seen from one fixed angle
@@ -36,7 +37,7 @@ const hex = (c: string) => {
 };
 const mix = (a: number[], b: number[], t: number) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(",")})`;
 
-export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, handle, towns, fill, media, mediaLabel, clouds }: Props) {
+export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, handle, towns, fill, media, mediaLabel, clouds, train }: Props) {
   const [tip, setTip] = useState<{ k: number; x: number; y: number } | null>(null);
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -234,7 +235,7 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
         }
         g.setLineDash([]); g.lineCap = "round";
         const [tx, ty] = arc(X[k], Y[k], X[k + 1], Y[k + 1], 0.5);
-        sprite(g, TRAIN, tx, ty, 2, done ? col.accent : tone(1), tone(0));
+        if (train) sprite(g, TRAIN, tx, ty, 2, done ? col.accent : tone(1), tone(0));
       }
       g.font = `600 10px ui-monospace, monospace`; g.textBaseline = "middle"; g.textAlign = "left";
       for (const t of live.current.towns) { // towns light up as the rider gets there
@@ -443,7 +444,7 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
       live.current.kick = () => {};
       if (handle) handle.current = null;
     };
-  }, [src, maxHeight, handle, fill]);
+  }, [src, maxHeight, handle, fill, train]);
 
   return (
     <div ref={wrap} className="terrain" role="img" aria-label={label}>

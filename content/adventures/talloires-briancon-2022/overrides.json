@@ -1,0 +1,12 @@
+{
+  "places": { "Talloires-Montmin": "Talloires", "Le Bourg-d'Oisans": "Bourg-d'Oisans", "Le Monêtier-les-Bains": "Monêtier-les-Bains" },
+  "days": { "day-06": { "start": "Col du Galibier" } },
+  "passes": {
+    "day-01": [{ "ele": 1458, "name": "Col des Aravis", "official": 1486 }, { "ele": 1622, "name": "Col des Saisies", "official": 1650 }],
+    "day-02": [{ "ele": 1946, "name": "Col de la Madeleine", "official": 1993 }, { "ele": 2011, "name": "Col de la Croix de Fer", "official": 2067 }],
+    "day-03": [{ "ele": 1965, "name": "Col de Sarenne", "official": 1999 }, { "ele": 2578, "name": "Col du Galibier", "official": 2642 }, { "ele": 2357, "name": "Col du Granon", "official": 2413 }],
+    "day-04": [{ "ele": 1835, "name": "Col de Montgenèvre", "official": 1850 }, { "ele": 1775, "name": "Col de l'Échelle", "official": 1762 }],
+    "day-05": [{ "ele": 2332, "name": "Col d'Izoard", "official": 2360 }, { "ele": 2696, "name": "Col Agnel", "official": 2744 }]
+  },
+  "add": { "day-06": [{ "km": 0, "name": "Col du Galibier", "official": 2642 }] }
+}

@@ -1,0 +1,4 @@
+{
+  "places": { "Talloires-Montmin": "Talloires", "Le Bourg-d'Oisans": "Bourg-d'Oisans", "Le Monêtier-les-Bains": "Monêtier-les-Bains" },
+  "passes": { "day-01": [{ "ele": 1797, "name": "Mont Ventoux", "official": 1910 }] }
+}

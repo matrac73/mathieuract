@@ -1,12 +1,12 @@
 // Downloads the original activity files (FIT, zipped) of a date range from the
 // Garmin Connect Personal API into data-raw/garmin/ (git-ignored).
-// Usage: node scripts/garmin-fetch.mjs 2026-07-30 2026-08-07
+// Usage: node scripts/garmin-fetch.mjs 2026-07-30 2026-08-07 [folder]   (folder under data-raw/, default "garmin")
 // Needs GARMIN_PERSONAL_API_KEY in .env.local
 import fs from "node:fs";
 import path from "node:path";
 
 const BASE = "https://personal.connectapi.garmin.com";
-const [start = "2026-07-30", end = "2026-08-07"] = process.argv.slice(2);
+const [start = "2026-07-30", end = "2026-08-07", dir = "garmin"] = process.argv.slice(2); // dir: one raw folder per adventure (data-raw/<dir>)
 
 function readKey() {
   if (process.env.GARMIN_PERSONAL_API_KEY) return process.env.GARMIN_PERSONAL_API_KEY;
@@ -31,9 +31,12 @@ async function main() {
   const list = await listRes.json();
   const acts = Array.isArray(list) ? list : (list.activities ?? list.data ?? []);
 
-  const out = path.join("data-raw", "garmin");
+  const out = path.join("data-raw", dir);
   fs.mkdirSync(out, { recursive: true });
-  fs.writeFileSync(path.join(out, "activities.json"), JSON.stringify(acts, null, 1));
+  // several date ranges can feed the same folder (a trip and its epilogue): the list is merged, not replaced
+  const listFile = path.join(out, "activities.json"), known = fs.existsSync(listFile) ? JSON.parse(fs.readFileSync(listFile, "utf8")) : [];
+  const all = [...known.filter((k) => !acts.some((a) => a.activityId === k.activityId)), ...acts];
+  fs.writeFileSync(listFile, JSON.stringify(all, null, 1));
 
   for (const a of acts) {
     const id = a.activityId;

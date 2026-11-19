@@ -1,0 +1,68 @@
+{
+ "day-01": [
+  {
+   "name": "Sarrians",
+   "i": 254
+  },
+  {
+   "name": "Bédoin",
+   "i": 337
+  }
+ ],
+ "day-02": [
+  {
+   "name": "Sault",
+   "i": 38
+  },
+  {
+   "name": "Manosque",
+   "i": 301
+  },
+  {
+   "name": "Valensole",
+   "i": 374
+  }
+ ],
+ "day-03": [
+  {
+   "name": "Draguignan",
+   "i": 306
+  },
+  {
+   "name": "Le Muy",
+   "i": 363
+  },
+  {
+   "name": "Fréjus",
+   "i": 431
+  }
+ ],
+ "day-04": [
+  {
+   "name": "Théoule-sur-Mer",
+   "i": 135
+  },
+  {
+   "name": "Cannes",
+   "i": 213
+  },
+  {
+   "name": "Antibes",
+   "i": 307
+  }
+ ],
+ "day-05": [
+  {
+   "name": "Antibes",
+   "i": 159
+  },
+  {
+   "name": "Cannes",
+   "i": 281
+  },
+  {
+   "name": "Théoule-sur-Mer",
+   "i": 357
+  }
+ ]
+}

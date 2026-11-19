@@ -147,7 +147,7 @@ async function overview(days) {
 
 // ---------- minimap: the route inside a much wider frame, so the region can be recognised ----------
 // Land in grey by altitude, sea and big lakes left empty (a lake is where the elevation model is perfectly flat).
-const CITIES = [["Zürich", 47.37, 8.54], ["Genève", 46.2, 6.14], ["Milano", 45.46, 9.19], ["Innsbruck", 47.27, 11.39], ["Torino", 45.07, 7.69], ["Lyon", 45.76, 4.84], ["München", 48.14, 11.58], ["Venezia", 45.44, 12.33], ["Genova", 44.41, 8.93], ["Nice", 43.7, 7.27], ["Bern", 46.95, 7.45]];
+const CITIES = [["Zürich", 47.37, 8.54], ["Genève", 46.2, 6.14], ["Milano", 45.46, 9.19], ["Innsbruck", 47.27, 11.39], ["Torino", 45.07, 7.69], ["Lyon", 45.76, 4.84], ["München", 48.14, 11.58], ["Venezia", 45.44, 12.33], ["Genova", 44.41, 8.93], ["Nice", 43.7, 7.27], ["Bern", 46.95, 7.45], ["Grenoble", 45.19, 5.72], ["Marseille", 43.3, 5.37], ["Avignon", 43.95, 4.81], ["Montpellier", 43.61, 3.88], ["Annecy", 45.9, 6.13]];
 const LAKES = [
   [[46.21, 6.15], [46.45, 6.5], [46.41, 6.9]], // Léman
   [[47.5, 9.72], [47.62, 9.4], [47.74, 9.08]], // Bodensee

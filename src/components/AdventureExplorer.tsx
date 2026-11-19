@@ -86,6 +86,8 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
     [t.calories, fmtNum(s.calories, locale), "kcal", rank((d) => d.stats.calories)],
   ];
   const wx = day.weather;
+  const train = meta.transfer === "train";
+  const epilogue = meta.epilogue != null && day.n >= meta.epilogue;
   const tot = summary.totals;
   const totals: [string, string, string][] = [
     [t.distance, fmtNum(tot.distanceKm, locale), "km"],
@@ -93,7 +95,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
     [t.days, String(tot.days), ""],
     [t.passes, String(tot.passes), ""],
     [t.countries, summary.countries.join(" · "), ""],
-    [t.riders, String(meta.riders), ""],
+    ...(meta.riders ? [[t.riders, String(meta.riders), ""] as [string, string, string]] : []),
   ];
 
   return (
@@ -107,11 +109,11 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
             <p className="lead">{meta.tagline[locale]}</p>
             <p className="muted adv-intro">{meta.intro[locale]}</p>
           </div>
-          <div className={`frame cover ${adv.cover ? "" : "empty"}`}>
-            {adv.cover ? <img src={adv.cover} alt="" /> : <span className="label">Cover photo</span>}
+          <div className="frame cover" hidden={!adv.cover}>
+            {adv.cover && <img src={adv.cover} alt="" />}
           </div>
         </div>
-        <JourneyScroll src={`/adventures/${adv.slug}/terrain/overview.json`} summary={summary} dict={dict} locale={locale} />
+        <JourneyScroll src={`/adventures/${adv.slug}/terrain/overview.json`} summary={summary} dict={dict} locale={locale} train={train} />
         <dl className="stat-grid totals">
           {totals.map(([k, v, u]) => (
             <div key={k} className="stat">
@@ -139,7 +141,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
           {days.map((d, i) => {
             const e = summary.days[i].ele, lo = 300, hi = 2800;
             return (
-              <button key={d.slug} className={`rail-day ${i === idx ? "on" : ""}`} onClick={() => go(i)} aria-current={i === idx}>
+              <button key={d.slug} className={`rail-day ${i === idx ? "on" : ""} ${meta.epilogue != null && d.n === meta.epilogue ? "epi" : ""}`} onClick={() => go(i)} aria-current={i === idx}>
                 <span className="rail-n">{pad(d.n)}</span>
                 <span className="rail-bars" aria-hidden>
                   {Array.from({ length: 10 }, (_, k) => {
@@ -157,7 +159,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
           <div className="day-count">
             <button className="arrow" onClick={() => go(idx - 1)} disabled={idx === 0} aria-label={t.prev}>←</button>
             <p className="label">
-              {t.day} <Scramble text={pad(day.n)} /> / {pad(days.length)} — <Scramble text={fmtDate(day.date, locale, { weekday: "long", day: "numeric", month: "long" })} />
+              {t.day} <Scramble text={pad(day.n)} /> / {pad(days.length)} — <Scramble text={fmtDate(day.date, locale, { weekday: "long", day: "numeric", month: "long" })} />{epilogue && <span className="tag">{t.epilogue}</span>}
             </p>
             <button className="arrow" onClick={() => go(idx + 1)} disabled={idx === days.length - 1} aria-label={t.next}>→</button>
           </div>
@@ -166,7 +168,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
           </h2>
           <p className="muted day-sub">
             <Scramble text={named.map((p) => p.name).join(" · ") || "—"} duration={700} />
-            {hasTransfer && <span className="tag">{t.transfer}</span>}
+            {hasTransfer && <span className="tag">{train ? t.transfer : t.gap}</span>}
           </p>
         </header>
 
@@ -180,7 +182,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
         </dl>
 
         <p className="label scene-title">[ 01 ] {t.terrain}</p>
-        <DayScene key={day.slug} slug={adv.slug} day={day} dict={dict} locale={locale} index={idx} mass={meta.massKg ?? 85} />
+        <DayScene key={day.slug} slug={adv.slug} day={day} dict={dict} locale={locale} index={idx} mass={meta.massKg ?? 85} train={train} />
         {named.length > 0 && (
           <ol className="pass-list">
             {named.map((p, i) => (

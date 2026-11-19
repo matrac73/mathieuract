@@ -37,7 +37,11 @@ export type Summary = {
   totals: { days: number; distanceKm: number; ascent: number; movingSec: number; calories: number; maxAlt: number; passes: number };
   days: DayCard[];
 };
-export type Meta = { order: number; title: L10n; tagline: L10n; intro: L10n; riders: number; sport: L10n; kind?: string; massKg?: number };
+export type Meta = {
+  order: number; title: L10n; tagline: L10n; intro: L10n; riders?: number; sport: L10n; kind?: string; massKg?: number;
+  transfer?: "train"; // how the unrecorded stretches were covered, when known (draws a little train on them)
+  epilogue?: number; // number of the first day of an epilogue ridden later (days only count riding days)
+};
 export type Adventure = { slug: string; meta: Meta; summary: Summary; cover: string | null };
 
 const json = <T,>(f: string): T => JSON.parse(fs.readFileSync(f, "utf8")) as T;

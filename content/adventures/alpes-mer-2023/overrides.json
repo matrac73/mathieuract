@@ -1,0 +1,10 @@
+{
+  "places": { "Talloires-Montmin": "Talloires", "Le Bourg-d'Oisans": "Bourg-d'Oisans", "Le Monêtier-les-Bains": "Monêtier-les-Bains" },
+  "passes": {
+    "day-01": [{ "ele": 1858, "name": "Col de la Madeleine", "official": 1993 }, { "ele": 2475, "name": "Col du Galibier", "official": 2642 }],
+    "day-02": [{ "ele": 2339, "name": "Col d'Izoard", "official": 2360 }, { "ele": 2081, "name": "Col de Vars", "official": 2108 }],
+    "day-03": [{ "ele": 2302, "name": "Col de la Cayolle", "official": 2326 }, { "ele": 1680, "name": "Col de Valberg", "official": 1672 }, { "ele": 1677, "name": "Col de la Couillole", "official": 1678 }],
+    "day-04": [{ "ele": 1484, "name": "Col Saint-Martin", "official": 1500 }, { "ele": 1580, "name": "Col de Turini", "official": 1607 }],
+    "day-07": [{ "ele": 1301, "name": "Col de Maure", "official": 1346 }]
+  }
+}

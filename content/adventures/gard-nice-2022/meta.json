@@ -1,0 +1,11 @@
+{
+  "order": 2,
+  "kind": "bike",
+  "title": { "en": "From the Gard to Nice", "fr": "Du Gard à Nice" },
+  "tagline": { "en": "Over the Ventoux and along the Verdon, in five stages", "fr": "Par le Ventoux et le Verdon, en cinq étapes" },
+  "intro": {
+    "en": "193 km on the first day, with Mont Ventoux in the second half of it; then Provence, the Verdon and the coast to Nice, and the ride back to Saint-Raphaël.",
+    "fr": "193 km le premier jour, avec le mont Ventoux en deuxième partie de journée ; puis la Provence, le Verdon et la côte jusqu'à Nice, et le retour à Saint-Raphaël."
+  },
+  "sport": { "en": "Road cycling", "fr": "Cyclisme sur route" }
+}

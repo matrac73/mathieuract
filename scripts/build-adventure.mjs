@@ -2,7 +2,8 @@
 //   content/adventures/<slug>/summary.json  + days/day-NN.json
 // and enriches each day with field data: named passes (OpenStreetMap/Overpass),
 // hourly weather along the route (Open-Meteo archive) and place names (Nominatim).
-// Usage: node scripts/build-adventure.mjs <slug>          (default: alps-2026)
+// Usage: node scripts/build-adventure.mjs <slug> [--from=YYYY-MM-DD] [--no-overpass]     (default slug: alps-2026)
+// Raw files: data-raw/garmin-<slug>/ when that folder exists, data-raw/garmin/ otherwise. Only rides are kept.
 import fs from "node:fs";
 import path from "node:path";
 import AdmZip from "adm-zip";
@@ -10,7 +11,9 @@ import FitParser from "fit-file-parser";
 
 const Parser = FitParser.default ?? FitParser;
 const slug = process.argv[2] ?? "alps-2026";
-const RAW = path.join("data-raw", "garmin");
+const RAW = fs.existsSync(path.join("data-raw", `garmin-${slug}`)) ? path.join("data-raw", `garmin-${slug}`) : path.join("data-raw", "garmin");
+const FROM = process.argv.find((a) => a.startsWith("--from="))?.slice(7) ?? "";
+const NO_OVERPASS = process.argv.includes("--no-overpass"); // when the network blocks it: name the passes in overrides.json instead
 const OUT = path.join("content", "adventures", slug);
 const N_PROFILE = 480;
 const UA = { "User-Agent": "personal-site-build-script/1.0" };
@@ -143,7 +146,7 @@ async function weatherFor(day) {
 
 async function main() {
   const acts = JSON.parse(fs.readFileSync(path.join(RAW, "activities.json"), "utf8"))
-    .filter((a) => fs.existsSync(path.join(RAW, `${a.activityId}.zip`)))
+    .filter((a) => fs.existsSync(path.join(RAW, `${a.activityId}.zip`)) && /cycl|bik/.test(a.activityType?.typeKey ?? "cycling") && a.startTimeLocal.slice(0, 10) >= FROM)
     .sort((a, b) => a.startTimeLocal.localeCompare(b.startTimeLocal));
   const byDate = new Map();
   for (const a of acts) {
@@ -239,7 +242,7 @@ async function main() {
   }
 
   console.log("naming passes (Overpass)…");
-  await namePasses(days.flatMap((d) => d.passes));
+  if (!NO_OVERPASS) await namePasses(days.flatMap((d) => d.passes));
 
   for (const day of days) {
     console.log(`enriching day ${day.n}…`);

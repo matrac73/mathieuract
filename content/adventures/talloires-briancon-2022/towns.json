@@ -1,0 +1,78 @@
+{
+ "day-01": [
+  {
+   "name": "Thônes",
+   "i": 138
+  },
+  {
+   "name": "Flumet",
+   "i": 268
+  },
+  {
+   "name": "Beaufort",
+   "i": 387
+  }
+ ],
+ "day-02": [
+  {
+   "name": "La Chambre",
+   "i": 196
+  },
+  {
+   "name": "Saint-Sorlin-d'Arves",
+   "i": 302
+  },
+  {
+   "name": "Allemond",
+   "i": 413
+  }
+ ],
+ "day-03": [
+  {
+   "name": "L'Alpe d'Huez",
+   "i": 60
+  },
+  {
+   "name": "La Grave",
+   "i": 183
+  },
+  {
+   "name": "Monêtier-les-Bains",
+   "i": 349
+  }
+ ],
+ "day-04": [
+  {
+   "name": "Montgenèvre",
+   "i": 73
+  },
+  {
+   "name": "Cesana Torinese",
+   "i": 127
+  },
+  {
+   "name": "Oulx",
+   "i": 189
+  },
+  {
+   "name": "Bardonecchia",
+   "i": 278
+  }
+ ],
+ "day-05": [
+  {
+   "name": "Arvieux",
+   "i": 136
+  }
+ ],
+ "day-06": [
+  {
+   "name": "Valloire",
+   "i": 158
+  },
+  {
+   "name": "Saint-Michel-de-Maurienne",
+   "i": 307
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+{
+  "order": 3,
+  "kind": "bike",
+  "title": { "en": "From Talloires to Briançon", "fr": "De Talloires à Briançon" },
+  "tagline": { "en": "Six days of high passes, from Lake Annecy to the Queyras", "fr": "Six jours de grands cols, du lac d'Annecy au Queyras" },
+  "intro": {
+    "en": "The trip with the most climbing: two days in a row at 3,500 and 4,150 m of elevation gain, and passes above 2,600 m. Aravis, Saisies, Madeleine, Croix de Fer, Sarenne, Galibier, Granon, Izoard, Agnel.",
+    "fr": "Le voyage le plus dense en dénivelé : deux jours de suite à 3 500 et 4 150 m de D+, et des cols à plus de 2 600 m. Aravis, Saisies, Madeleine, Croix de Fer, Sarenne, Galibier, Granon, Izoard, Agnel."
+  },
+  "sport": { "en": "Road cycling", "fr": "Cyclisme sur route" }
+}

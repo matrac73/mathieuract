@@ -785,3 +785,8 @@ html { scroll-snap-type: none; }
 .prose.hand { font-family: var(--font-hand), "Segoe Print", cursive; font-size: clamp(22px, 2.3vw, 27px); line-height: 1.36; max-width: 60ch; }
 .prose.hand > * + * { margin-top: 0.75em; }
 .prose.hand .emo { font-size: 0.8em; }
+
+/* ---------- v11: an epilogue ridden later; adventures without a cover ---------- */
+.rail-day.epi { border-left: 2px dashed var(--accent); }
+.day-count .tag { margin-left: 10px; }
+.frame.cover[hidden] { display: none; }

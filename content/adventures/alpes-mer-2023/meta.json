@@ -1,0 +1,12 @@
+{
+  "order": 4,
+  "kind": "bike",
+  "epilogue": 6,
+  "title": { "en": "From the Alps to the sea", "fr": "Des Alpes à la mer" },
+  "tagline": { "en": "Albertville → Nice in five days, then the way back north", "fr": "Albertville → Nice en cinq jours, puis le retour vers le nord" },
+  "intro": {
+    "en": "A straight line from the Alps to the Mediterranean, starting with a day of 145 km and 4,000 m of climbing: Madeleine, Galibier, Izoard, Vars, Cayolle, Turini. Epilogue nine days later: Saint-Raphaël → Digne → Gap, 249 km in two days.",
+    "fr": "Une vraie ligne des Alpes à la Méditerranée, avec un premier jour à 145 km et 4 000 m de D+ : Madeleine, Galibier, Izoard, Vars, Cayolle, Turini. Épilogue neuf jours plus tard : Saint-Raphaël → Digne → Gap, 249 km en deux jours."
+  },
+  "sport": { "en": "Road cycling", "fr": "Cyclisme sur route" }
+}

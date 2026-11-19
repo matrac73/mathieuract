@@ -1,7 +1,8 @@
 {
-  "order": 1,
+  "order": 5,
   "riders": 2,
   "kind": "bike",
+  "transfer": "train",
   "massKg": 88,
   "title": { "en": "X-Alpes", "fr": "X-Alpes" },
   "tagline": { "en": "Zurich → Albertville, two riders, nine days", "fr": "Zurich → Albertville, à deux, en neuf jours" },

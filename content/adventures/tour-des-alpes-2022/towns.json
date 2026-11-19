@@ -1,0 +1,87 @@
+{
+ "day-01": [
+  {
+   "name": "Annecy",
+   "i": 131
+  },
+  {
+   "name": "Saint-Jorioz",
+   "i": 343
+  },
+  {
+   "name": "Doussard",
+   "i": 426
+  }
+ ],
+ "day-02": [],
+ "day-03": [
+  {
+   "name": "Briançon",
+   "i": 131
+  },
+  {
+   "name": "Arvieux",
+   "i": 259
+  },
+  {
+   "name": "Guillestre",
+   "i": 355
+  },
+  {
+   "name": "Embrun",
+   "i": 444
+  }
+ ],
+ "day-04": [
+  {
+   "name": "Le Lauzet-Ubaye",
+   "i": 157
+  },
+  {
+   "name": "Espinasses",
+   "i": 290
+  },
+  {
+   "name": "Chorges",
+   "i": 404
+  }
+ ],
+ "day-05": [
+  {
+   "name": "Susa",
+   "i": 119
+  },
+  {
+   "name": "Lanslebourg",
+   "i": 261
+  },
+  {
+   "name": "Bonneval-sur-Arc",
+   "i": 333
+  },
+  {
+   "name": "Val-d'Isère",
+   "i": 446
+  }
+ ],
+ "day-06": [
+  {
+   "name": "Bourg-Saint-Maurice",
+   "i": 136
+  },
+  {
+   "name": "Moûtiers",
+   "i": 331
+  }
+ ],
+ "day-07": [
+  {
+   "name": "Saint-Jorioz",
+   "i": 33
+  },
+  {
+   "name": "Lescheraines",
+   "i": 104
+  }
+ ]
+}

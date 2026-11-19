@@ -125,3 +125,22 @@ the 3D map stays on the right and the orange trace follows.
 `skip` leaves a file out; `day` + `time` place a file that lost its date or position (it goes where the route was at that
 time); `start` says where a video's 3 seconds begin; `blur` softens zones (x, y, width, height as fractions of the picture,
 then the strength). After changing `start` or `blur`, delete the converted file so the import makes it again.
+
+## Several adventures side by side
+
+Each adventure keeps its raw files in its own folder:
+
+```
+node scripts/garmin-fetch.mjs 2023-08-07 2023-08-13 garmin-<slug>      # a third argument: the folder under data-raw/
+node scripts/garmin-fetch.mjs 2023-08-20 2023-08-23 garmin-<slug>      # a second range (an epilogue) is merged into it
+node scripts/build-adventure.mjs <slug> [--from=YYYY-MM-DD] [--no-overpass]
+```
+
+`build-adventure` reads `data-raw/garmin-<slug>/` when it exists, keeps only the rides, and numbers the days by riding
+day (rest days and gaps are not counted). `--no-overpass` skips the automatic pass names when the network blocks
+Overpass: name them in `overrides.json` (`passes`, matched by detected altitude), where `days` can also rename the start
+or the end of one day.
+
+More `meta.json` keys: `riders` is optional; `"transfer": "train"` draws a little train on the unrecorded stretches
+(without it they are plain dotted arcs, labelled "unrecorded stretch"); `"epilogue": 6` marks day 6 and the following
+ones as an epilogue ridden later. Without a `cover.jpg` the cover frame is simply not shown.

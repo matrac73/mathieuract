@@ -1,0 +1,108 @@
+{
+ "day-01": [
+  {
+   "name": "La Chambre",
+   "i": 216
+  },
+  {
+   "name": "Valloire",
+   "i": 346
+  }
+ ],
+ "day-02": [
+  {
+   "name": "Briançon",
+   "i": 65
+  },
+  {
+   "name": "Arvieux",
+   "i": 174
+  },
+  {
+   "name": "Vars",
+   "i": 330
+  },
+  {
+   "name": "Jausiers",
+   "i": 449
+  }
+ ],
+ "day-03": [
+  {
+   "name": "Entraunes",
+   "i": 199
+  },
+  {
+   "name": "Guillaumes",
+   "i": 277
+  },
+  {
+   "name": "Beuil",
+   "i": 371
+  }
+ ],
+ "day-04": [
+  {
+   "name": "Saint-Martin-Vésubie",
+   "i": 101
+  },
+  {
+   "name": "La Bollène-Vésubie",
+   "i": 154
+  },
+  {
+   "name": "Sospel",
+   "i": 281
+  },
+  {
+   "name": "Menton",
+   "i": 358
+  }
+ ],
+ "day-05": [
+  {
+   "name": "Antibes",
+   "i": 176
+  },
+  {
+   "name": "Cannes",
+   "i": 267
+  },
+  {
+   "name": "Théoule-sur-Mer",
+   "i": 348
+  }
+ ],
+ "day-06": [
+  {
+   "name": "Fréjus",
+   "i": 48
+  },
+  {
+   "name": "Le Muy",
+   "i": 137
+  },
+  {
+   "name": "Aups",
+   "i": 262
+  },
+  {
+   "name": "Riez",
+   "i": 364
+  }
+ ],
+ "day-07": [
+  {
+   "name": "La Javie",
+   "i": 93
+  },
+  {
+   "name": "Seyne",
+   "i": 237
+  },
+  {
+   "name": "Espinasses",
+   "i": 351
+  }
+ ]
+}

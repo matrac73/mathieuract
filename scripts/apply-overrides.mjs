@@ -13,6 +13,9 @@ for (const s of summary.days) {
   const file = path.join(DIR, "days", `${s.slug}.json`);
   const day = JSON.parse(fs.readFileSync(file, "utf8"));
   place(day.start); place(day.end);
+  const own = ov.days?.[s.slug]; // a name for this day only: { "start": "...", "end": "..." }
+  if (own?.start) day.start.name = own.start;
+  if (own?.end) day.end.name = own.end;
   for (const o of ov.passes?.[s.slug] ?? []) {
     const pk = [...day.passes].sort((a, b) => Math.abs(a.ele - o.ele) - Math.abs(b.ele - o.ele))[0];
     if (!pk || Math.abs(pk.ele - o.ele) > 25) continue;

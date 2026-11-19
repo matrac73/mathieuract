@@ -1,0 +1,11 @@
+{
+  "order": 1,
+  "kind": "bike",
+  "title": { "en": "Tour of the Alps", "fr": "Tour des Alpes" },
+  "tagline": { "en": "Annecy → Annecy in seven days, with a detour through Italy", "fr": "Annecy → Annecy en sept jours, avec un détour par l'Italie" },
+  "intro": {
+    "en": "My first long trip by bike: the Galibier, the Izoard, the lake of Serre-Ponçon, then Italy, the Mont-Cenis and the Iseran, and a last loop in the Bauges. Some of the links between stages were not recorded.",
+    "fr": "Mon premier grand voyage à vélo : le Galibier, l'Izoard, le lac de Serre-Ponçon, puis l'Italie, le Mont-Cenis et l'Iseran, et une dernière boucle dans les Bauges. Certaines liaisons entre les étapes n'ont pas été enregistrées."
+  },
+  "sport": { "en": "Road cycling", "fr": "Cyclisme sur route" }
+}

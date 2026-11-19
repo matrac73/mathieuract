@@ -16,7 +16,7 @@ import { Terrain3D, type TerrainHandle } from "./Terrain3D";
 const localTime = (ts: number) => new Date((ts + 7200) * 1000).toISOString().slice(11, 16); // CEST all along the route
 const near = (v: (number | null)[], i: number) => { for (let k = 0; k < 12; k++) { const a = v[i - k] ?? v[i + k]; if (a != null) return a; } return null; };
 
-export function DayScene({ slug, day, dict, locale, index, mass }: { slug: string; day: Day; dict: Dict; locale: Locale; index: number; mass: number }) {
+export function DayScene({ slug, day, dict, locale, index, mass, train = false }: { slug: string; day: Day; dict: Dict; locale: Locale; index: number; mass: number; train?: boolean }) {
   const t = dict.adv;
   const P = day.profile, n = P.d.length;
   const section = useRef<HTMLElement>(null), stick = useRef<HTMLDivElement>(null);
@@ -131,7 +131,7 @@ export function DayScene({ slug, day, dict, locale, index, mass }: { slug: strin
     <section className={`scene ${media.length ? "duo" : ""}`} ref={section} aria-label={t.terrain}>
       <div className="scene-stick" ref={stick}>
         <div className="scene-map">
-          <Terrain3D key={day.slug} fill handle={handle} towns={towns} marks={marks} media={day.media} mediaLabel={t.media} clouds={clouds} src={`/adventures/${slug}/terrain/${day.slug}.json`} label={`${day.start.name ?? ""} → ${day.end.name ?? ""}`} />
+          <Terrain3D key={day.slug} fill train={train} handle={handle} towns={towns} marks={marks} media={day.media} mediaLabel={t.media} clouds={clouds} src={`/adventures/${slug}/terrain/${day.slug}.json`} label={`${day.start.name ?? ""} → ${day.end.name ?? ""}`} />
         </div>
         <dl className="scene-hud left">
           <div><dt className="label">{t.distance}</dt><dd><b className="num" ref={set("km")}>0</b><span className="unit">km</span></dd></div>

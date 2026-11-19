@@ -18,7 +18,7 @@ const hex = (c: string) => {
   return [0, 2, 4].map((i) => parseInt(f.slice(i, i + 2), 16));
 };
 
-export function JourneyScroll({ src, summary, dict, locale }: { src: string; summary: Summary; dict: Dict; locale: Locale }) {
+export function JourneyScroll({ src, summary, dict, locale, train = false }: { src: string; summary: Summary; dict: Dict; locale: Locale; train?: boolean }) {
   const t = dict.adv;
   const section = useRef<HTMLElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -75,7 +75,7 @@ export function JourneyScroll({ src, summary, dict, locale }: { src: string; sum
         : [(X[i0] + (X[i0 + 1] - X[i0]) * fr) * cell, (Y[i0] + (Y[i0 + 1] - Y[i0]) * fr) * cell];
       const mw = o.nu * cell, mh = o.nv * cell;
       const tx = mw <= W ? (W - mw) / 2 : Math.min(0, Math.max(W - mw, W / 2 - hx));
-      const ty = (H - mh) / 2;
+      const ty = mh <= H ? (H - mh) / 2 : Math.min(0, Math.max(H - mh, H / 2 - hy)); // a north–south trip is taller than the screen: follow the rider
       const cs = css(), accent = cs.getPropertyValue("--accent").trim(), bg = cs.getPropertyValue("--bg").trim(), mid = cs.getPropertyValue("--mid").trim(), fg = cs.getPropertyValue("--fg").trim();
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
@@ -103,7 +103,7 @@ export function JourneyScroll({ src, summary, dict, locale }: { src: string; sum
         }
         ctx.setLineDash([]); ctx.lineCap = "round";
         const [tx, ty] = arc(ax, ay, bx, by, 0.5);
-        sprite(ctx, TRAIN, tx, ty, 2, done ? accent : fg, bg);
+        if (train) sprite(ctx, TRAIN, tx, ty, 2, done ? accent : fg, bg);
       }
       brk.slice(0, -1).forEach((b, k) => { // stage starts
         ctx.fillStyle = bg; ctx.fillRect(X[b] * cell - 4.5, Y[b] * cell - 4.5, 9, 9);
@@ -144,7 +144,7 @@ export function JourneyScroll({ src, summary, dict, locale }: { src: string; sum
     const mo = new MutationObserver(resize);
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
     return () => { dead = true; cancelAnimationFrame(raf); window.removeEventListener("scroll", kick); window.removeEventListener("resize", resize); mo.disconnect(); };
-  }, [src, summary, locale]);
+  }, [src, summary, locale, train]);
 
   return (
     <section className="journey" ref={section} aria-label={t.journey}>
