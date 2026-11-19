@@ -8,14 +8,15 @@ import { TRAIN, arc, sprite } from "@/lib/pixel";
 // then the route, already there in grey, turns orange behind a moving head in 5 s.
 // The pointer tilts the model by a few degrees, no more.
 
-type Data = { nu: number; nv: number; cellKm: number; min: number; step: number; ex: number; pitch: number; bearing: number; h: string; u: number[]; v: number[] };
+type Data = { nu: number; nv: number; cellKm: number; min: number; step: number; ex: number; pitch: number; bearing: number; h: string; u: number[]; v: number[]; w?: string }; // w: where the water is, one bit per cell
 export type Wind = { dir: number; speed: number; rain?: number } | null; // dir = where it blows from (degrees), speed in km/h, rain in mm/h
 export type Spot = { src: string; at: number; video: boolean }; // a photo or a video, `at` = 0..1 along the route
 type Town = { name: string; at: number; always?: boolean };
 export type TerrainHandle = { set: (progress: number, wind?: Wind, active?: number) => void }; // `active`: the photo being looked at (-1: none)
-type Level = { b: number; n: number; m: number; z: Float32Array };
+type Level = { b: number; n: number; m: number; z: Float32Array; w: Uint8Array };
 type Props = {
   src: string; cursor?: number | null; marks?: number[]; label?: string; maxHeight?: number;
+  markNames?: string[]; // the passes, named next to their number as the rider reaches them
   handle?: MutableRefObject<TerrainHandle | null>; // when given, the route follows `set(progress)` (scroll) instead of drawing itself in 5 s
   towns?: Town[]; // named as the rider reaches them (`always`: start and finish, shown from the first frame)
   media?: Spot[]; // blinking dots on the route; hovering one shows the picture
@@ -37,13 +38,14 @@ const hex = (c: string) => {
 };
 const mix = (a: number[], b: number[], t: number) => `rgb(${a.map((v, i) => Math.round(v + (b[i] - v) * t)).join(",")})`;
 
-export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, handle, towns, fill, media, mediaLabel, clouds, train }: Props) {
+export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, handle, towns, fill, media, mediaLabel, clouds, train, markNames }: Props) {
   const [tip, setTip] = useState<{ k: number; x: number; y: number } | null>(null);
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
-  const live = useRef({ cursor: null as number | null, marks: [] as number[], towns: [] as Town[], media: [] as Spot[], clouds: [] as Cloud[], p: null as number | null, wind: null as Wind, active: -1, kick: () => {} });
+  const live = useRef({ cursor: null as number | null, marks: [] as number[], markNames: [] as string[], towns: [] as Town[], media: [] as Spot[], clouds: [] as Cloud[], p: null as number | null, wind: null as Wind, active: -1, kick: () => {} });
   live.current.cursor = cursor;
   live.current.marks = marks ?? [];
+  live.current.markNames = markNames ?? [];
   live.current.towns = towns ?? [];
   live.current.media = media ?? [];
   live.current.clouds = clouds ?? [];
@@ -56,6 +58,7 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let dead = false, raf = 0, data: Data | null = null;
     let W = 0, H = 0, S = 1, ox = 0, oy = 0, dpr = 1, zmax = 1;
+    let wat = new Uint8Array(0); // 1 where the cell is water (sea or lake)
     let zw = new Float32Array(0), levels: Level[] = [], zl = new Float32Array(0), gap = new Uint8Array(0);
     let layers: (HTMLCanvasElement | null)[] = [], cache: HTMLCanvasElement | null = null;
     let t0 = 0, started = false, vis = false, lastT = 0;
@@ -89,14 +92,15 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
 
     const level = (b: number): Level => {
       const { nu, nv } = data!;
-      const n = Math.ceil(nu / b), m = Math.ceil(nv / b), z = new Float32Array(n * m);
+      const n = Math.ceil(nu / b), m = Math.ceil(nv / b), z = new Float32Array(n * m), w = new Uint8Array(n * m);
       for (let j = 0; j < m; j++)
         for (let i = 0; i < n; i++) {
-          let s = 0, k = 0;
-          for (let y = j * b; y < Math.min(nv, (j + 1) * b); y++) for (let x = i * b; x < Math.min(nu, (i + 1) * b); x++) { s += zw[y * nu + x]; k++; }
+          let s = 0, k = 0, wet = 0;
+          for (let y = j * b; y < Math.min(nv, (j + 1) * b); y++) for (let x = i * b; x < Math.min(nu, (i + 1) * b); x++) { s += zw[y * nu + x]; k++; wet += wat[y * nu + x] ?? 0; }
+          w[j * n + i] = wet * 2 >= k ? 1 : 0;
           z[j * n + i] = Math.max(1, Math.round(s / k / b)) * b; // whole cubes
         }
-      return { b, n, m, z };
+      return { b, n, m, z, w };
     };
 
     const layout = () => {
@@ -143,7 +147,7 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
     };
 
     const terrain = (g: CanvasRenderingContext2D, L: Level, yawD: number, pitchD: number, grow = 1) => {
-      const d = data!, { b, n, m, z } = L;
+      const d = data!, { b, n, m, z } = L, veil = `rgba(${col.fg.join(",")},0.34)`;
       const c = Math.cos(rad(yawD)), s = Math.sin(rad(yawD)), sp = Math.sin(rad(pitchD)), cp = Math.cos(rad(pitchD));
       const eUx = c * S * b, eUy = -s * sp * S * b, eVx = -s * S * b, eVy = -c * sp * S * b, eZ = -cp * S;
       const x00 = ox + ((-d.nu / 2) * c + (d.nv / 2) * s) * S, y00 = oy - ((-d.nu / 2) * s - (d.nv / 2) * c) * sp * S;
@@ -176,6 +180,10 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
           }
           const yt = y + zc * eZ;
           quad(x, yt, x + eUx, yt + eUy, x + eUx + eVx, yt + eUy + eVy, x + eVx, yt + eVy, tone(0.1 + 0.86 * Math.pow(rel, 0.85)));
+          if (L.w[j * n + i]) { // water: a translucent grey veil over the bed, and no joints between the cubes
+            g.fillStyle = veil;
+            g.beginPath(); g.moveTo(x, yt); g.lineTo(x + eUx, yt + eUy); g.lineTo(x + eUx + eVx, yt + eUy + eVy); g.lineTo(x + eVx, yt + eVy); g.closePath(); g.fill();
+          }
         }
     };
 
@@ -252,11 +260,23 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
       box(X[0], Y[0], lw, p > 0 ? col.accent : tone(0.5));
       box(X[n - 1], Y[n - 1], lw, p >= 1 ? col.accent : tone(0.5));
       g.font = `600 10px ui-monospace, monospace`; g.textAlign = "center"; g.textBaseline = "middle";
+      const taken: number[][] = []; // the pass names already written, so that two neighbours do not overlap
       live.current.marks.forEach((f, k) => {
         const i = Math.round(f * (n - 1)), x = X[i], y = Y[i] - 16;
         g.fillStyle = tone(0); g.fillRect(x - 0.5, y, 1, 14);
         g.fillStyle = f <= p ? col.accent : tone(1); g.fillRect(x - 8, y - 8, 16, 16);
         g.fillStyle = tone(0); g.fillText(String(k + 1), x, y + 0.5);
+        const name = live.current.markNames[k], a = Math.min(1, Math.max(0, (p - f + 0.012) / 0.03)); // named like a town, when the rider gets there
+        if (name && a > 0) {
+          const text = name.toUpperCase(), w = g.measureText(text).width + 10, left = x + 12 + w > W, lx = left ? x - 10 - w : x + 10;
+          let ly = y;
+          while (taken.some((b) => lx < b[0] + b[2] + 4 && lx + w + 4 > b[0] && Math.abs(ly - b[1]) < 17)) ly -= 18; // stacked above its neighbour
+          taken.push([lx, ly, w]);
+          g.globalAlpha = alpha * a; g.textAlign = "left";
+          g.fillStyle = tone(0); g.fillRect(lx, ly - 8, w, 16);
+          g.fillStyle = col.accent; g.fillText(text, lx + 5, ly + 0.5);
+          g.globalAlpha = alpha; g.textAlign = "center";
+        }
       });
       if (p > 0 && (p < 1 || handle)) { const [x, y] = at(Math.min(n - 1.001, p * (n - 1))); box(x, y, lw + 2.5, col.accent); }
       spots = live.current.media.map((m, k) => { const [x, y] = at(Math.min(n - 1.001, Math.max(0, m.at) * (n - 1))); return { k, x, y }; });
@@ -396,6 +416,8 @@ export function Terrain3D({ src, cursor = null, marks, label, maxHeight = 640, h
         data = d;
         const bin = atob(d.h), k = (d.step * d.ex * RELIEF) / (d.cellKm * 1000);
         zw = new Float32Array(bin.length);
+        wat = new Uint8Array(bin.length);
+        if (d.w) { const bits = atob(d.w); for (let i = 0; i < bin.length; i++) wat[i] = (bits.charCodeAt(i >> 3) >> (i & 7)) & 1; }
         const raw = new Float32Array(bin.length);
         for (let i = 0; i < bin.length; i++) raw[i] = 1 + bin.charCodeAt(i) * k;
         // taller relief needs calmer cubes: a light 3 × 3 smoothing keeps the shapes and drops the cell-to-cell jitter

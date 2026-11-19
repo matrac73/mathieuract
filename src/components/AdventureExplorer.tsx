@@ -113,7 +113,7 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
             {adv.cover && <img src={adv.cover} alt="" />}
           </div>
         </div>
-        <JourneyScroll src={`/adventures/${adv.slug}/terrain/overview.json`} summary={summary} dict={dict} locale={locale} train={train} />
+        <JourneyScroll src={`/adventures/${adv.slug}/terrain/overview.json`} summary={summary} dict={dict} locale={locale} train={train} back={meta.back === "train"} />
         <dl className="stat-grid totals">
           {totals.map(([k, v, u]) => (
             <div key={k} className="stat">

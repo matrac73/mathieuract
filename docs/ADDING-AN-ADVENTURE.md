@@ -144,3 +144,8 @@ or the end of one day.
 More `meta.json` keys: `riders` is optional; `"transfer": "train"` draws a little train on the unrecorded stretches
 (without it they are plain dotted arcs, labelled "unrecorded stretch"); `"epilogue": 6` marks day 6 and the following
 ones as an epilogue ridden later. Without a `cover.jpg` the cover frame is simply not shown.
+
+Also: `--to=YYYY-MM-DD` limits `build-adventure` to the rides up to that date; `"back": "train"` in `meta.json` draws the
+way home on the overview (a dotted arc and a train from the last finish to the first start). `build-terrain` records where
+the water is (sea and lakes) in each stage file: the 3D map shows it as a flat translucent grey surface. The passes are
+named on the 3D map next to their number, as the rider reaches them.

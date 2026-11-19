@@ -1,11 +1,10 @@
 {
   "places": { "Talloires-Montmin": "Talloires", "Le Bourg-d'Oisans": "Bourg-d'Oisans", "Le Monêtier-les-Bains": "Monêtier-les-Bains" },
   "passes": {
-    "day-02": [{ "ele": 2505, "name": "Col du Galibier", "official": 2642 }],
-    "day-03": [{ "ele": 2333, "name": "Col d'Izoard", "official": 2360 }],
-    "day-04": [{ "ele": 1110, "name": null }, { "ele": 1199, "name": null }, { "ele": 1171, "name": "Col Lebraut", "official": 1110 }],
-    "day-05": [{ "ele": 2054, "name": "Col du Mont-Cenis", "official": 2083 }, { "ele": 2682, "name": "Col de l'Iseran", "official": 2764 }],
-    "day-06": [{ "ele": 1874, "name": null }, { "ele": 1162, "name": null }],
-    "day-07": [{ "ele": 1027, "name": null }, { "ele": 1213, "name": null }, { "ele": 1585, "name": "Mont Revard", "official": 1538 }, { "ele": 1710, "name": "Crêt de Châtillon (Semnoz)", "official": 1699 }]
+    "day-01": [{ "ele": 2505, "name": "Col du Galibier", "official": 2642 }],
+    "day-02": [{ "ele": 2333, "name": "Col d'Izoard", "official": 2360 }],
+    "day-03": [{ "ele": 1110, "name": null }, { "ele": 1199, "name": null }, { "ele": 1171, "name": "Col Lebraut", "official": 1110 }],
+    "day-04": [{ "ele": 2054, "name": "Col du Mont-Cenis", "official": 2083 }, { "ele": 2682, "name": "Col de l'Iseran", "official": 2764 }],
+    "day-05": [{ "ele": 1874, "name": null }, { "ele": 1162, "name": null }]
   }
 }

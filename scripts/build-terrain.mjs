@@ -40,7 +40,7 @@ async function eleAt(lat, lon, z) {
   const x0 = Math.floor(fx), y0 = Math.floor(fy), ax = fx - x0, ay = fy - y0;
   const at = async (X, Y) => px(await tile(z, Math.floor(X / 256), Math.floor(Y / 256)), X & 255, Y & 255);
   const [a, b, c, d] = [await at(x0, y0), await at(x0 + 1, y0), await at(x0, y0 + 1), await at(x0 + 1, y0 + 1)];
-  return a * (1 - ax) * (1 - ay) + b * ax * (1 - ay) + c * (1 - ax) * ay + d * ax * ay;
+  return Math.max(0, a * (1 - ax) * (1 - ay) + b * ax * (1 - ay) + c * (1 - ax) * ay + d * ax * ay); // the tiles carry the depth of the sea: here the sea is flat, at 0
 }
 const zoomFor = (cellKm, lat) => {
   for (let z = 7; z <= 12; z++) if ((40075 * Math.cos((lat * Math.PI) / 180)) / (2 ** z * 256) <= cellKm / 1.4) return z;
@@ -65,6 +65,43 @@ function visibility(h, nu, nv, ru, rv, zOf, pitch) {
     if (ok) seen++;
   }
   return seen / ru.length;
+}
+
+/**
+ * Where the water is: the sea (altitude 0) and the lakes. The elevation model is perfectly flat on a lake, so each cell
+ * is probed at five points a third of a cell apart, on detailed tiles (zoom 11, where a lake is exactly flat; coarser
+ * tiles blur its shores in): identical altitudes mean water, even on a lake one cell wide. Only the cells whose
+ * surroundings are nearly level (`ele`, the coarse grid) are probed, which spares the tiles of the mountains.
+ * `probe(i, j, du, dv)` gives the altitude at cell (i, j), shifted by a fraction of a cell. One bit per cell, packed.
+ */
+async function water(probe, ele, nu, nv) {
+  const flat = new Uint8Array(nu * nv);
+  for (let j = 0; j < nv; j++)
+    for (let i = 0; i < nu; i++) {
+      let lo = Infinity, hi = -Infinity;
+      for (let b = -1; b <= 1; b++) for (let a = -1; a <= 1; a++) { const v = ele[Math.min(nv - 1, Math.max(0, j + b)) * nu + Math.min(nu - 1, Math.max(0, i + a))]; lo = Math.min(lo, v); hi = Math.max(hi, v); }
+      if (hi - lo > 40 && ele[j * nu + i] - lo > 12) continue; // a slope, well above the lowest neighbour: no water there
+      const e = [await probe(i, j, 0, 0), await probe(i, j, 0.33, 0), await probe(i, j, -0.33, 0), await probe(i, j, 0, 0.33), await probe(i, j, 0, -0.33)];
+      flat[j * nu + i] = e[0] <= 0.5 || Math.max(...e) - Math.min(...e) < 0.06 ? 1 : 0;
+    }
+  // keep the patches of at least 3 cells (touching by a side or a corner)
+  const seen = new Uint8Array(nu * nv), keep = new Uint8Array(nu * nv);
+  for (let s = 0; s < nu * nv; s++) {
+    if (!flat[s] || seen[s]) continue;
+    const comp = [s]; seen[s] = 1;
+    for (let q = 0; q < comp.length; q++) {
+      const i = comp[q] % nu, j = (comp[q] - i) / nu;
+      for (let b = -1; b <= 1; b++) for (let a = -1; a <= 1; a++) {
+        const x = i + a, y = j + b, k = y * nu + x;
+        if (x >= 0 && y >= 0 && x < nu && y < nv && flat[k] && !seen[k]) { seen[k] = 1; comp.push(k); }
+      }
+    }
+    if (comp.length >= 3) for (const k of comp) keep[k] = 1;
+  }
+  const out = new Uint8Array(Math.ceil((nu * nv) / 8));
+  let count = 0;
+  keep.forEach((on, k) => { if (on) { out[k >> 3] |= 1 << (k & 7); count++; } });
+  return count ? b64(out) : undefined;
 }
 
 async function stage(file) {
@@ -110,10 +147,14 @@ async function stage(file) {
     for (const pitch of [42, 50, 58]) {
       const vis = visibility(h, NU, nv, ru, rv, zOf, pitch);
       const score = vis - (pitch - 42) * 0.006 - Math.abs(off) * 0.0015; // a low camera reads as relief; climb only if the route gets lost
-      if (!best || score > best.score) best = { score, vis, off, pitch, nu: NU, nv, cellKm: r2(cell), min: Math.round(lo), step: r2(step), ex: r2(ex), h: b64(h), u: ru.map(r2), v: rv.map(r2), bearing: Math.round((90 - (a * 180) / Math.PI + 360) % 360) };
+      if (!best || score > best.score) best = { score, vis, off, pitch, frame: { uMin, vMin, cell, ca, sa, ele }, nu: NU, nv, cellKm: r2(cell), min: Math.round(lo), step: r2(step), ex: r2(ex), h: b64(h), u: ru.map(r2), v: rv.map(r2), bearing: Math.round((90 - (a * 180) / Math.PI + 360) % 360) };
     }
   }
-  const { score, vis, off, ...out } = best;
+  const { score, vis, off, frame: fr, ...out } = best;
+  out.w = await water((i, j, du, dv) => {
+    const u = fr.uMin + (i + 0.5 + du) * fr.cell, v = fr.vMin + (j + 0.5 + dv) * fr.cell;
+    return eleAt(lat0 + (u * fr.sa + v * fr.ca) / ky, lon0 + (u * fr.ca - v * fr.sa) / kx, 11);
+  }, fr.ele, out.nu, out.nv);
   fs.writeFileSync(path.join(OUT, file), JSON.stringify(out));
   console.log(`${file}: ${out.nu}x${out.nv} cells of ${out.cellKm} km, pitch ${out.pitch}°, axis offset ${off}°, screen-right bearing ${out.bearing}°, route visible ${(vis * 100).toFixed(0)}%`);
   return { n: day.n, lat, lon };
@@ -197,6 +238,7 @@ if (process.argv.includes("--minimap")) { // only the minimap (the stages are sl
   await minimap(files.map((f) => { const d = JSON.parse(fs.readFileSync(path.join(DAYS, f), "utf8")); return { n: d.n, lat: d.profile.lat, lon: d.profile.lon }; }));
   process.exit(0);
 }
+for (const f of fs.readdirSync(OUT)) if (/^day-\d+\.json$/.test(f) && !files.includes(f)) fs.rmSync(path.join(OUT, f)); // a stage that no longer exists
 const days = [];
 for (const f of files) days.push(await stage(f));
 await overview(days);

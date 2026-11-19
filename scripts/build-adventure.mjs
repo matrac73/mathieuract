@@ -2,7 +2,7 @@
 //   content/adventures/<slug>/summary.json  + days/day-NN.json
 // and enriches each day with field data: named passes (OpenStreetMap/Overpass),
 // hourly weather along the route (Open-Meteo archive) and place names (Nominatim).
-// Usage: node scripts/build-adventure.mjs <slug> [--from=YYYY-MM-DD] [--no-overpass]     (default slug: alps-2026)
+// Usage: node scripts/build-adventure.mjs <slug> [--from=YYYY-MM-DD] [--to=YYYY-MM-DD] [--no-overpass]     (default slug: alps-2026)
 // Raw files: data-raw/garmin-<slug>/ when that folder exists, data-raw/garmin/ otherwise. Only rides are kept.
 import fs from "node:fs";
 import path from "node:path";
@@ -13,6 +13,7 @@ const Parser = FitParser.default ?? FitParser;
 const slug = process.argv[2] ?? "alps-2026";
 const RAW = fs.existsSync(path.join("data-raw", `garmin-${slug}`)) ? path.join("data-raw", `garmin-${slug}`) : path.join("data-raw", "garmin");
 const FROM = process.argv.find((a) => a.startsWith("--from="))?.slice(7) ?? "";
+const TO = process.argv.find((a) => a.startsWith("--to="))?.slice(5) ?? "9999";
 const NO_OVERPASS = process.argv.includes("--no-overpass"); // when the network blocks it: name the passes in overrides.json instead
 const OUT = path.join("content", "adventures", slug);
 const N_PROFILE = 480;
@@ -146,7 +147,7 @@ async function weatherFor(day) {
 
 async function main() {
   const acts = JSON.parse(fs.readFileSync(path.join(RAW, "activities.json"), "utf8"))
-    .filter((a) => fs.existsSync(path.join(RAW, `${a.activityId}.zip`)) && /cycl|bik/.test(a.activityType?.typeKey ?? "cycling") && a.startTimeLocal.slice(0, 10) >= FROM)
+    .filter((a) => fs.existsSync(path.join(RAW, `${a.activityId}.zip`)) && /cycl|bik/.test(a.activityType?.typeKey ?? "cycling") && a.startTimeLocal.slice(0, 10) >= FROM && a.startTimeLocal.slice(0, 10) <= TO)
     .sort((a, b) => a.startTimeLocal.localeCompare(b.startTimeLocal));
   const byDate = new Map();
   for (const a of acts) {
@@ -156,6 +157,7 @@ async function main() {
   }
 
   fs.mkdirSync(path.join(OUT, "days"), { recursive: true });
+  for (const f of fs.readdirSync(path.join(OUT, "days"))) fs.rmSync(path.join(OUT, "days", f)); // no stale day when the selection shrinks
   const days = [];
   let n = 0;
   for (const [date, list] of byDate) {

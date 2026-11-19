@@ -18,7 +18,7 @@ const hex = (c: string) => {
   return [0, 2, 4].map((i) => parseInt(f.slice(i, i + 2), 16));
 };
 
-export function JourneyScroll({ src, summary, dict, locale, train = false }: { src: string; summary: Summary; dict: Dict; locale: Locale; train?: boolean }) {
+export function JourneyScroll({ src, summary, dict, locale, train = false, back = false }: { src: string; summary: Summary; dict: Dict; locale: Locale; train?: boolean; back?: boolean }) {
   const t = dict.adv;
   const section = useRef<HTMLElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
@@ -105,6 +105,18 @@ export function JourneyScroll({ src, summary, dict, locale, train = false }: { s
         const [tx, ty] = arc(ax, ay, bx, by, 0.5);
         if (train) sprite(ctx, TRAIN, tx, ty, 2, done ? accent : fg, bg);
       }
+      if (back) { // the way home by train: from the last finish back to the first start, once the route is ridden
+        const e = X.length - 1, ax = X[e] * cell, ay = Y[e] * cell, bx = X[0] * cell, by = Y[0] * cell, done = p > 0.995;
+        ctx.lineCap = "butt"; ctx.setLineDash([3, 6]);
+        for (const [w, c] of [[6, bg], [2.4, done ? accent : fg]] as const) {
+          ctx.strokeStyle = c; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(ax, ay);
+          for (let q = 1; q <= 32; q++) { const [x, y] = arc(ax, ay, bx, by, q / 32); ctx.lineTo(x, y); }
+          ctx.stroke();
+        }
+        ctx.setLineDash([]); ctx.lineCap = "round";
+        const [sx, sy] = arc(ax, ay, bx, by, 0.5);
+        sprite(ctx, TRAIN, sx, sy, 2, done ? accent : fg, bg);
+      }
       brk.slice(0, -1).forEach((b, k) => { // stage starts
         ctx.fillStyle = bg; ctx.fillRect(X[b] * cell - 4.5, Y[b] * cell - 4.5, 9, 9);
         ctx.fillStyle = k <= d ? accent : fg; ctx.fillRect(X[b] * cell - 3, Y[b] * cell - 3, 6, 6);
@@ -144,7 +156,7 @@ export function JourneyScroll({ src, summary, dict, locale, train = false }: { s
     const mo = new MutationObserver(resize);
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
     return () => { dead = true; cancelAnimationFrame(raf); window.removeEventListener("scroll", kick); window.removeEventListener("resize", resize); mo.disconnect(); };
-  }, [src, summary, locale, train]);
+  }, [src, summary, locale, train, back]);
 
   return (
     <section className="journey" ref={section} aria-label={t.journey}>

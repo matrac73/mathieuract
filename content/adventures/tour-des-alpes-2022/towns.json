@@ -1,20 +1,6 @@
 {
- "day-01": [
-  {
-   "name": "Annecy",
-   "i": 131
-  },
-  {
-   "name": "Saint-Jorioz",
-   "i": 343
-  },
-  {
-   "name": "Doussard",
-   "i": 426
-  }
- ],
- "day-02": [],
- "day-03": [
+ "day-01": [],
+ "day-02": [
   {
    "name": "Briançon",
    "i": 131
@@ -32,7 +18,7 @@
    "i": 444
   }
  ],
- "day-04": [
+ "day-03": [
   {
    "name": "Le Lauzet-Ubaye",
    "i": 157
@@ -46,7 +32,7 @@
    "i": 404
   }
  ],
- "day-05": [
+ "day-04": [
   {
    "name": "Susa",
    "i": 119
@@ -64,7 +50,7 @@
    "i": 446
   }
  ],
- "day-06": [
+ "day-05": [
   {
    "name": "Bourg-Saint-Maurice",
    "i": 136
@@ -72,16 +58,6 @@
   {
    "name": "Moûtiers",
    "i": 331
-  }
- ],
- "day-07": [
-  {
-   "name": "Saint-Jorioz",
-   "i": 33
-  },
-  {
-   "name": "Lescheraines",
-   "i": 104
   }
  ]
 }
