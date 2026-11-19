@@ -181,7 +181,6 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
 
         <p className="label scene-title">[ 01 ] {t.terrain}</p>
         <DayScene key={day.slug} slug={adv.slug} day={day} dict={dict} locale={locale} index={idx} mass={meta.massKg ?? 85} />
-        <p className="note">{t.terrainNote}</p>
         {named.length > 0 && (
           <ol className="pass-list">
             {named.map((p, i) => (
@@ -194,23 +193,16 @@ export function AdventureExplorer({ adv, days, dict, locale, index }: { adv: Adv
           </ol>
         )}
 
-        {/* room to tell the day */}
-        <div className="panel story">
-          <div className="panel-head"><h3 className="label">[ 02 ] {t.story}</h3></div>
-          {day.notesHtml ? (
-            <div className="prose" dangerouslySetInnerHTML={{ __html: day.notesHtml }} />
-          ) : (
-            <>
-              <div className="frame empty story-empty"><span className="label">{t.storyEmpty}<br /><span className="dim">content/adventures/{adv.slug}/notes/{day.slug}.{locale}.md</span></span></div>
-              <div className="anecdotes">
-                {Array.from({ length: 3 }, (_, i) => <div key={i} className="frame empty"><span className="label">{t.anecdote} {pad(i + 1)}</span></div>)}
-              </div>
-            </>
-          )}
-        </div>
+        {/* the notes written that evening, in handwriting — only on the days that have some */}
+        {day.notesHtml && (
+          <div className="panel story">
+            <div className="panel-head"><h3 className="label">[ 02 ] {t.story}</h3></div>
+            <div className="prose hand" dangerouslySetInnerHTML={{ __html: day.notesHtml }} />
+          </div>
+        )}
 
         <div className="panel">
-          <div className="panel-head"><h3 className="label">[ 03 ] {t.weather}</h3></div>
+          <div className="panel-head"><h3 className="label">[ {day.notesHtml ? "03" : "02"} ] {t.weather}</h3></div>
           <div className="table-scroll">
             <table className="wx">
               <thead>

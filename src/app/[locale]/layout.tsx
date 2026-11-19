@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Doto, Geist, Geist_Mono } from "next/font/google";
+import { Caveat, Doto, Geist, Geist_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/Header";
 import { Year } from "@/components/Year";
@@ -9,6 +9,7 @@ import "../globals.css";
 
 const sans = Geist({ subsets: ["latin"], variable: "--font-sans" });
 const mono = Geist_Mono({ subsets: ["latin"], variable: "--font-mono" });
+const hand = Caveat({ subsets: ["latin"], variable: "--font-hand" }); // the notes written on the road
 const dot = Doto({ subsets: ["latin"], variable: "--font-dot", weight: ["700", "900"] });
 
 export const generateStaticParams = () => locales.map((locale) => ({ locale }));
@@ -37,7 +38,7 @@ export default async function RootLayout({ children, params }: { children: React
   if (!isLocale(locale)) notFound();
   const dict = getDict(locale);
   return (
-    <html lang={locale} data-theme="dark" className={`${sans.variable} ${mono.variable} ${dot.variable}`} suppressHydrationWarning>
+    <html lang={locale} data-theme="dark" className={`${sans.variable} ${mono.variable} ${dot.variable} ${hand.variable}`} suppressHydrationWarning>
       <body>
         <script dangerouslySetInnerHTML={{ __html: boot }} />
         <a className="skip-link" href="#main">Skip to content</a>

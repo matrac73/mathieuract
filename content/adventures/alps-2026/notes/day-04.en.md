@@ -4,7 +4,7 @@ We set off wet and a little tired. We stop at a café for a cinnamon roll and a 
 
 Innsbruck is a charming little town with many frescoes painted on its façades: beautiful, but we are hungry.
 
-We decide to stop at "Machete", recommended by Jonas, Yannick's brother, who studies here. A burrito place: so good. We eat them on the square with a good ice cream and some doughnuts before taking on the pass.
+We decide to stop at "Machete", recommended by Jo., Ya.'s brother, who studies here. A burrito place: so good. We eat them on the square with a good ice cream and some doughnuts before taking on the pass.
 
 The Brenner turned out tougher than expected, with its 30 km of climbing and some stretches above 15%. It is the pass that links Italy and Austria, so it is not like the others: a kind of shopping centre and railway station at altitude, with every brand store trying to make the most of the favourable taxes.
 
@@ -12,4 +12,4 @@ The descent on the Italian side, on the other hand, is brilliant: a cycle path o
 
 And to finish, I am writing this from our camp a little further down, beside the cycle path, at 1,200 m.
 
-Tomorrow morning our paths part: Marine and Yannick carry on east towards Croatia, while Etienne and I head back to France 🥲
+Tomorrow morning our paths part: Ma. and Ya. carry on east towards Croatia, while Et. and I head back to France 🥲

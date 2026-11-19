@@ -4,7 +4,7 @@ Départ mouillés et un peu fatigués. Nous nous arrêtons dans un café prendre
 
 Innsbruck est une charmante bourgade avec de nombreuses fresques peintes sur les façades : beau, mais on a faim.
 
-Nous décidons de nous arrêter au restaurant « Machete », sur les conseils de Jonas, le frère de Yannick, qui étudie ici. Restaurant de burritos : trop bon. Nous les dégustons sur la place avec une bonne glace et des beignets avant d'attaquer le col.
+Nous décidons de nous arrêter au restaurant « Machete », sur les conseils de Jo., le frère de Ya., qui étudie ici. Restaurant de burritos : trop bon. Nous les dégustons sur la place avec une bonne glace et des beignets avant d'attaquer le col.
 
 Le col du Brenner s'est avéré plus coriace que prévu, avec ses 30 km de montée et parfois des portions à plus de 15 %. C'est le col qui fait la jonction entre l'Italie et l'Autriche. Il n'est donc pas comme les autres : c'est une espèce de centre commercial/gare en altitude, avec toutes les boutiques de marque qui cherchent à profiter des taxes avantageuses.
 
@@ -12,4 +12,4 @@ La redescente côté italien est en revanche géniale : piste cyclable sur le fl
 
 Et pour finir, j'écris ce message depuis notre camp un peu plus bas, sur le bord de la piste cyclable, à 1 200 m d'altitude.
 
-Demain matin, nos chemins se sépareront : Marine et Yannick prolongeront à l'est, direction la Croatie, tandis qu'Etienne et moi retournons en France 🥲
+Demain matin, nos chemins se sépareront : Ma. et Ya. prolongeront à l'est, direction la Croatie, tandis qu'Et. et moi retournons en France 🥲

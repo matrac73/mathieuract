@@ -6,4 +6,4 @@ We then string together 4 passes of 200 to 1,000 m of climbing each, which takes
 
 Arriving in St. Moritz was much appreciated. After some shopping in a supermarket at the station (the only one still open), we pitch camp and have dinner above the lake before a well-earned sleep!
 
-Hats off to Etienne, who had never climbed more than 1,500 m in a day before this one!
+Hats off to Et., who had never climbed more than 1,500 m in a day before this one!

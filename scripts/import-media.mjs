@@ -121,9 +121,14 @@ function convert(from, dst, dir, video, m, fix) {
     const tmp = path.join(dir, "_tmp.png");
     run("ffmpeg", ["-v", "error", "-y", "-i", from, "-frames:v", "1", "-update", "1", tmp]);
     // each zone to soften: a blurred copy of it, feathered into an ellipse, laid back over the picture
-    let graph = "[0:v]scale='min(1600,iw)':'min(1600,ih)':force_original_aspect_ratio=decrease[v0]";
+    // (the zone may run past the edge of the picture, for a face cut by the frame: the ellipse stays centred on the zone)
+    const src0 = probe(tmp).streams[0], k = Math.min(1, 1600 / Math.max(src0.width, src0.height)), W = Math.round(src0.width * k), H = Math.round(src0.height * k);
+    let graph = `[0:v]scale=${W}:${H}[v0]`;
     (fix.blur ?? []).forEach(([x, y, w, h, s = 8], i) => {
-      graph += `;[v${i}]split[a${i}][b${i}];[b${i}]crop=iw*${w}:ih*${h}:iw*${x}:ih*${y},gblur=sigma=${s},format=yuva444p,geq=lum='p(X,Y)':cb='cb(X,Y)':cr='cr(X,Y)':a='255*clip(2.2*(1-hypot((X-W/2)/(W/2),(Y-H/2)/(H/2))),0,1)'[c${i}];[a${i}][c${i}]overlay=W*${x}:H*${y}[v${i + 1}]`;
+      const bx = x * W, by = y * H, bw = w * W, bh = h * H; // the zone, in pixels
+      const cx = Math.max(0, Math.round(bx)), cy = Math.max(0, Math.round(by)), cw = Math.min(W, Math.round(bx + bw)) - cx, ch = Math.min(H, Math.round(by + bh)) - cy; // the part of it inside the picture
+      const r = `hypot((X+${(cx - bx - bw / 2).toFixed(1)})/${(bw / 2).toFixed(1)},(Y+${(cy - by - bh / 2).toFixed(1)})/${(bh / 2).toFixed(1)})`;
+      graph += `;[v${i}]split[a${i}][b${i}];[b${i}]crop=${cw}:${ch}:${cx}:${cy},gblur=sigma=${s},format=yuva444p,geq=lum='p(X,Y)':cb='cb(X,Y)':cr='cr(X,Y)':a='255*clip(4*(1-${r}),0,1)'[c${i}];[a${i}][c${i}]overlay=${cx}:${cy}[v${i + 1}]`;
     });
     run("ffmpeg", ["-v", "error", "-y", "-i", tmp, "-filter_complex", graph, "-map", `[v${(fix.blur ?? []).length}]`, "-frames:v", "1", "-update", "1", "-q:v", "5", "-map_metadata", "-1", dst]);
     fs.rmSync(tmp);

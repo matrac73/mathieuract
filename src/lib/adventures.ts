@@ -60,6 +60,8 @@ export function getAdventure(slug: string): Adventure | null {
 }
 
 const VIDEO = /\.(mp4|webm|mov|m4v)$/i;
+// French punctuation never starts a line: the spaces inside « » and before : ; ! ? become non-breaking
+const frSpaces = (html: string, l: string) => (l === "fr" ? html.replace(/« /g, "« ").replace(/ »/g, " »").replace(/ ([:;!?])/g, " $1") : html);
 
 /**
  * Where on the day's route a photo or video was taken (0..1). In order of trust:
@@ -111,7 +113,7 @@ export async function getDays(slug: string, locale: Locale): Promise<Day[]> {
       const f = path.join(DIR, slug, "notes", `${c.slug}.${l}.md`);
       if (fs.existsSync(f)) {
         const md = fs.readFileSync(f, "utf8").trim();
-        if (md) { notesHtml = monoEmoji(marked.parse(md, { async: false }) as string); break; }
+        if (md) { notesHtml = monoEmoji(frSpaces(marked.parse(md, { async: false }) as string, l)); break; }
       }
     }
     const avgPower = averagePower(day.profile, estimatePower(day.profile, day.weather, adv.meta.massKg ?? 85));

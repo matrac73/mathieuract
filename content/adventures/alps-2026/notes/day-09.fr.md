@@ -1,4 +1,4 @@
-Dernier jour de roulage pour l'équipe. Réveil chez Lou après la meilleure nuit du trip (83/100 de score). J'ai l'impression que mon corps s'est habitué aux conditions.
+Dernier jour de roulage pour l'équipe. Réveil chez Lo. après la meilleure nuit du trip (83/100 de score). J'ai l'impression que mon corps s'est habitué aux conditions.
 
 Il ne nous reste que 3 ascensions de 500 m de D+ avant d'arriver à la maison.
 

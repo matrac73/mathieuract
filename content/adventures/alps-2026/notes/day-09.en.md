@@ -1,4 +1,4 @@
-Last day of riding for the team. Waking up at Lou's after the best night of the trip (a sleep score of 83/100). It feels like my body has got used to the conditions.
+Last day of riding for the team. Waking up at Lo.'s after the best night of the trip (a sleep score of 83/100). It feels like my body has got used to the conditions.
 
 Only 3 climbs of 500 m each are left before we get home.
 
