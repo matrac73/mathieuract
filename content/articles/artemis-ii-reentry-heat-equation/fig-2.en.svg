@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460">
+  <line class="s-line" x1="90" y1="70" x2="750" y2="70" stroke-width="1"/>
+  <line class="s-line" x1="90" y1="210" x2="750" y2="210" stroke-width="1"/>
+  <line class="s-mid" x1="90" y1="56" x2="90" y2="350" stroke-width="2"/>
+  <line class="s-mid" x1="90" y1="350" x2="760" y2="350" stroke-width="2"/>
+  <line class="s-mid" x1="310" y1="350" x2="310" y2="358" stroke-width="2"/>
+  <line class="s-mid" x1="530" y1="350" x2="530" y2="358" stroke-width="2"/>
+  <line class="s-mid" x1="750" y1="350" x2="750" y2="358" stroke-width="2"/>
+  <text class="t-mid" x="24" y="40" font-size="17">temperature (surface = 1)</text>
+  <text class="t-mid" x="80" y="76" font-size="16" text-anchor="end">1</text>
+  <text class="t-mid" x="80" y="216" font-size="16" text-anchor="end">0.5</text>
+  <text class="t-mid" x="80" y="356" font-size="16" text-anchor="end">0</text>
+  <text class="t-mid" x="90" y="376" font-size="16" text-anchor="middle">0</text>
+  <text class="t-mid" x="310" y="376" font-size="16" text-anchor="middle">10</text>
+  <text class="t-mid" x="530" y="376" font-size="16" text-anchor="middle">20</text>
+  <text class="t-mid" x="750" y="376" font-size="16" text-anchor="middle">30</text>
+  <text class="t-mid" x="776" y="408" font-size="17" text-anchor="end">depth (mm)</text>
+  <circle class="f-fg" cx="90" cy="70" r="6"/>
+  <text x="330" y="54" font-size="17">surface kept hot, at x = 0</text>
+
+  <g data-step="2">
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="3" d="M90,70 L110.2,101.5 L130.3,132.4 L150.5,162 L170.7,190 L190.8,215.7 L211,239.1 L231.2,259.8 L251.4,277.8 L271.5,293.1 L291.7,306 L332,324.9 L372.4,336.6 L412.7,343.4 L453,346.9 L493.4,348.7 L594,349.9 L750,350"/>
+    <line class="s-mid" x1="190.8" y1="215.7" x2="190.8" y2="390" stroke-width="1.5" stroke-dasharray="5 5"/>
+    <circle class="f-fg" cx="190.8" cy="215.7" r="6"/>
+    <text x="191" y="408" font-size="17" text-anchor="middle">3.5 min</text>
+    <text class="t-mid" x="191" y="432" font-size="17" text-anchor="middle">4.6 mm</text>
+  </g>
+
+  <g data-step="3">
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="3" d="M90,70 L130.3,101.5 L170.7,132.4 L211,162 L251.4,190 L291.7,215.7 L332,239.1 L372.4,259.8 L412.7,277.8 L453.1,293.1 L493.4,306 L574.1,324.9 L654.8,336.6 L735.4,343.4 L750,344.2"/>
+    <line class="s-mid" x1="291.7" y1="215.7" x2="291.7" y2="390" stroke-width="1.5" stroke-dasharray="5 5"/>
+    <circle class="f-fg" cx="291.7" cy="215.7" r="6"/>
+    <text x="292" y="408" font-size="17" text-anchor="middle">14 min</text>
+    <text class="t-mid" x="292" y="432" font-size="17" text-anchor="middle">9.2 mm</text>
+  </g>
+
+  <g data-step="4">
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="3" d="M90,70 L170.7,101.5 L251.3,132.4 L332,162 L412.7,190 L493.4,215.7 L574,239.1 L654.7,259.8 L735.4,277.8 L750,280.8"/>
+    <line class="s-mid" x1="493.4" y1="215.7" x2="493.4" y2="390" stroke-width="1.5" stroke-dasharray="5 5"/>
+    <circle class="f-fg" cx="493.4" cy="215.7" r="6"/>
+    <text x="493" y="408" font-size="17" text-anchor="middle">56 min</text>
+    <text class="t-mid" x="493" y="432" font-size="17" text-anchor="middle">18 mm</text>
+    <text class="t-acc" x="760" y="120" font-size="20" text-anchor="end">time × 4 → depth × 2</text>
+  </g>
+</svg>

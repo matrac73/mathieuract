@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <line class="s-line" x1="90" y1="70" x2="750" y2="70" stroke-width="1"/>
+  <line class="s-line" x1="90" y1="210" x2="750" y2="210" stroke-width="1"/>
+  <line class="s-mid" x1="90" y1="56" x2="90" y2="350" stroke-width="2"/>
+  <line class="s-mid" x1="90" y1="350" x2="760" y2="350" stroke-width="2"/>
+  <line class="s-mid" x1="310" y1="350" x2="310" y2="358" stroke-width="2"/>
+  <line class="s-mid" x1="530" y1="350" x2="530" y2="358" stroke-width="2"/>
+  <line class="s-mid" x1="750" y1="350" x2="750" y2="358" stroke-width="2"/>
+  <text class="t-mid" x="24" y="40" font-size="17">temperature (surface at 2 min = 1)</text>
+  <text class="t-mid" x="80" y="76" font-size="16" text-anchor="end">1</text>
+  <text class="t-mid" x="80" y="216" font-size="16" text-anchor="end">0.5</text>
+  <text class="t-mid" x="80" y="356" font-size="16" text-anchor="end">0</text>
+  <text class="t-mid" x="90" y="376" font-size="16" text-anchor="middle">0</text>
+  <text class="t-mid" x="310" y="376" font-size="16" text-anchor="middle">10</text>
+  <text class="t-mid" x="530" y="376" font-size="16" text-anchor="middle">20</text>
+  <text class="t-mid" x="750" y="376" font-size="16" text-anchor="middle">30</text>
+  <text class="t-mid" x="776" y="412" font-size="17" text-anchor="end">depth (mm)</text>
+
+  <path data-hide="2" class="s-fg" fill="none" stroke-width="3" d="M90,70 L112,75.9 L134,92.4 L156,117.9 L178,149.2 L200,183.7 L222,217.6 L244,249.2 L266,276.1 L288,298.2 L310,315.1 L332,327.5 L354,336.1 L376,341.7 L398,345.3 L442,348.7 L486,349.7 L530,349.9 L750,350"/>
+  <text x="168" y="100" font-size="17">2 min</text>
+
+  <g data-step="2">
+    <path class="s-mid" fill="none" stroke-width="2" stroke-dasharray="6 6" d="M90,70 L112,75.9 L134,92.4 L156,117.9 L178,149.2 L200,183.7 L222,217.6 L244,249.2 L266,276.1 L288,298.2 L310,315.1 L332,327.5 L354,336.1 L376,341.7 L398,345.3 L442,348.7 L486,349.7 L530,349.9 L750,350"/>
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="3" d="M90,210 L134,212.9 L178,221.2 L222,233.9 L266,249.7 L310,266.8 L354,283.8 L398,299.5 L442,313.1 L486,324.1 L530,332.5 L574,338.7 L618,343 L662,345.9 L706,347.6 L750,348.7"/>
+    <text x="592" y="318" font-size="17">8 min</text>
+  </g>
+
+  <g data-step="3">
+    <line class="s-fg" x1="104" y1="86" x2="104" y2="192" stroke-width="2"/>
+    <path class="f-fg" d="M98,190 L110,190 L104,202 Z"/>
+    <text x="250" y="110" font-size="17">surface: 100% → 50%</text>
+  </g>
+
+  <g data-step="4">
+    <line class="s-acc" x1="310" y1="310" x2="310" y2="282" stroke-width="3"/>
+    <path class="f-acc" d="M303,283 L317,283 L310,270 Z"/>
+    <text class="t-acc" x="332" y="206" font-size="18">at 10 mm: 12% → 30%</text>
+    <text class="t-acc" x="332" y="232" font-size="18">the inside keeps heating</text>
+  </g>
+</svg>
