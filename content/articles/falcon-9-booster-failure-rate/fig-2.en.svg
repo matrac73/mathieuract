@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <line x1="90" y1="295" x2="680" y2="295" class="s-line" stroke-width="1"/>
+  <line x1="90" y1="220" x2="680" y2="220" class="s-line" stroke-width="1"/>
+  <line x1="90" y1="145" x2="680" y2="145" class="s-line" stroke-width="1"/>
+  <line x1="90" y1="70" x2="680" y2="70" class="s-line" stroke-width="1"/>
+  <line x1="90" y1="60" x2="90" y2="370" class="s-mid" stroke-width="2"/>
+  <line x1="90" y1="370" x2="680" y2="370" class="s-mid" stroke-width="2"/>
+
+  <text x="24" y="38" font-size="18">Chance of reaching this many flights (%)</text>
+  <text x="78" y="376" font-size="16" text-anchor="end" class="t-mid">0</text>
+  <text x="78" y="301" font-size="16" text-anchor="end" class="t-mid">25</text>
+  <text x="78" y="226" font-size="16" text-anchor="end" class="t-mid">50</text>
+  <text x="78" y="151" font-size="16" text-anchor="end" class="t-mid">75</text>
+  <text x="78" y="76" font-size="16" text-anchor="end" class="t-mid">100</text>
+
+  <text x="90" y="394" font-size="16" text-anchor="middle" class="t-mid">0</text>
+  <text x="237" y="394" font-size="16" text-anchor="middle" class="t-mid">18</text>
+  <text x="385" y="394" font-size="16" text-anchor="middle" class="t-mid">36</text>
+  <text x="532" y="394" font-size="16" text-anchor="middle" class="t-mid">54</text>
+  <text x="680" y="394" font-size="16" text-anchor="middle" class="t-mid">72</text>
+  <text x="385" y="428" font-size="18" text-anchor="middle">Number of flights</text>
+
+  <g data-step="1">
+    <path d="M90 70 L163.8 95.8 L237.5 119.4 L311.3 141 L385 160.7 L458.8 178.7 L532.5 195.2 L606.3 210.2 L680 224" pathLength="1" fill="none" class="draw s-fg" stroke-width="3"/>
+    <text x="670" y="180" font-size="18" text-anchor="end">Constant rate</text>
+  </g>
+
+  <g data-step="2">
+    <path d="M90 70 L126.9 71.7 L163.8 76.7 L200.6 84.9 L237.5 95.8 L274.4 109.4 L311.3 125 L348.1 142.3 L385 160.7 L421.9 179.8 L458.8 199 L495.6 218.2 L532.5 236.5 L569.4 254.1 L606.3 270.4 L643.1 285.4 L680 298.9" pathLength="1" fill="none" class="draw s-mid" stroke-width="3"/>
+    <text x="600" y="332" font-size="18" text-anchor="end" class="t-mid">Wear</text>
+    <circle cx="385" cy="160.7" r="6" class="f-fg"/>
+    <text x="400" y="132" font-size="18">36 flights: 70% for both</text>
+  </g>
+
+  <g data-step="3">
+    <line x1="680" y1="60" x2="680" y2="370" class="s-acc" stroke-width="2" stroke-dasharray="6 6"/>
+    <circle cx="680" cy="224" r="6" class="f-acc"/>
+    <circle cx="680" cy="298.9" r="6" class="f-acc"/>
+    <text x="694" y="230" font-size="18" class="t-acc">49%</text>
+    <text x="694" y="305" font-size="18" class="t-acc">24%</text>
+  </g>
+
+  <g data-step="4">
+    <text x="110" y="318" font-size="18" class="t-acc">36 more flights:</text>
+    <text x="110" y="344" font-size="18" class="t-acc">a 70% or a 34% chance</text>
+  </g>
+</svg>
