@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <g data-step="4">
+    <rect x="415" y="60" width="325" height="310" class="f-acc" opacity="0.12"/>
+    <text x="578" y="92" font-size="18" text-anchor="middle" class="t-acc">Jamais observé sur ce lanceur</text>
+  </g>
+
+  <line x1="90" y1="308" x2="740" y2="308" class="s-line" stroke-width="1"/>
+  <line x1="90" y1="246" x2="740" y2="246" class="s-line" stroke-width="1"/>
+  <line x1="90" y1="184" x2="740" y2="184" class="s-line" stroke-width="1"/>
+  <line x1="90" y1="122" x2="740" y2="122" class="s-line" stroke-width="1"/>
+  <line x1="90" y1="60" x2="90" y2="370" class="s-mid" stroke-width="2"/>
+  <line x1="90" y1="370" x2="740" y2="370" class="s-mid" stroke-width="2"/>
+
+  <text x="24" y="38" font-size="18">Risque au vol suivant (%)</text>
+  <text x="78" y="376" font-size="16" text-anchor="end" class="t-mid">0</text>
+  <text x="78" y="314" font-size="16" text-anchor="end" class="t-mid">1</text>
+  <text x="78" y="252" font-size="16" text-anchor="end" class="t-mid">2</text>
+  <text x="78" y="190" font-size="16" text-anchor="end" class="t-mid">3</text>
+  <text x="78" y="128" font-size="16" text-anchor="end" class="t-mid">4</text>
+
+  <text x="90" y="394" font-size="16" text-anchor="middle" class="t-mid">0</text>
+  <text x="252" y="394" font-size="16" text-anchor="middle" class="t-mid">18</text>
+  <text x="415" y="394" font-size="16" text-anchor="middle" class="t-mid">36</text>
+  <text x="578" y="394" font-size="16" text-anchor="middle" class="t-mid">54</text>
+  <text x="740" y="394" font-size="16" text-anchor="middle" class="t-mid">72</text>
+  <text x="415" y="428" font-size="18" text-anchor="middle">Nombre de vols déjà effectués</text>
+
+  <g data-step="1">
+    <path d="M90 308 L740 308" pathLength="1" fill="none" class="draw s-fg" stroke-width="3"/>
+    <text x="730" y="296" font-size="18" text-anchor="end">Taux constant : 1 % par vol</text>
+  </g>
+
+  <g data-step="2">
+    <path d="M90 370 L740 122" pathLength="1" fill="none" class="draw s-mid" stroke-width="3"/>
+    <text x="400" y="150" font-size="18" text-anchor="end" class="t-mid">Usure : le risque monte</text>
+  </g>
+
+  <g data-step="3">
+    <line x1="415" y1="60" x2="415" y2="370" class="s-acc" stroke-width="2" stroke-dasharray="6 6"/>
+    <circle cx="415" cy="308" r="6" class="f-acc"/>
+    <circle cx="415" cy="246" r="6" class="f-acc"/>
+    <text x="429" y="332" font-size="18" class="t-acc">1 %</text>
+    <text x="401" y="236" font-size="18" text-anchor="end" class="t-acc">2 %</text>
+    <text x="415" y="48" font-size="18" text-anchor="middle" class="t-acc">36e vol</text>
+  </g>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420">
+  <line x1="100" y1="210" x2="700" y2="210" class="s-line" stroke-width="1"/>
+  <line x1="100" y1="80" x2="700" y2="80" class="s-line" stroke-width="1"/>
+  <line x1="100" y1="70" x2="100" y2="340" class="s-mid" stroke-width="2"/>
+  <line x1="100" y1="340" x2="700" y2="340" class="s-mid" stroke-width="2"/>
+
+  <text x="24" y="40" font-size="18">Chances d'enchaîner 36 vols sans perte (%)</text>
+  <text x="88" y="346" font-size="16" text-anchor="end" class="t-mid">0</text>
+  <text x="88" y="216" font-size="16" text-anchor="end" class="t-mid">50</text>
+  <text x="88" y="86" font-size="16" text-anchor="end" class="t-mid">100</text>
+
+  <text x="230" y="366" font-size="18" text-anchor="middle" class="t-mid">1 % par vol</text>
+  <text x="400" y="366" font-size="18" text-anchor="middle" class="t-mid">3 % par vol</text>
+  <text x="570" y="366" font-size="18" text-anchor="middle" class="t-mid">5 % par vol</text>
+  <text x="400" y="400" font-size="18" text-anchor="middle">Risque de perte à chaque vol</text>
+
+  <g data-step="1">
+    <rect x="170" y="158" width="120" height="182" class="f-fg"/>
+    <text x="230" y="146" font-size="20" text-anchor="middle">70 %</text>
+  </g>
+
+  <g data-step="2">
+    <rect x="340" y="251.6" width="120" height="88.4" class="f-mid"/>
+    <text x="400" y="240" font-size="20" text-anchor="middle">34 %</text>
+  </g>
+
+  <g data-step="3">
+    <rect x="510" y="295.8" width="120" height="44.2" class="f-mid"/>
+    <text x="570" y="284" font-size="20" text-anchor="middle">17 %</text>
+  </g>
+
+  <g data-step="4">
+    <text x="700" y="118" font-size="18" text-anchor="end" class="t-acc">Un seul record ne tranche pas</text>
+    <text x="700" y="144" font-size="18" text-anchor="end" class="t-acc">entre ces trois risques</text>
+  </g>
+</svg>
