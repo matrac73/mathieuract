@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 470">
   <text x="36" y="40" font-size="18">Inflation (%)</text>
-  <text x="770" y="440" font-size="18" text-anchor="end">Unemployment (%)</text>
+  <text x="770" y="456" font-size="18" text-anchor="end">Unemployment (%)</text>
   <line class="s-fg" x1="100" y1="60" x2="100" y2="400" stroke-width="2"/>
   <line class="s-fg" x1="100" y1="400" x2="750" y2="400" stroke-width="2"/>
   <text class="t-mid" x="88" y="406" font-size="16" text-anchor="end">0</text>

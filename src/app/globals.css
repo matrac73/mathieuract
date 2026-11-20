@@ -790,3 +790,29 @@ html { scroll-snap-type: none; }
 .rail-day.epi { border-left: 2px dashed var(--accent); }
 .day-count .tag { margin-left: 10px; }
 .frame.cover[hidden] { display: none; }
+
+/* ---------- v13: home tiles = latest adventure / article, courses on the CentraleSupélec page, structured experience pages ---------- */
+.tile-desc b { display: block; color: var(--fg); font-weight: 600; margin-bottom: 4px; }
+.tile:hover .tile-desc b { color: var(--bg); }
+.courses-lead { max-width: 64ch; margin-top: 8px; }
+.year { margin-top: 34px; border-top: 1px solid var(--line); padding-top: 18px; }
+.year-title { color: var(--accent); }
+.course-group { margin-top: 22px; }
+.courses { margin-top: 8px; border-top: 1px solid var(--line); }
+.course { display: grid; grid-template-columns: minmax(180px, 30%) minmax(0, 1fr); gap: 4px 24px; padding: 12px 0; border-bottom: 1px solid var(--line); scroll-margin-top: calc(var(--header-h) + 16px); }
+.course-name { font-weight: 600; }
+.course-text { color: var(--mid); font-size: 15px; }
+.course-articles { grid-column: 2; display: grid; gap: 4px; margin-top: 4px; font-size: 14px; }
+.course-articles a { color: var(--fg); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.course-articles a span { color: var(--accent); }
+.course-articles a:hover { text-decoration-color: var(--accent); }
+.course:target { background: var(--panel); box-shadow: -12px 0 0 var(--panel), 12px 0 0 var(--panel); }
+.course:target .course-name { color: var(--accent); }
+@media (max-width: 640px) { .course { grid-template-columns: 1fr; } .course-articles { grid-column: 1; } }
+.exp-prose { max-width: 78ch; }
+.exp-prose h2 { margin-top: 2em; padding-top: 0.9em; border-top: 1px solid var(--line); font-family: var(--font-mono), monospace; font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+.exp-prose h3 { margin-top: 1.6em; font-size: 19px; }
+.exp-prose h3 + p { color: var(--mid); margin-top: 0.3em; }
+.exp-prose ul { margin-top: 0.5em; }
+.exp-prose li { margin: 0.25em 0; }
+.exp-prose li { margin: 0; }
