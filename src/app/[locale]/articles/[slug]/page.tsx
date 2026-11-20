@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ScrollFigures } from "@/components/ScrollFigures";
 import { VoxelScene } from "@/components/VoxelScene";
 import { getArticle, listArticles, listSlugs } from "@/lib/articles";
+import { courseName, courseOf } from "@/lib/courses";
 import { fmtDate, getDict, isLocale, locales } from "@/lib/i18n";
 
 type P = { params: Promise<{ locale: string; slug: string }> };
@@ -22,6 +23,7 @@ export default async function ArticlePage({ params }: P) {
   const a = getArticle(slug, locale);
   if (!a) notFound();
   const d = getDict(locale);
+  const course = courseOf(a);
   const all = listArticles(locale);
   const next = all[(all.findIndex((x) => x.slug === slug) + 1) % all.length];
   return (
@@ -34,7 +36,7 @@ export default async function ArticlePage({ params }: P) {
           <h1 className="display small">{a.title}</h1>
           <dl className="persp-meta">
             {a.news && (<><dt className="label">{d.articles.news}</dt><dd><a href={a.news.url} target="_blank" rel="noopener noreferrer">{a.news.title}</a> <span className="dim">· {a.news.source}, {fmtDate(a.news.date, locale)}</span></dd></>)}
-            {a.course && (<><dt className="label">{d.articles.course}</dt><dd>{a.course} <span className="dim">· CentraleSupélec</span></dd></>)}
+            {a.course && (<><dt className="label">{d.articles.course}</dt><dd>{course ? <Link href={`/${locale}/experience/centralesupelec#${course.slug}`}>{courseName(course)} ({course.year})</Link> : a.course} <span className="dim">· CentraleSupélec</span></dd></>)}
           </dl>
         </header>
       ) : (

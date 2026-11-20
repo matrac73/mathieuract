@@ -10,7 +10,7 @@ export type NewsRef = { title: string; source: string; url: string; date: string
 export type ArticleMeta = {
   slug: string; title: string; summary: string; category: string; date: string; written?: string; scene?: string; readingMinutes: number; order: number;
   // "perspective" articles: a recent news item read through one of the courses followed at CentraleSupélec
-  hook?: string; course?: string; news?: NewsRef;
+  hook?: string; course?: string; courseSlug?: string; news?: NewsRef;
 };
 export type Article = ArticleMeta & { html: string };
 
@@ -50,6 +50,9 @@ function loadSvg(slug: string, file: string): string {
     .replace(/\s(xlink:)?href\s*=\s*("(?!#)[^"]*"|'(?!#)[^']*')/gi, "")
     .replace(/<svg([^>]*?)\s(?:width|height)="[^"]*"/gi, "<svg$1")
     .replace(/<svg([^>]*?)\s(?:width|height)="[^"]*"/gi, "<svg$1")
+    // on one line: a blank line inside the SVG would end the HTML block for the markdown parser,
+    // and the rest of the drawing would come out as plain text under the figure
+    .replace(/\s*\r?\n\s*/g, " ")
     .trim();
 }
 
