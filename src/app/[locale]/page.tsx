@@ -7,7 +7,7 @@ import { Rotator } from "@/components/Rotator";
 import { HoverScramble, Scramble } from "@/components/Scramble";
 import { listAdventures } from "@/lib/adventures";
 import { listArticles } from "@/lib/articles";
-import { getDict, isLocale } from "@/lib/i18n";
+import { fmtDate, fmtNum, getDict, isLocale } from "@/lib/i18n";
 import { site } from "@/content/site";
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
@@ -36,8 +36,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           </h1>
           <p className="hero-role"><Rotator items={site.taglines[locale]} /></p>
           <div className="hero-cta">
-            {latest && <Link className="btn" href={`/${locale}/adventures/${latest.slug}`}>{d.home.ctaAdventure} <span aria-hidden>→</span></Link>}
-            {article && <Link className="btn ghost" href={`/${locale}/articles/${article.slug}`}>{d.home.ctaArticle} <span aria-hidden>→</span></Link>}
+            {tiles.map((k, i) => <Link key={k} className={i ? "btn ghost" : "btn"} href={`/${locale}/${k}`}>{d.nav[k]} <span aria-hidden>→</span></Link>)}
           </div>
         </div>
         <div className="hero-portrait frame">
@@ -47,16 +46,24 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       </section>
 
       <section className="section">
-        <p className="label">[ {d.home.index} ]</p>
+        <p className="label">[ {d.home.latest} ]</p>
         <div className="tiles two">
-          {tiles.map((k, i) => (
-            <Link key={k} href={`/${locale}/${k}`} className="tile">
-              <span className="tile-n">0{i + 1}</span>
-              <span className="tile-title"><HoverScramble text={d.nav[k]} /></span>
-              <span className="tile-desc">{d.home.tiles[k]}</span>
-              <span className="tile-foot"><span className="label">{k === "pro" ? "2013 → …" : `${String(adventures.length).padStart(2, "0")} ${d.perso.adventures.toLowerCase()}`}</span><span aria-hidden>→</span></span>
+          {latest && (
+            <Link href={`/${locale}/adventures/${latest.slug}`} className="tile">
+              <span className="tile-n">01</span>
+              <span className="tile-title"><HoverScramble text={d.home.ctaAdventure} /></span>
+              <span className="tile-desc"><b>{latest.meta.title[locale]}</b>{latest.meta.tagline[locale]}</span>
+              <span className="tile-foot"><span className="label">{fmtDate(latest.summary.startDate, locale, { month: "long", year: "numeric" })} · {fmtNum(latest.summary.totals.distanceKm, locale)} km</span><span aria-hidden>→</span></span>
             </Link>
-          ))}
+          )}
+          {article && (
+            <Link href={`/${locale}/articles/${article.slug}`} className="tile">
+              <span className="tile-n">02</span>
+              <span className="tile-title"><HoverScramble text={d.home.ctaArticle} /></span>
+              <span className="tile-desc"><b>{article.title}</b>{article.hook ?? article.summary}</span>
+              <span className="tile-foot"><span className="label">{fmtDate(`${when(article)}-15`, locale, { month: "long", year: "numeric" })} · {article.readingMinutes} {d.articles.min}</span><span aria-hidden>→</span></span>
+            </Link>
+          )}
         </div>
       </section>
     </>

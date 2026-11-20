@@ -8,6 +8,7 @@ import { Scramble } from "@/components/Scramble";
 import { VoxelScene } from "@/components/VoxelScene";
 import { career } from "@/content/site";
 import { listArticles } from "@/lib/articles";
+import { coursesByYear } from "@/lib/courses";
 import { getDict, isLocale, locales, type Locale } from "@/lib/i18n";
 
 type P = { params: Promise<{ locale: string; slug: string }> };
@@ -46,6 +47,7 @@ export default async function ExperiencePage({ params }: P) {
     const w = months(a.written ?? a.date.slice(0, 7));
     return w >= months(it.start) && w <= months(it.end ?? now);
   });
+  const curriculum = slug === "centralesupelec" ? coursesByYear(listArticles(locale), locale) : [];
   const prev = career[i + 1], next = career[i - 1]; // the list is newest first
 
   return (
@@ -68,21 +70,51 @@ export default async function ExperiencePage({ params }: P) {
       <section className="block">
         <h2 className="label">[ {t.expWhat} ]</h2>
         {html ? (
-          <div className="prose" dangerouslySetInnerHTML={{ __html: html }} />
+          <div className="prose exp-prose" dangerouslySetInnerHTML={{ __html: html }} />
         ) : (
           <div className="frame empty exp-text"><span className="label">{t.expText}<br /><span className="dim">content/experiences/{slug}.{locale}.md</span></span></div>
         )}
       </section>
 
-      <section className="block">
-        <h2 className="label">[ Images ]</h2>
-        <div className="photos">
-          {images.length
-            // eslint-disable-next-line @next/next/no-img-element
-            ? images.map((src) => <figure key={src} className="frame"><img src={src} alt="" loading="lazy" /></figure>)
-            : Array.from({ length: 3 }, (_, k) => <div key={k} className="frame empty"><span className="label">{t.expImg} {String(k + 1).padStart(2, "0")}<br /><span className="dim">public/experiences/{slug}/</span></span></div>)}
-        </div>
-      </section>
+      {curriculum.length > 0 && (
+        <section className="block" id="courses">
+          <h2 className="label">[ {t.courses} ]</h2>
+          <p className="muted courses-lead">{t.coursesLead}</p>
+          {curriculum.map((y) => (
+            <div key={y.year} className="year">
+              <h3 className="display small year-title">{y.year}</h3>
+              {y.groups.map((g) => (
+                <div key={g.theme} className="course-group">
+                  <p className="label">{g.theme}</p>
+                  <ul className="courses">
+                    {g.items.map((c) => (
+                      <li key={c.slug} id={c.slug} className="course">
+                        <span className="course-name">{c.name}</span>
+                        <span className="course-text">{c.text}</span>
+                        {c.articles.length > 0 && (
+                          <span className="course-articles" aria-label={t.courseArticles}>
+                            {c.articles.map((a) => <Link key={a.slug} href={`/${locale}/articles/${a.slug}`}><span aria-hidden>→</span> {a.title}</Link>)}
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {images.length > 0 && (
+        <section className="block">
+          <h2 className="label">[ Images ]</h2>
+          <div className="photos">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {images.map((src) => <figure key={src} className="frame"><img src={src} alt="" loading="lazy" /></figure>)}
+          </div>
+        </section>
+      )}
 
       {written.length > 0 && (
         <section className="block">
