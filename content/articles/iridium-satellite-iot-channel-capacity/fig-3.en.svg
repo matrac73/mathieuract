@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420">
+  <text class="t-mid" x="24" y="36" font-size="16">Maximum rate in 20 MHz</text>
+  <line class="s-mid" x1="120" y1="340" x2="700" y2="340" stroke-width="2"/>
+  <text x="250" y="398" font-size="18" text-anchor="middle">4G network, 20 dB</text>
+  <text x="570" y="398" font-size="18" text-anchor="middle">Satellite, −28 dB</text>
+
+  <!-- step 1: power P -->
+  <g data-step="1">
+    <rect class="f-mid" x="170" y="220" width="70" height="120"/>
+    <text class="t-mid" x="205" y="364" font-size="16" text-anchor="middle">P</text>
+    <text x="205" y="210" font-size="16" text-anchor="middle">133 Mbit/s</text>
+    <rect class="f-mid" x="490" y="220" width="70" height="120"/>
+    <text class="t-mid" x="525" y="364" font-size="16" text-anchor="middle">P</text>
+    <text x="525" y="210" font-size="16" text-anchor="middle">46 kbit/s</text>
+  </g>
+
+  <!-- step 2: 4G, doubled power -->
+  <g data-step="2">
+    <rect class="f-fg" x="260" y="202" width="70" height="138"/>
+    <text class="t-mid" x="295" y="364" font-size="16" text-anchor="middle">2 P</text>
+    <text x="300" y="192" font-size="16" text-anchor="middle">153 Mbit/s</text>
+    <text x="300" y="166" font-size="20" text-anchor="middle">+15%</text>
+  </g>
+
+  <!-- step 3: satellite, doubled power -->
+  <g data-step="3">
+    <rect class="f-acc" x="580" y="101" width="70" height="239"/>
+    <text class="t-mid" x="615" y="364" font-size="16" text-anchor="middle">2 P</text>
+    <text class="t-acc" x="615" y="91" font-size="16" text-anchor="middle">91 kbit/s</text>
+    <text class="t-acc" x="615" y="64" font-size="20" text-anchor="middle">× 2</text>
+  </g>
+</svg>

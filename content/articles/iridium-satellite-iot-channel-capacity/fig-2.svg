@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <!-- axes -->
+  <line class="s-mid" x1="100" y1="380" x2="770" y2="380" stroke-width="2"/>
+  <line class="s-mid" x1="100" y1="60" x2="100" y2="380" stroke-width="2"/>
+  <line class="s-line" x1="100" y1="230" x2="770" y2="230" stroke-width="1"/>
+  <line class="s-line" x1="100" y1="80" x2="770" y2="80" stroke-width="1"/>
+  <text class="t-mid" x="24" y="36" font-size="16">Débit maximal (kbit/s)</text>
+  <text class="t-mid" x="88" y="386" font-size="16" text-anchor="end">0</text>
+  <text class="t-mid" x="88" y="236" font-size="16" text-anchor="end">25</text>
+  <text class="t-mid" x="88" y="86" font-size="16" text-anchor="end">50</text>
+  <line class="s-mid" x1="232" y1="380" x2="232" y2="386" stroke-width="2"/>
+  <line class="s-mid" x1="364" y1="380" x2="364" y2="386" stroke-width="2"/>
+  <line class="s-mid" x1="496" y1="380" x2="496" y2="386" stroke-width="2"/>
+  <line class="s-mid" x1="628" y1="380" x2="628" y2="386" stroke-width="2"/>
+  <line class="s-mid" x1="760" y1="380" x2="760" y2="386" stroke-width="2"/>
+  <text class="t-mid" x="100" y="406" font-size="16" text-anchor="middle">1 kHz</text>
+  <text class="t-mid" x="232" y="406" font-size="16" text-anchor="middle">10 kHz</text>
+  <text class="t-mid" x="364" y="406" font-size="16" text-anchor="middle">100 kHz</text>
+  <text class="t-mid" x="496" y="406" font-size="16" text-anchor="middle">1 MHz</text>
+  <text class="t-mid" x="628" y="406" font-size="16" text-anchor="middle">10 MHz</text>
+  <text class="t-mid" x="776" y="406" font-size="16" text-anchor="end">100 MHz</text>
+  <text class="t-mid" x="430" y="436" font-size="16" text-anchor="middle">Largeur de bande (échelle logarithmique)</text>
+
+  <!-- step 1 : C(W) = W log2(1 + 31600 / W) -->
+  <g data-step="1">
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="3" d="M100,349.8 L133,333.5 L166,314.6 L199,286.6 L232,256.4 L265,222.5 L298,190.4 L331,162.5 L364,142.4 L397.7,127.4 L430,119 L463,113.5 L496,110.6 L562,107.6 L628,107 L667.7,106.6 L760,106.4"/>
+  </g>
+
+  <!-- step 2 : plafond P / N0 x log2(e) -->
+  <g data-step="2">
+    <line class="s-mid" x1="100" y1="106.4" x2="770" y2="106.4" stroke-width="2" stroke-dasharray="6 5"/>
+    <text class="t-mid" x="114" y="130" font-size="18">Plafond : 46 kbit/s</text>
+  </g>
+
+  <!-- step 3 : la bande 4G entière -->
+  <g data-step="3">
+    <circle class="f-fg" cx="667.7" cy="106.6" r="6"/>
+    <text x="660" y="140" font-size="18" text-anchor="middle">20 MHz : 46 kbit/s</text>
+  </g>
+
+  <!-- step 4 : la bande étroite -->
+  <g data-step="4">
+    <circle class="f-acc" cx="397.7" cy="127.4" r="7"/>
+    <text class="t-acc" x="412" y="176" font-size="18">180 kHz : 42 kbit/s</text>
+    <text class="t-acc" x="412" y="202" font-size="16">111 fois plus étroit, −8 %</text>
+  </g>
+</svg>
