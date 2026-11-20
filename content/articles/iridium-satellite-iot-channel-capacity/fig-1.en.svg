@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <!-- axes -->
+  <line class="s-mid" x1="90" y1="380" x2="770" y2="380" stroke-width="2"/>
+  <line class="s-mid" x1="90" y1="50" x2="90" y2="380" stroke-width="2"/>
+  <line class="s-line" x1="90" y1="265.7" x2="770" y2="265.7" stroke-width="1"/>
+  <line class="s-line" x1="90" y1="151.4" x2="770" y2="151.4" stroke-width="1"/>
+  <text class="t-mid" x="24" y="30" font-size="16">Rate per hertz (bit/s/Hz)</text>
+  <text class="t-mid" x="78" y="386" font-size="16" text-anchor="end">0</text>
+  <text class="t-mid" x="78" y="271" font-size="16" text-anchor="end">5</text>
+  <text class="t-mid" x="78" y="157" font-size="16" text-anchor="end">10</text>
+  <line class="s-mid" x1="185.7" y1="380" x2="185.7" y2="386" stroke-width="2"/>
+  <line class="s-mid" x1="377.1" y1="380" x2="377.1" y2="386" stroke-width="2"/>
+  <line class="s-mid" x1="568.6" y1="380" x2="568.6" y2="386" stroke-width="2"/>
+  <line class="s-mid" x1="760" y1="380" x2="760" y2="386" stroke-width="2"/>
+  <text class="t-mid" x="185.7" y="406" font-size="16" text-anchor="middle">−20</text>
+  <text class="t-mid" x="377.1" y="406" font-size="16" text-anchor="middle">0</text>
+  <text class="t-mid" x="568.6" y="406" font-size="16" text-anchor="middle">20</text>
+  <text class="t-mid" x="760" y="406" font-size="16" text-anchor="middle">40</text>
+  <text class="t-mid" x="425" y="436" font-size="16" text-anchor="middle">Signal-to-noise ratio (dB)</text>
+
+  <!-- step 1: curve log2(1 + SNR) -->
+  <g data-step="1">
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="3" d="M90,380 L185.7,379.7 L233.6,379 L281.4,376.9 L305.3,374.7 L329.3,370.9 L353.2,365.2 L377.1,357.1 L401.1,346.4 L425,333 L448.9,317.6 L472.9,300.9 L520.7,265.1 L568.6,227.8 L616.4,190.1 L664.3,152.2 L712.1,114.2 L760,76.3"/>
+  </g>
+
+  <!-- step 2: course examples -->
+  <g data-step="2">
+    <circle class="f-fg" cx="568.6" cy="227.8" r="6"/>
+    <text x="584" y="252" font-size="18">4G: 20 dB</text>
+    <circle class="f-fg" cx="664.3" cy="152.2" r="6"/>
+    <text x="646" y="142" font-size="18" text-anchor="end">Wi-Fi: 30 dB</text>
+    <circle class="f-fg" cx="693" cy="129.4" r="6"/>
+    <text x="680" y="110" font-size="18" text-anchor="end">Phone line: 33 dB</text>
+  </g>
+
+  <!-- step 3: distance costs 48 dB -->
+  <g data-step="3">
+    <path class="s-fg" fill="none" stroke-width="2" stroke-dasharray="6 5" d="M558,228 L109,228 L109,362"/>
+    <path class="f-fg" d="M109,373 L103,361 L115,361 Z"/>
+    <text x="330" y="214" font-size="18" text-anchor="middle">260 times farther: −48 dB</text>
+  </g>
+
+  <!-- step 4: the satellite point -->
+  <g data-step="4">
+    <circle class="f-acc" cx="109" cy="380" r="7"/>
+    <text class="t-acc" x="126" y="316" font-size="18">Satellite: −28 dB</text>
+    <text class="t-acc" x="126" y="342" font-size="16">0.002 bit/s per Hz</text>
+  </g>
+</svg>
