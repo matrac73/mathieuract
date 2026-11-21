@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <path d="M90,50 L90,370 L740,370" fill="none" class="s-mid" stroke-width="2"/>
+  <text x="415" y="412" font-size="18" text-anchor="middle" class="t-mid">Model complexity (low → high)</text>
+  <text x="48" y="210" font-size="18" text-anchor="middle" class="t-mid" transform="rotate(-90 48 210)">Error rate (no unit)</text>
+  <text x="78" y="376" font-size="16" text-anchor="end" class="t-mid">0</text>
+  <g data-step="1">
+    <path class="draw s-fg" pathLength="1" d="M90,130 C200,250 350,330 740,358" fill="none" stroke-width="3"/>
+    <text x="110" y="335" font-size="17">training error</text>
+  </g>
+  <g data-step="2">
+    <path class="draw s-mid" pathLength="1" d="M90,115 C220,250 380,300 740,193" fill="none" stroke-width="3"/>
+    <text x="740" y="170" font-size="17" text-anchor="end" class="t-mid">test error</text>
+  </g>
+  <g data-step="3">
+    <path d="M560,250 L560,326" fill="none" class="s-fg" stroke-width="2"/>
+    <polygon points="554,252 566,252 560,241" class="f-fg"/>
+    <polygon points="554,324 566,324 560,335" class="f-fg"/>
+    <text x="548" y="294" font-size="17" text-anchor="end">overfitting</text>
+  </g>
+  <g data-step="4">
+    <path class="s-acc" d="M90,124 C200,244 350,324 740,352" fill="none" stroke-width="3" stroke-dasharray="9 6"/>
+    <path d="M650,226 L650,330" fill="none" class="s-acc" stroke-width="2"/>
+    <polygon points="644,328 656,328 650,340" class="f-acc"/>
+    <text x="740" y="110" font-size="18" text-anchor="end" class="t-acc">test already seen: error ≈ training</text>
+  </g>
+</svg>
