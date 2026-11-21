@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <line x1="90" y1="292.5" x2="740" y2="292.5" class="s-line" stroke-width="1"/>
+  <line x1="90" y1="215" x2="740" y2="215" class="s-line" stroke-width="1"/>
+  <line x1="90" y1="137.5" x2="740" y2="137.5" class="s-line" stroke-width="1"/>
+  <line x1="90" y1="60" x2="740" y2="60" class="s-line" stroke-width="1"/>
+  <line x1="90" y1="60" x2="90" y2="370" class="s-mid" stroke-width="2"/>
+  <line x1="90" y1="370" x2="740" y2="370" class="s-mid" stroke-width="2"/>
+  <text x="24" y="38" font-size="18">One-way delay (ms)</text>
+  <text x="78" y="376" font-size="16" text-anchor="end" class="t-mid">0</text>
+  <text x="78" y="298" font-size="16" text-anchor="end" class="t-mid">40</text>
+  <text x="78" y="221" font-size="16" text-anchor="end" class="t-mid">80</text>
+  <text x="78" y="143" font-size="16" text-anchor="end" class="t-mid">120</text>
+  <text x="78" y="66" font-size="16" text-anchor="end" class="t-mid">160</text>
+  <text x="90" y="394" font-size="16" text-anchor="middle" class="t-mid">0</text>
+  <text x="307" y="394" font-size="16" text-anchor="middle" class="t-mid">10,000</text>
+  <text x="523" y="394" font-size="16" text-anchor="middle" class="t-mid">20,000</text>
+  <text x="740" y="394" font-size="16" text-anchor="middle" class="t-mid">30,000</text>
+  <text x="415" y="428" font-size="18" text-anchor="middle">Length of fibre travelled (km)</text>
+  <g data-step="1">
+    <path d="M90 370 L740 93.2" pathLength="1" fill="none" class="draw s-fg" stroke-width="3"/>
+    <text x="112" y="92" font-size="18">delay = distance ÷ 210,000 km/s</text>
+  </g>
+  <g data-step="2">
+    <line x1="408.5" y1="234.4" x2="408.5" y2="370" class="s-mid" stroke-width="2" stroke-dasharray="6 6"/>
+    <line x1="90" y1="234.4" x2="408.5" y2="234.4" class="s-mid" stroke-width="2" stroke-dasharray="6 6"/>
+    <circle cx="408.5" cy="234.4" r="7" class="f-fg"/>
+    <text x="424" y="264" font-size="18">Red Sea: 70 ms</text>
+  </g>
+  <g data-step="3">
+    <circle cx="545" cy="176.3" r="7" class="f-acc"/>
+    <text x="560" y="206" font-size="18" class="t-acc">China: 100 ms</text>
+    <circle cx="727" cy="98.8" r="7" class="f-acc"/>
+    <text x="712" y="84" font-size="18" text-anchor="end" class="t-acc">Pacific: 140 ms</text>
+  </g>
+  <g data-step="4">
+    <text x="112" y="136" font-size="18" class="t-acc">Round trip: 60 to 140 ms more</text>
+  </g>
+</svg>
