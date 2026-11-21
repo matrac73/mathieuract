@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="24" y="40" font-size="16" class="t-mid">Delay of each link, in ms</text>
+  <line x1="110" y1="230" x2="400" y2="90" class="s-mid" stroke-width="2"/>
+  <line x1="400" y1="90" x2="690" y2="230" class="s-mid" stroke-width="2"/>
+  <line x1="110" y1="230" x2="400" y2="230" class="s-mid" stroke-width="2"/>
+  <line x1="110" y1="230" x2="400" y2="360" class="s-mid" stroke-width="2"/>
+  <line x1="400" y1="360" x2="690" y2="230" class="s-mid" stroke-width="2"/>
+  <line x1="400" y1="230" x2="690" y2="230" class="s-mid" stroke-width="2" data-hide="2"/>
+  <text x="545" y="220" font-size="18" text-anchor="middle" data-hide="2">30</text>
+  <g data-hide="2">
+    <path d="M110 230 L400 230 L690 230" fill="none" class="s-acc" stroke-width="5"/>
+    <text x="776" y="40" font-size="18" text-anchor="end" class="t-acc">40 + 30 = 70 ms</text>
+  </g>
+  <g data-step="2">
+    <line x1="400" y1="230" x2="690" y2="230" class="s-mid" stroke-width="2" stroke-dasharray="4 8"/>
+    <line x1="533" y1="218" x2="557" y2="242" class="s-fg" stroke-width="4"/>
+    <line x1="533" y1="242" x2="557" y2="218" class="s-fg" stroke-width="4"/>
+    <text x="545" y="204" font-size="16" text-anchor="middle">Cable cut</text>
+  </g>
+  <g data-step="3">
+    <text x="436" y="84" font-size="16">advertises: 50</text>
+    <text x="400" y="304" font-size="16" text-anchor="middle">advertises: ∞</text>
+    <text x="440" y="384" font-size="16">advertises: 60</text>
+    <text x="24" y="420" font-size="16" class="t-mid">Asia compares: link + advert</text>
+  </g>
+  <g data-step="4">
+    <path d="M110 230 L400 90 L690 230" pathLength="1" fill="none" class="draw s-acc" stroke-width="5"/>
+    <text x="776" y="40" font-size="18" text-anchor="end" class="t-acc">50 + 50 = 100 ms</text>
+  </g>
+  <circle cx="110" cy="230" r="22" class="f-panel s-fg" stroke-width="2"/>
+  <circle cx="690" cy="230" r="22" class="f-panel s-fg" stroke-width="2"/>
+  <circle cx="400" cy="90" r="22" class="f-panel s-fg" stroke-width="2"/>
+  <circle cx="400" cy="230" r="22" class="f-panel s-fg" stroke-width="2"/>
+  <circle cx="400" cy="360" r="22" class="f-panel s-fg" stroke-width="2"/>
+  <text x="110" y="282" font-size="18" text-anchor="middle">Asia</text>
+  <text x="690" y="282" font-size="18" text-anchor="middle">Europe</text>
+  <text x="400" y="50" font-size="18" text-anchor="middle">China (land)</text>
+  <text x="400" y="282" font-size="18" text-anchor="middle">Red Sea</text>
+  <text x="400" y="412" font-size="18" text-anchor="middle">Pacific</text>
+  <text x="238" y="146" font-size="18" text-anchor="middle">50</text>
+  <text x="562" y="146" font-size="18" text-anchor="middle">50</text>
+  <text x="255" y="220" font-size="18" text-anchor="middle">40</text>
+  <text x="236" y="322" font-size="18" text-anchor="middle">80</text>
+  <text x="564" y="322" font-size="18" text-anchor="middle">60</text>
+</svg>

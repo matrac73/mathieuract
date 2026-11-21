@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <text x="24" y="40" font-size="18">File d'attente d'un routeur</text>
+  <line x1="60" y1="185" x2="262" y2="185" class="s-fg" stroke-width="3"/>
+  <path d="M262 175 L280 185 L262 195 Z" class="f-fg"/>
+  <line x1="580" y1="185" x2="742" y2="185" class="s-fg" stroke-width="3"/>
+  <path d="M742 175 L760 185 L742 195 Z" class="f-fg"/>
+  <rect x="280" y="140" width="300" height="90" class="f-panel s-fg" stroke-width="2"/>
+  <line x1="330" y1="140" x2="330" y2="230" class="s-line" stroke-width="2"/>
+  <line x1="380" y1="140" x2="380" y2="230" class="s-line" stroke-width="2"/>
+  <line x1="430" y1="140" x2="430" y2="230" class="s-line" stroke-width="2"/>
+  <line x1="480" y1="140" x2="480" y2="230" class="s-line" stroke-width="2"/>
+  <line x1="530" y1="140" x2="530" y2="230" class="s-line" stroke-width="2"/>
+  <rect x="536" y="148" width="38" height="74" class="f-mid"/>
+  <text x="430" y="258" font-size="16" text-anchor="middle" class="t-mid">6 places</text>
+  <text x="670" y="160" font-size="16" text-anchor="middle">Sortie : 10 par seconde</text>
+  <text x="165" y="160" font-size="16" text-anchor="middle" data-hide="2">Arrivées : 8 par seconde</text>
+  <g data-step="2">
+    <text x="165" y="160" font-size="16" text-anchor="middle">Arrivées : 12 par seconde</text>
+    <rect x="486" y="148" width="38" height="74" class="f-mid"/>
+    <rect x="436" y="148" width="38" height="74" class="f-mid"/>
+    <rect x="386" y="148" width="38" height="74" class="f-mid"/>
+    <text x="430" y="116" font-size="16" text-anchor="middle">La file gagne 2 paquets par seconde</text>
+  </g>
+  <g data-step="3">
+    <rect x="336" y="148" width="38" height="74" class="f-mid"/>
+    <rect x="286" y="148" width="38" height="74" class="f-mid"/>
+    <path d="M270 190 Q270 250 236 266" pathLength="1" fill="none" class="draw s-acc" stroke-width="3"/>
+    <rect x="190" y="254" width="38" height="30" fill="none" class="s-acc" stroke-width="3"/>
+    <rect x="138" y="272" width="38" height="30" fill="none" class="s-acc" stroke-width="3"/>
+    <text x="24" y="346" font-size="18" class="t-acc">File pleine : paquets supprimés</text>
+  </g>
+  <g data-step="4">
+    <text x="165" y="216" font-size="16" text-anchor="middle" class="t-mid">puis ralenties par TCP</text>
+    <text x="776" y="346" font-size="18" text-anchor="end">TCP renvoie et ralentit l'émetteur</text>
+  </g>
+</svg>
