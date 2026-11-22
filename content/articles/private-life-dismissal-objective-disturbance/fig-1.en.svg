@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <rect x="250" y="30" width="300" height="50" rx="6" class="f-panel s-fg" stroke-width="2"/>
+  <text x="400" y="62" text-anchor="middle" font-size="20">Fact from private life</text>
+  <g data-step="2">
+    <path class="draw s-mid" pathLength="1" d="M400 80 V120" fill="none" stroke-width="2"/>
+    <polygon points="392,118 408,118 400,132" class="f-mid"/>
+    <rect x="220" y="132" width="360" height="50" rx="6" class="f-panel s-fg" stroke-width="2"/>
+    <text x="400" y="164" text-anchor="middle" font-size="20">Principle: no dismissal</text>
+  </g>
+  <g data-step="3">
+    <path class="draw s-mid" pathLength="1" d="M300 182 L216 240" fill="none" stroke-width="2"/>
+    <polygon points="204,248 213,232 223,245" class="f-mid"/>
+    <path class="draw s-mid" pathLength="1" d="M500 182 L584 240" fill="none" stroke-width="2"/>
+    <polygon points="596,248 587,232 577,245" class="f-mid"/>
+    <text x="400" y="226" text-anchor="middle" font-size="18" class="t-mid">except in two cases</text>
+    <rect x="40" y="250" width="340" height="50" rx="6" class="f-panel s-fg" stroke-width="2"/>
+    <text x="210" y="282" text-anchor="middle" font-size="20">Clear objective disturbance</text>
+    <text x="210" y="326" text-anchor="middle" font-size="16" class="t-mid">non-disciplinary ground</text>
+    <rect x="420" y="250" width="340" height="50" rx="6" class="f-panel s-fg" stroke-width="2"/>
+    <text x="590" y="282" text-anchor="middle" font-size="20">Breach of the contract</text>
+    <text x="590" y="326" text-anchor="middle" font-size="16" class="t-mid">disciplinary ground</text>
+  </g>
+  <g data-step="4">
+    <rect x="40" y="250" width="340" height="50" rx="6" fill="none" class="s-acc" stroke-width="4"/>
+    <path class="draw s-acc" pathLength="1" d="M210 338 V372" fill="none" stroke-width="3"/>
+    <polygon points="201,370 219,370 210,386" class="f-acc"/>
+    <text x="210" y="414" text-anchor="middle" font-size="20" class="t-acc">Real and serious cause</text>
+    <text x="590" y="414" text-anchor="middle" font-size="16" class="t-mid">route not used here</text>
+  </g>
+</svg>
