@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="24" y="36" font-size="18">Moteur de recherche : de la requête au document</text>
+  <rect x="40" y="70" width="90" height="44" class="f-panel s-fg" stroke-width="2"/>
+  <text x="85" y="98" font-size="17" text-anchor="middle" class="t-mono">d1</text>
+  <rect x="40" y="134" width="90" height="44" class="f-panel s-fg" stroke-width="2"/>
+  <text x="85" y="162" font-size="17" text-anchor="middle" class="t-mono">d2</text>
+  <rect x="40" y="198" width="90" height="44" class="f-panel s-fg" stroke-width="2"/>
+  <text x="85" y="226" font-size="17" text-anchor="middle" class="t-mono">d3</text>
+  <rect x="40" y="262" width="90" height="44" class="f-panel s-fg" stroke-width="2"/>
+  <text x="85" y="290" font-size="17" text-anchor="middle" class="t-mono">d4</text>
+  <rect x="40" y="326" width="90" height="44" class="f-panel s-fg" stroke-width="2"/>
+  <text x="85" y="354" font-size="17" text-anchor="middle" class="t-mono">d5</text>
+  <text x="85" y="400" font-size="16" text-anchor="middle" class="t-mid">5 documents</text>
+  <g data-step="2">
+    <rect x="165" y="60" width="370" height="270" class="f-panel s-mid" stroke-width="2"/>
+    <text x="180" y="90" font-size="17">Index inversé</text>
+    <text x="180" y="136" font-size="17" class="t-mono">july</text>
+    <text x="236" y="136" font-size="17" class="t-mid">→</text>
+    <text x="262" y="136" font-size="17" class="t-mono">d2 d3 d4</text>
+    <text x="262" y="160" font-size="16" class="t-mid">poids idf = 0,22</text>
+    <text x="180" y="206" font-size="17" class="t-mono">new</text>
+    <text x="236" y="206" font-size="17" class="t-mid">→</text>
+    <text x="262" y="206" font-size="17" class="t-mono">d1 d4</text>
+    <text x="262" y="230" font-size="16" class="t-mid">poids idf = 0,40</text>
+    <text x="180" y="276" font-size="17" class="t-mono">home</text>
+    <text x="236" y="276" font-size="17" class="t-mid">→</text>
+    <text x="262" y="276" font-size="17" class="t-mono">d1 d2 d3 d4 d5</text>
+    <text x="262" y="300" font-size="16" class="t-mid">poids idf = 0</text>
+  </g>
+  <g data-step="3">
+    <rect x="560" y="60" width="216" height="270" class="f-panel s-mid" stroke-width="2"/>
+    <text x="574" y="90" font-size="16">Requête : july new</text>
+    <text x="580" y="136" font-size="18" class="t-acc">1. d4</text>
+    <text x="760" y="136" font-size="18" text-anchor="end" class="t-acc">0,62</text>
+    <text x="580" y="176" font-size="17">2. d1</text>
+    <text x="760" y="176" font-size="17" text-anchor="end">0,40</text>
+    <text x="580" y="216" font-size="17">3. d2</text>
+    <text x="760" y="216" font-size="17" text-anchor="end">0,22</text>
+    <text x="580" y="256" font-size="17">3. d3</text>
+    <text x="760" y="256" font-size="17" text-anchor="end">0,22</text>
+    <text x="580" y="306" font-size="16" class="t-mid">d5 : non renvoyé</text>
+  </g>
+  <g data-step="4">
+    <path d="M668 330 V362 H152 V284 H140" pathLength="1" fill="none" class="draw s-acc" stroke-width="3"/>
+    <path d="M132 284 L144 277 L144 291 Z" class="f-acc"/>
+    <rect x="36" y="258" width="98" height="52" fill="none" class="s-acc" stroke-width="3"/>
+    <text x="776" y="412" font-size="18" text-anchor="end" class="t-acc">Chaque résultat est un document existant</text>
+  </g>
+</svg>

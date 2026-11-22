@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420">
+  <text x="24" y="40" font-size="18">Language model: one word after another</text>
+  <rect x="40" y="80" width="340" height="48" class="f-panel s-fg" stroke-width="2"/>
+  <text x="56" y="111" font-size="18">The capital of Australia is</text>
+  <rect x="396" y="80" width="140" height="48" class="f-panel s-mid" stroke-width="2"/>
+  <text x="466" y="111" font-size="20" text-anchor="middle" class="t-mid" data-hide="3">?</text>
+  <g data-step="2">
+    <text x="40" y="180" font-size="16" class="t-mid">Possible next words</text>
+    <text x="776" y="180" font-size="16" text-anchor="end" class="t-mid">probabilities made up for the example</text>
+    <text x="40" y="226" font-size="17">Canberra</text>
+    <rect x="180" y="208" width="220" height="24" class="f-mid"/>
+    <text x="412" y="226" font-size="17">55%</text>
+    <text x="40" y="274" font-size="17">Sydney</text>
+    <rect x="180" y="256" width="140" height="24" class="f-mid"/>
+    <text x="332" y="274" font-size="17">35%</text>
+    <text x="40" y="322" font-size="17">Melbourne</text>
+    <rect x="180" y="304" width="40" height="24" class="f-mid"/>
+    <text x="232" y="322" font-size="17">10%</text>
+  </g>
+  <g data-step="3">
+    <rect x="180" y="256" width="140" height="24" class="f-acc"/>
+    <path d="M390 268 H500 V140" pathLength="1" fill="none" class="draw s-acc" stroke-width="3"/>
+    <path d="M500 130 L493 142 L507 142 Z" class="f-acc"/>
+    <rect x="396" y="80" width="140" height="48" fill="none" class="s-acc" stroke-width="3"/>
+    <text x="466" y="111" font-size="18" text-anchor="middle" class="t-acc">Sydney</text>
+    <text x="556" y="111" font-size="18" class="t-acc">plausible, but wrong</text>
+  </g>
+  <g data-step="4">
+    <text x="40" y="386" font-size="18" class="t-acc">No document behind the sentence</text>
+  </g>
+</svg>
