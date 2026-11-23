@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="50" y="48" font-size="20">1 000 copies, dont 100 écrites par IA</text>
+  <rect x="50" y="110" width="700" height="200" class="s-fg f-panel" stroke-width="2"/>
+  <line x1="120" y1="110" x2="120" y2="310" class="s-fg" stroke-width="2"/>
+  <text x="50" y="98" font-size="18">100 IA</text>
+  <text x="435" y="98" font-size="18" text-anchor="middle">900 écrites par les élèves</text>
+  <g data-step="2">
+    <rect x="50" y="258" width="70" height="52" class="f-acc"/>
+    <text x="50" y="340" font-size="18" class="t-acc">26 signalées</text>
+  </g>
+  <g data-step="3">
+    <rect x="120" y="292" width="630" height="18" class="f-fg"/>
+    <text x="435" y="340" font-size="18" text-anchor="middle">81 signalées à tort</text>
+  </g>
+  <g data-step="4">
+    <path d="M50 354 V364 H750 V354" class="s-acc" fill="none" stroke-width="2"/>
+    <text x="400" y="404" font-size="22" text-anchor="middle" class="t-acc">Signalée : 26 sur 107 = 24 % d'IA</text>
+  </g>
+</svg>
