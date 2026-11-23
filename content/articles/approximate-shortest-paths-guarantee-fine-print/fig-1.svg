@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="24" y="34" font-size="17" class="t-mid">Nombre d'opérations</text>
+  <line x1="110" y1="60" x2="560" y2="60" class="s-line" stroke-width="1"/>
+  <line x1="110" y1="220" x2="560" y2="220" class="s-line" stroke-width="1"/>
+  <line x1="260" y1="50" x2="260" y2="380" class="s-line" stroke-width="1"/>
+  <line x1="410" y1="50" x2="410" y2="380" class="s-line" stroke-width="1"/>
+  <line x1="560" y1="50" x2="560" y2="380" class="s-line" stroke-width="1"/>
+  <line x1="110" y1="50" x2="110" y2="380" class="s-mid" stroke-width="2"/>
+  <line x1="110" y1="380" x2="570" y2="380" class="s-mid" stroke-width="2"/>
+  <text x="98" y="386" font-size="17" text-anchor="end" class="t-mid">10⁶</text>
+  <text x="98" y="226" font-size="17" text-anchor="end" class="t-mid">10¹²</text>
+  <text x="98" y="66" font-size="17" text-anchor="end" class="t-mid">10¹⁸</text>
+  <text x="110" y="406" font-size="17" text-anchor="middle" class="t-mid">10³</text>
+  <text x="260" y="406" font-size="17" text-anchor="middle" class="t-mid">10⁴</text>
+  <text x="410" y="406" font-size="17" text-anchor="middle" class="t-mid">10⁵</text>
+  <text x="560" y="406" font-size="17" text-anchor="middle" class="t-mid">10⁶</text>
+  <text x="335" y="436" font-size="17" text-anchor="middle" class="t-mid">Nombre de sommets n du réseau</text>
+  <g data-step="1">
+    <path d="M110 300 L560 60" fill="none" class="draw s-fg" stroke-width="3" pathLength="1"/>
+    <text x="578" y="44" font-size="18">Exact : n³</text>
+  </g>
+  <g data-step="2">
+    <circle cx="560" cy="60" r="6" class="f-fg"/>
+    <text x="578" y="70" font-size="17">10¹⁸ opérations</text>
+    <text x="578" y="96" font-size="17">≈ 32 ans</text>
+    <text x="578" y="330" font-size="16" class="t-mid">à 1 milliard</text>
+    <text x="578" y="352" font-size="16" class="t-mid">d'opérations/s</text>
+  </g>
+  <g data-step="3">
+    <path d="M110 380 L560 220" fill="none" class="draw s-acc" stroke-width="3" pathLength="1"/>
+    <text x="578" y="204" font-size="18" class="t-acc">Approché : n²</text>
+  </g>
+  <g data-step="4">
+    <circle cx="560" cy="220" r="6" class="f-acc"/>
+    <text x="578" y="230" font-size="17" class="t-acc">10¹² opérations</text>
+    <text x="578" y="256" font-size="17" class="t-acc">≈ 17 minutes</text>
+  </g>
+</svg>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <text x="24" y="40" font-size="19">Paire éloignée, vraie distance : 10</text>
+  <line x1="50" y1="120" x2="760" y2="120" class="s-mid" stroke-width="2"/>
+  <line x1="50" y1="112" x2="50" y2="128" class="s-mid" stroke-width="2"/>
+  <text x="50" y="150" font-size="17" text-anchor="middle" class="t-mid">0</text>
+  <g data-step="1">
+    <rect x="330" y="96" width="280" height="24" class="f-panel s-fg" stroke-width="2"/>
+    <text x="330" y="150" font-size="17" text-anchor="middle">10</text>
+    <text x="610" y="150" font-size="17" text-anchor="middle">20 = 2 × 10</text>
+    <circle cx="442" cy="108" r="7" class="f-fg"/>
+    <text x="442" y="82" font-size="17" text-anchor="middle">estimation 14 : permise</text>
+  </g>
+  <g data-step="2">
+    <text x="24" y="230" font-size="19">Paire proche, vraie distance : 2</text>
+    <line x1="50" y1="310" x2="760" y2="310" class="s-mid" stroke-width="2"/>
+    <line x1="50" y1="302" x2="50" y2="318" class="s-mid" stroke-width="2"/>
+    <text x="50" y="340" font-size="17" text-anchor="middle" class="t-mid">0</text>
+    <rect x="210" y="286" width="160" height="24" class="f-panel s-fg" stroke-width="2"/>
+    <text x="210" y="340" font-size="17" text-anchor="middle">2</text>
+    <text x="370" y="340" font-size="17" text-anchor="middle">4 = 2 × 2</text>
+    <text x="24" y="376" font-size="16" class="t-mid">Distances en nombre d'arêtes</text>
+  </g>
+  <g data-step="3">
+    <line x1="450" y1="302" x2="450" y2="318" class="s-acc" stroke-width="2"/>
+    <text x="450" y="340" font-size="17" text-anchor="middle" class="t-acc">5</text>
+    <circle cx="450" cy="298" r="7" class="f-acc"/>
+    <text x="470" y="290" font-size="17" class="t-acc">estimation 5 : hors garantie</text>
+  </g>
+</svg>
