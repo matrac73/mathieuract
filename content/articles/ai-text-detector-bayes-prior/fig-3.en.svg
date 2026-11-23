@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440">
+  <text x="30" y="44" font-size="20">Probability of AI for a flagged essay</text>
+  <text x="30" y="72" font-size="16" class="t-mid">starting point: 10% AI essays</text>
+  <line x1="500" y1="96" x2="500" y2="384" class="s-line"/>
+  <line x1="710" y1="96" x2="710" y2="384" class="s-line"/>
+  <line x1="290" y1="96" x2="290" y2="384" class="s-fg" stroke-width="2"/>
+  <text x="290" y="410" font-size="16" text-anchor="middle">0</text>
+  <text x="500" y="410" font-size="16" text-anchor="middle">50</text>
+  <text x="710" y="410" font-size="16" text-anchor="middle">100%</text>
+  <text x="30" y="121" font-size="17">catches 26%</text>
+  <text x="30" y="143" font-size="17" class="t-mid">9% false alarms</text>
+  <rect x="290" y="108" width="102" height="34" class="f-mid"/>
+  <text x="402" y="131" font-size="18">24%</text>
+  <g data-step="2">
+    <text x="30" y="196" font-size="17">catches 100%</text>
+    <text x="30" y="218" font-size="17" class="t-mid">9% false alarms</text>
+    <rect x="290" y="183" width="232" height="34" class="f-fg"/>
+    <text x="532" y="206" font-size="18">55%</text>
+  </g>
+  <g data-step="3">
+    <text x="30" y="271" font-size="17">catches 26%</text>
+    <text x="30" y="293" font-size="17" class="t-mid">1% false alarms</text>
+    <rect x="290" y="258" width="312" height="34" class="f-fg"/>
+    <text x="612" y="281" font-size="18">74%</text>
+  </g>
+  <g data-step="4">
+    <text x="30" y="346" font-size="17">catches 26%</text>
+    <text x="30" y="368" font-size="17" class="t-acc">0.1% false alarms</text>
+    <rect x="290" y="333" width="406" height="34" class="f-acc"/>
+    <text x="706" y="356" font-size="18" class="t-acc">97%</text>
+  </g>
+</svg>
