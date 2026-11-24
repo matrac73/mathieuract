@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="24" y="44" font-size="16" class="t-mid">écart latéral (m)</text>
+  <text x="776" y="44" font-size="16" text-anchor="end" class="t-mid">accélération latérale ≤ 2 m/s²</text>
+  <path d="M100,380 Q400,380 700,92 L700,380 Z" class="f-panel"/>
+  <line x1="100" y1="300" x2="700" y2="300" class="s-line" stroke-width="1"/>
+  <line x1="100" y1="220" x2="700" y2="220" class="s-line" stroke-width="1"/>
+  <line x1="100" y1="140" x2="700" y2="140" class="s-line" stroke-width="1"/>
+  <line x1="100" y1="60" x2="100" y2="380" class="s-fg" stroke-width="2"/>
+  <line x1="100" y1="380" x2="700" y2="380" class="s-fg" stroke-width="2"/>
+  <text x="88" y="386" font-size="16" text-anchor="end" class="t-mono">0</text>
+  <text x="88" y="306" font-size="16" text-anchor="end" class="t-mono">20</text>
+  <text x="88" y="226" font-size="16" text-anchor="end" class="t-mono">40</text>
+  <text x="88" y="146" font-size="16" text-anchor="end" class="t-mono">60</text>
+  <text x="88" y="66" font-size="16" text-anchor="end" class="t-mono">80</text>
+  <line x1="300" y1="380" x2="300" y2="387" class="s-fg" stroke-width="2"/>
+  <line x1="500" y1="380" x2="500" y2="387" class="s-fg" stroke-width="2"/>
+  <line x1="600" y1="380" x2="600" y2="387" class="s-fg" stroke-width="2"/>
+  <line x1="700" y1="380" x2="700" y2="387" class="s-fg" stroke-width="2"/>
+  <text x="100" y="406" font-size="16" text-anchor="middle" class="t-mono">0</text>
+  <text x="300" y="406" font-size="16" text-anchor="middle" class="t-mono">4</text>
+  <text x="500" y="406" font-size="16" text-anchor="middle" class="t-mono">8</text>
+  <text x="600" y="406" font-size="16" text-anchor="middle" class="t-mono">10</text>
+  <text x="700" y="406" font-size="16" text-anchor="middle" class="t-mono">12</text>
+  <text x="700" y="432" font-size="16" text-anchor="end" class="t-mid">temps restant avant la tour (s)</text>
+  <path d="M100,380 Q400,380 700,92" fill="none" class="s-fg" stroke-width="2.5"/>
+  <text x="130" y="130" font-size="17">hors de portée</text>
+  <text x="430" y="350" font-size="17">rattrapable</text>
+  <g data-step="2">
+    <circle cx="600" cy="260" r="7" class="f-fg"/>
+    <text x="616" y="266" font-size="16">30 m : possible</text>
+  </g>
+  <g data-step="3">
+    <line x1="100" y1="180" x2="600" y2="180" class="s-mid" stroke-width="1.5" stroke-dasharray="6 6"/>
+    <line x1="600" y1="180" x2="600" y2="380" class="s-mid" stroke-width="1.5" stroke-dasharray="6 6"/>
+    <text x="585" y="170" font-size="16" text-anchor="end">limite à 10 s : 50 m</text>
+  </g>
+  <g data-step="4">
+    <circle cx="600" cy="120" r="8" class="f-acc"/>
+    <text x="616" y="112" font-size="17" class="t-acc">65 m : trop loin,</text>
+    <text x="616" y="134" font-size="17" class="t-acc">cap sur la mer</text>
+  </g>
+</svg>

@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="24" y="50" font-size="16" class="t-mid">offset from the tower axis (m)</text>
+  <line x1="100" y1="120" x2="740" y2="120" class="s-line" stroke-width="1"/>
+  <line x1="100" y1="220" x2="740" y2="220" class="s-line" stroke-width="1"/>
+  <line x1="100" y1="70" x2="100" y2="360" class="s-fg" stroke-width="2"/>
+  <line x1="100" y1="360" x2="740" y2="360" class="s-fg" stroke-width="2"/>
+  <line x1="100" y1="320" x2="740" y2="320" class="s-mid" stroke-width="1.5" stroke-dasharray="6 6"/>
+  <text x="740" y="346" font-size="16" text-anchor="end" class="t-mid">tower axis</text>
+  <text x="88" y="126" font-size="16" text-anchor="end" class="t-mono">10</text>
+  <text x="88" y="226" font-size="16" text-anchor="end" class="t-mono">5</text>
+  <text x="88" y="326" font-size="16" text-anchor="end" class="t-mono">0</text>
+  <line x1="260" y1="360" x2="260" y2="367" class="s-fg" stroke-width="2"/>
+  <line x1="420" y1="360" x2="420" y2="367" class="s-fg" stroke-width="2"/>
+  <line x1="580" y1="360" x2="580" y2="367" class="s-fg" stroke-width="2"/>
+  <line x1="740" y1="360" x2="740" y2="367" class="s-fg" stroke-width="2"/>
+  <text x="100" y="388" font-size="16" text-anchor="middle" class="t-mono">0</text>
+  <text x="260" y="388" font-size="16" text-anchor="middle" class="t-mono">2</text>
+  <text x="420" y="388" font-size="16" text-anchor="middle" class="t-mono">4</text>
+  <text x="580" y="388" font-size="16" text-anchor="middle" class="t-mono">6</text>
+  <text x="740" y="388" font-size="16" text-anchor="middle" class="t-mono">8</text>
+  <text x="740" y="418" font-size="16" text-anchor="end" class="t-mid">time (s)</text>
+  <line x1="100" y1="120" x2="740" y2="120" class="s-mid" stroke-width="2.5"/>
+  <circle cx="100" cy="120" r="6" class="f-fg"/>
+  <text x="740" y="106" font-size="16" text-anchor="end" class="t-mid">no control: the offset stays</text>
+  <g data-step="2">
+    <rect x="350" y="165" width="390" height="46" rx="6" class="s-fg f-panel" stroke-width="1.5"/>
+    <text x="545" y="194" font-size="17" text-anchor="middle">control = −1 × offset − 1.4 × speed</text>
+  </g>
+  <g data-step="3">
+    <path d="M100,120 L120,125.6 L140,139.7 L160,159.1 L180,181.2 L220,226.3 L260,265.1 L300,294.1 L340,313.1 L380,323.7 L420,328.3 L460,329.2 L500,328 L580,323.9 L660,321 L740,319.8" fill="none" class="draw s-acc" pathLength="1" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+  <g data-step="4">
+    <line x1="340" y1="313" x2="340" y2="360" class="s-acc" stroke-width="2" stroke-dasharray="5 5"/>
+    <circle cx="340" cy="313.1" r="6" class="f-acc"/>
+    <text x="352" y="298" font-size="17" class="t-acc">after 3 s: under 0.5 m</text>
+  </g>
+</svg>
