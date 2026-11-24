@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <line x1="24" y1="390" x2="240" y2="390" class="s-fg" stroke-width="2"/>
+  <line x1="240" y1="390" x2="776" y2="390" class="s-mid" stroke-width="2" stroke-dasharray="10 8"/>
+  <text x="24" y="420" font-size="16" class="t-mid">Texas coast</text>
+  <text x="400" y="420" font-size="16" text-anchor="middle" class="t-mid">not to scale</text>
+  <text x="776" y="420" font-size="16" text-anchor="end" class="t-mid">Gulf of Mexico</text>
+  <rect x="136" y="240" width="12" height="150" class="s-fg f-none" stroke-width="2"/>
+  <line x1="148" y1="300" x2="182" y2="300" class="s-fg" stroke-width="3"/>
+  <text x="142" y="228" font-size="16" text-anchor="middle">tower</text>
+  <path d="M166,388 Q166,120 430,110" fill="none" class="s-fg" stroke-width="2.5"/>
+  <circle cx="430" cy="110" r="6" class="f-fg"/>
+  <text x="418" y="96" font-size="16" text-anchor="end">separation at 2 min 20 s</text>
+  <path d="M430,110 Q600,60 770,52" fill="none" class="s-mid" stroke-width="2"/>
+  <text x="620" y="40" font-size="16" text-anchor="middle" class="t-mid">ship: on to orbit</text>
+  <g data-step="2">
+    <path d="M430,110 C475,105 470,175 420,205" fill="none" class="draw s-fg" pathLength="1" stroke-width="2.5"/>
+    <circle cx="420" cy="205" r="6" class="f-fg"/>
+    <text x="485" y="165" font-size="16">flip, engines relit</text>
+  </g>
+  <g data-step="3">
+    <path d="M420,205 Q270,225 190,296" fill="none" class="s-mid" stroke-width="2.5" stroke-dasharray="8 7"/>
+    <polyline points="203,292.5 190,296 195,283.5" fill="none" class="s-mid" stroke-width="2.5"/>
+    <text x="205" y="340" font-size="16" class="t-mid">planned: back to the tower</text>
+  </g>
+  <g data-step="4">
+    <path d="M420,205 Q440,300 480,384" fill="none" class="draw s-acc" pathLength="1" stroke-width="3"/>
+    <polyline points="480.2,370.6 480,384 469.4,375.8" fill="none" class="s-acc" stroke-width="3"/>
+    <text x="500" y="300" font-size="17" class="t-acc">diverted to sea after 6 min</text>
+  </g>
+</svg>
