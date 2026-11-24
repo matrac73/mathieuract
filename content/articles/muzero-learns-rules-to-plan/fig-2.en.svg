@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <rect x="40" y="185" width="160" height="80" class="f-panel s-mid" stroke-width="2"/>
+  <text x="120" y="231" font-size="18" text-anchor="middle">game screen</text>
+  <path d="M204 225 H270 M262 219 L270 225 L262 231" class="s-fg" fill="none" stroke-width="2"/>
+  <circle cx="300" cy="225" r="24" class="f-panel s-fg" stroke-width="2"/>
+  <text x="290" y="278" font-size="17" text-anchor="middle">internal state</text>
+  <g data-step="2">
+    <line x1="321" y1="213" x2="451" y2="141" class="s-mid" stroke-width="2"/>
+    <line x1="321" y1="237" x2="451" y2="309" class="s-mid" stroke-width="2"/>
+    <circle cx="470" cy="130" r="22" class="f-panel s-fg" stroke-width="2"/>
+    <circle cx="470" cy="320" r="22" class="f-panel s-fg" stroke-width="2"/>
+    <text x="395" y="132" font-size="17" text-anchor="end">move A, gain +1</text>
+    <text x="395" y="332" font-size="17" text-anchor="end">move B, gain 0</text>
+  </g>
+  <g data-step="3">
+    <text x="470" y="136" font-size="18" text-anchor="middle">3</text>
+    <text x="470" y="326" font-size="18" text-anchor="middle">8</text>
+    <text x="470" y="231" font-size="17" text-anchor="middle" class="t-mid">predicted value</text>
+  </g>
+  <g data-step="4">
+    <line x1="491" y1="123" x2="627" y2="84" class="s-mid" stroke-width="2"/>
+    <line x1="491" y1="137" x2="627" y2="176" class="s-mid" stroke-width="2"/>
+    <line x1="491" y1="313" x2="627" y2="274" class="s-mid" stroke-width="2"/>
+    <line x1="491" y1="327" x2="627" y2="366" class="s-mid" stroke-width="2"/>
+    <circle cx="640" cy="80" r="14" class="f-panel s-mid" stroke-width="2"/>
+    <circle cx="640" cy="180" r="14" class="f-panel s-mid" stroke-width="2"/>
+    <circle cx="640" cy="270" r="14" class="f-panel s-mid" stroke-width="2"/>
+    <circle cx="640" cy="370" r="14" class="f-panel s-mid" stroke-width="2"/>
+    <text x="640" y="40" font-size="17" text-anchor="middle" class="t-mid">several moves ahead</text>
+  </g>
+  <g data-step="5">
+    <line x1="321" y1="237" x2="451" y2="309" class="s-acc" stroke-width="4"/>
+    <circle cx="470" cy="320" r="22" class="s-acc" fill="none" stroke-width="4"/>
+    <text x="40" y="412" font-size="19" class="t-acc">B is played: 0 + 8 &gt; 1 + 3</text>
+  </g>
+</svg>

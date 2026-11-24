@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380">
+  <text x="40" y="56" font-size="17" class="t-mid">Méthode</text>
+  <text x="400" y="56" font-size="17" text-anchor="middle" class="t-mid">Règles du jeu</text>
+  <text x="630" y="56" font-size="17" text-anchor="middle" class="t-mid">Prévoit avant d'agir</text>
+  <line x1="40" y1="76" x2="760" y2="76" class="s-mid" stroke-width="2"/>
+  <line x1="40" y1="146" x2="760" y2="146" class="s-line"/>
+  <line x1="40" y1="216" x2="760" y2="216" class="s-line"/>
+  <line x1="40" y1="286" x2="760" y2="286" class="s-line"/>
+  <text x="40" y="118" font-size="18">Programmation dynamique</text>
+  <text x="400" y="118" font-size="18" text-anchor="middle">données</text>
+  <text x="630" y="118" font-size="18" text-anchor="middle">oui</text>
+  <g data-step="2">
+    <text x="40" y="188" font-size="18">Q-learning</text>
+    <text x="400" y="188" font-size="18" text-anchor="middle">inconnues</text>
+    <text x="630" y="188" font-size="18" text-anchor="middle">non</text>
+  </g>
+  <g data-step="3">
+    <text x="40" y="258" font-size="18">AlphaZero</text>
+    <text x="400" y="258" font-size="18" text-anchor="middle">données</text>
+    <text x="630" y="258" font-size="18" text-anchor="middle">oui</text>
+  </g>
+  <g data-step="4">
+    <rect x="28" y="296" width="744" height="60" rx="6" class="s-acc" fill="none" stroke-width="2"/>
+    <text x="40" y="332" font-size="18" class="t-acc">MuZero</text>
+    <text x="400" y="332" font-size="18" text-anchor="middle" class="t-acc">apprises</text>
+    <text x="630" y="332" font-size="18" text-anchor="middle" class="t-acc">oui</text>
+  </g>
+</svg>

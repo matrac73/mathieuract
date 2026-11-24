@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420">
+  <text x="60" y="48" font-size="19">Un pas coûte 10, sortir rapporte 200</text>
+  <text x="60" y="76" font-size="16" class="t-mid">gain futur compté à 90 %</text>
+  <rect x="60" y="150" width="130" height="100" class="f-panel s-mid" stroke-width="2"/>
+  <rect x="190" y="150" width="130" height="100" class="f-panel s-mid" stroke-width="2"/>
+  <rect x="320" y="150" width="130" height="100" class="f-panel s-mid" stroke-width="2"/>
+  <rect x="450" y="150" width="130" height="100" class="f-panel s-mid" stroke-width="2"/>
+  <rect x="640" y="150" width="120" height="100" class="s-fg" fill="none" stroke-width="2" stroke-dasharray="6 6"/>
+  <text x="700" y="207" font-size="20" text-anchor="middle">Sortie</text>
+  <text x="125" y="178" font-size="16" text-anchor="middle" class="t-mid">à 4 pas</text>
+  <text x="255" y="178" font-size="16" text-anchor="middle" class="t-mid">à 3 pas</text>
+  <text x="385" y="178" font-size="16" text-anchor="middle" class="t-mid">à 2 pas</text>
+  <text x="515" y="178" font-size="16" text-anchor="middle" class="t-mid">à 1 pas</text>
+  <path d="M162 134 H218 M210 128 L218 134 L210 140" class="s-mid" fill="none" stroke-width="2"/>
+  <path d="M292 134 H348 M340 128 L348 134 L340 140" class="s-mid" fill="none" stroke-width="2"/>
+  <path d="M422 134 H478 M470 128 L478 134 L470 140" class="s-mid" fill="none" stroke-width="2"/>
+  <path d="M582 134 H638 M630 128 L638 134 L630 140" class="s-fg" fill="none" stroke-width="2"/>
+  <text x="190" y="120" font-size="17" text-anchor="middle" class="t-mid">−10</text>
+  <text x="320" y="120" font-size="17" text-anchor="middle" class="t-mid">−10</text>
+  <text x="450" y="120" font-size="17" text-anchor="middle" class="t-mid">−10</text>
+  <text x="610" y="120" font-size="17" text-anchor="middle">+200</text>
+  <g data-step="2">
+    <text x="515" y="226" font-size="22" text-anchor="middle">200</text>
+  </g>
+  <g data-step="3">
+    <text x="385" y="226" font-size="22" text-anchor="middle">170</text>
+    <text x="60" y="310" font-size="17">à 2 pas : −10 + 0,9 × 200 = 170</text>
+  </g>
+  <g data-step="4">
+    <text x="255" y="226" font-size="22" text-anchor="middle">143</text>
+    <text x="60" y="346" font-size="17">à 3 pas : −10 + 0,9 × 170 = 143</text>
+  </g>
+  <g data-step="5">
+    <rect x="60" y="150" width="130" height="100" class="s-acc" fill="none" stroke-width="3"/>
+    <text x="125" y="226" font-size="22" text-anchor="middle" class="t-acc">119</text>
+    <text x="60" y="382" font-size="17" class="t-acc">à 4 pas : −10 + 0,9 × 143 ≈ 119</text>
+  </g>
+</svg>
