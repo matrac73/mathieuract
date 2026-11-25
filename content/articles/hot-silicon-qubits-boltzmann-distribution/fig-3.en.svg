@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420">
+  <text x="210" y="60" font-size="20" text-anchor="middle">Opposite spins</text>
+  <text x="590" y="60" font-size="20" text-anchor="middle">Identical spins</text>
+  <path d="M60,130 L60,260 L180,260 L180,190 L240,190 L240,260 L360,260 L360,130" fill="none" class="s-mid" stroke-width="3"/>
+  <path d="M440,130 L440,260 L560,260 L560,190 L620,190 L620,260 L740,260 L740,130" fill="none" class="s-mid" stroke-width="3"/>
+  <text x="120" y="286" font-size="16" text-anchor="middle" class="t-mid">dot 1</text>
+  <text x="300" y="286" font-size="16" text-anchor="middle" class="t-mid">dot 2</text>
+  <text x="500" y="286" font-size="16" text-anchor="middle" class="t-mid">dot 1</text>
+  <text x="680" y="286" font-size="16" text-anchor="middle" class="t-mid">dot 2</text>
+  <circle cx="120" cy="215" r="12" class="f-fg"/>
+  <line x1="120" y1="203" x2="120" y2="180" class="s-fg" stroke-width="3"/>
+  <polygon points="113,182 120,168 127,182" class="f-fg"/>
+  <circle cx="300" cy="215" r="12" class="f-fg"/>
+  <line x1="300" y1="168" x2="300" y2="192" class="s-fg" stroke-width="3"/>
+  <polygon points="293,190 300,204 307,190" class="f-fg"/>
+  <circle cx="500" cy="215" r="12" class="f-fg"/>
+  <line x1="500" y1="203" x2="500" y2="180" class="s-fg" stroke-width="3"/>
+  <polygon points="493,182 500,168 507,182" class="f-fg"/>
+  <circle cx="680" cy="215" r="12" class="f-fg"/>
+  <line x1="680" y1="203" x2="680" y2="180" class="s-fg" stroke-width="3"/>
+  <polygon points="673,182 680,168 687,182" class="f-fg"/>
+  <g data-step="2">
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="3" d="M278,150 Q212,100 150,147"/>
+    <polygon points="146,150 160.8,146.4 153.6,136.8" class="f-fg"/>
+    <text x="210" y="322" font-size="18" text-anchor="middle">The electron can cross</text>
+  </g>
+  <g data-step="3">
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="3" d="M658,150 Q636,118 610,134"/>
+    <line x1="578" y1="134" x2="602" y2="158" class="s-fg" stroke-width="4"/>
+    <line x1="602" y1="134" x2="578" y2="158" class="s-fg" stroke-width="4"/>
+    <text x="590" y="322" font-size="18" text-anchor="middle">Crossing forbidden</text>
+  </g>
+  <g data-step="4">
+    <text x="400" y="366" font-size="20" text-anchor="middle" class="t-acc">Readout compares two spins with each other,</text>
+    <text x="400" y="394" font-size="20" text-anchor="middle" class="t-acc">with no exchange with an electron reservoir</text>
+  </g>
+</svg>

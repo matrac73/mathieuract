@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="40" y="44" font-size="16" class="t-mid">probability of finding the spin low</text>
+  <line x1="100" y1="80" x2="750" y2="80" class="s-line" stroke-width="1"/>
+  <line x1="100" y1="205" x2="750" y2="205" class="s-line" stroke-width="1"/>
+  <line x1="100" y1="380" x2="100" y2="64" class="s-mid" stroke-width="2"/>
+  <line x1="100" y1="380" x2="750" y2="380" class="s-mid" stroke-width="2"/>
+  <text x="90" y="86" font-size="16" text-anchor="end" class="t-mid">100%</text>
+  <text x="90" y="211" font-size="16" text-anchor="end" class="t-mid">75%</text>
+  <text x="90" y="336" font-size="16" text-anchor="end" class="t-mid">50%</text>
+  <text x="90" y="385" font-size="16" text-anchor="end" class="t-mid">40%</text>
+  <line x1="300" y1="380" x2="300" y2="386" class="s-mid" stroke-width="2"/>
+  <line x1="500" y1="380" x2="500" y2="386" class="s-mid" stroke-width="2"/>
+  <line x1="700" y1="380" x2="700" y2="386" class="s-mid" stroke-width="2"/>
+  <text x="100" y="404" font-size="16" text-anchor="middle" class="t-mid">0</text>
+  <text x="300" y="404" font-size="16" text-anchor="middle" class="t-mid">0.5</text>
+  <text x="500" y="404" font-size="16" text-anchor="middle" class="t-mid">1</text>
+  <text x="700" y="404" font-size="16" text-anchor="middle" class="t-mid">1.5</text>
+  <text x="640" y="426" font-size="16" text-anchor="end" class="t-mid">temperature (K)</text>
+  <line x1="100" y1="330" x2="750" y2="330" class="s-mid" stroke-width="2" stroke-dasharray="8 6"/>
+  <text x="750" y="354" font-size="16" text-anchor="end" class="t-mid">50%: a coin toss</text>
+  <g data-step="2">
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="3" d="M104,80 L108,80.1 L112,81.9 L116,87.4 L120,96.8 L124,108.7 L130,128.1 L140,158.6 L150,183.5 L160,203 L180,230.8 L200,249 L220,261.8 L260,278.3 L300,288.4 L340,295.3 L420,303.9 L500,309.1 L580,312.6 L700,316 L740,316.9"/>
+  </g>
+  <g data-step="3">
+    <circle cx="140" cy="158.6" r="7" class="f-fg"/>
+    <text x="158" y="154" font-size="18">0.1 K: 84%</text>
+  </g>
+  <g data-step="4">
+    <circle cx="700" cy="316" r="8" class="f-acc"/>
+    <text x="700" y="294" font-size="18" text-anchor="middle" class="t-acc">1.5 K: 53%</text>
+  </g>
+</svg>
