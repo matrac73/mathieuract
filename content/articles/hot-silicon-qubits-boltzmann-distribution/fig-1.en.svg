@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="40" y="50" font-size="18">A spin in a magnetic field</text>
+  <line x1="60" y1="390" x2="260" y2="390" class="s-fg" stroke-width="3"/>
+  <line x1="60" y1="358" x2="260" y2="358" class="s-fg" stroke-width="3"/>
+  <text x="60" y="414" font-size="16" class="t-mid">low state</text>
+  <text x="60" y="346" font-size="16" class="t-mid">high state</text>
+  <line x1="280" y1="360" x2="280" y2="388" class="s-fg" stroke-width="2"/>
+  <polygon points="275,366 280,358 285,366" class="f-fg"/>
+  <polygon points="275,382 280,390 285,382" class="f-fg"/>
+  <text x="292" y="380" font-size="16">gap ΔE</text>
+  <line x1="260" y1="358" x2="760" y2="358" class="s-line" stroke-width="1.5" stroke-dasharray="6 6"/>
+  <line x1="420" y1="390" x2="420" y2="80" class="s-mid" stroke-width="2"/>
+  <line x1="420" y1="390" x2="760" y2="390" class="s-mid" stroke-width="2"/>
+  <line x1="414" y1="252" x2="420" y2="252" class="s-mid" stroke-width="2"/>
+  <line x1="414" y1="114" x2="420" y2="114" class="s-mid" stroke-width="2"/>
+  <text x="408" y="395" font-size="16" text-anchor="end" class="t-mid">0</text>
+  <text x="408" y="258" font-size="16" text-anchor="end" class="t-mid">1</text>
+  <text x="408" y="120" font-size="16" text-anchor="end" class="t-mid">2</text>
+  <text x="420" y="62" font-size="16" text-anchor="middle" class="t-mid">energy (10⁻²³ J)</text>
+  <g data-step="2">
+    <rect x="460" y="371" width="80" height="19" class="f-mid"/>
+    <text x="500" y="340" font-size="16" text-anchor="middle">kT at 0.1 K</text>
+    <text x="500" y="414" font-size="16" text-anchor="middle" class="t-mid">0.6 × ΔE</text>
+  </g>
+  <g data-step="3">
+    <rect x="620" y="104" width="80" height="286" class="f-acc"/>
+    <text x="660" y="90" font-size="16" text-anchor="middle" class="t-acc">kT at 1.5 K</text>
+    <text x="660" y="414" font-size="16" text-anchor="middle" class="t-acc">9 × ΔE</text>
+  </g>
+</svg>
