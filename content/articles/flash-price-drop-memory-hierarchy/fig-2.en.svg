@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="350" y="50" font-size="18" class="t-mid">Access time</text>
+  <text x="590" y="50" font-size="18" class="t-mid">Cost per GB</text>
+  <g data-step="1">
+    <rect x="105" y="76" width="130" height="60" rx="6" class="f-panel s-mid" stroke-width="2"/>
+    <text x="170" y="112" font-size="18" text-anchor="middle">Registers</text>
+    <text x="350" y="112" font-size="18" class="t-mono">a few ns</text>
+    <text x="590" y="112" font-size="18" class="t-mid">not quoted</text>
+    <rect x="85" y="156" width="170" height="60" rx="6" class="f-panel s-mid" stroke-width="2"/>
+    <text x="170" y="192" font-size="18" text-anchor="middle">Cache</text>
+    <text x="350" y="192" font-size="18" class="t-mono">1 to 12 ns</text>
+    <text x="590" y="192" font-size="18" class="t-mono">€5,000</text>
+  </g>
+  <g data-step="2">
+    <rect x="60" y="236" width="220" height="60" rx="6" class="f-panel s-fg" stroke-width="2"/>
+    <text x="170" y="272" font-size="18" text-anchor="middle">Main memory (RAM)</text>
+    <text x="350" y="272" font-size="18" class="t-mono">5 to 40 ns</text>
+    <text x="590" y="272" font-size="18" class="t-mono">€2.5 to €18</text>
+  </g>
+  <g data-step="3">
+    <rect x="30" y="322" width="280" height="60" rx="6" class="f-panel s-fg" stroke-width="2"/>
+    <text x="170" y="358" font-size="18" text-anchor="middle">Hard drive or SSD</text>
+    <text x="350" y="358" font-size="18" class="t-mono">85 µs to 16 ms</text>
+    <text x="590" y="358" font-size="18" class="t-mono">€0.02 to €0.44</text>
+  </g>
+  <g data-step="4">
+    <line x1="336" y1="262" x2="336" y2="362" class="s-acc" stroke-width="3"/>
+    <text x="350" y="316" font-size="18" class="t-acc">× 2,000 at least</text>
+  </g>
+  <text x="400" y="424" font-size="16" text-anchor="middle" class="t-mid">Lower down: larger, slower, cheaper</text>
+</svg>

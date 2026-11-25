@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="24" y="44" font-size="16" class="t-mid">Temps d'accès moyen (ns)</text>
+  <line x1="110" y1="60" x2="110" y2="380" class="s-mid" stroke-width="2"/>
+  <line x1="110" y1="380" x2="760" y2="380" class="s-mid" stroke-width="2"/>
+  <line x1="110" y1="239" x2="760" y2="239" class="s-line" stroke-width="1"/>
+  <line x1="110" y1="98" x2="760" y2="98" class="s-line" stroke-width="1"/>
+  <text x="100" y="386" font-size="16" text-anchor="end" class="t-mid">0</text>
+  <text x="100" y="245" font-size="16" text-anchor="end" class="t-mid">1 000</text>
+  <text x="100" y="104" font-size="16" text-anchor="end" class="t-mid">2 000</text>
+  <text x="110" y="404" font-size="16" text-anchor="middle" class="t-mid">0</text>
+  <text x="425" y="404" font-size="16" text-anchor="middle" class="t-mid">1</text>
+  <text x="740" y="404" font-size="16" text-anchor="middle" class="t-mid">2</text>
+  <text x="425" y="434" font-size="16" text-anchor="middle" class="t-mid">Part des accès servis par le SSD (%)</text>
+  <g data-step="1">
+    <circle cx="110" cy="377" r="6" class="f-fg"/>
+    <text x="200" y="368" font-size="18">Tout en RAM : 20 ns</text>
+  </g>
+  <g data-step="2">
+    <path d="M110 377.2 L740 95.4" fill="none" class="draw s-fg" stroke-width="3" pathLength="1"/>
+  </g>
+  <g data-step="3">
+    <circle cx="425" cy="236.3" r="7" class="f-acc"/>
+    <text x="448" y="266" font-size="18" class="t-acc">1 % sur SSD : ≈ 1 020 ns</text>
+    <text x="448" y="292" font-size="18" class="t-acc">50 fois plus lent</text>
+  </g>
+</svg>
