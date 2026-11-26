@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="24" y="40" font-size="18" class="t-mid">Amazon, 12 mois, milliards de dollars</text>
+  <line x1="50" y1="300" x2="770" y2="300" class="s-mid" stroke-width="2"/>
+  <text x="24" y="306" font-size="16" class="t-mid">0</text>
+  <g data-step="1">
+    <rect x="70" y="152" width="120" height="148" class="f-fg"/>
+    <text x="130" y="142" font-size="20" text-anchor="middle">134,8</text>
+    <text x="130" y="400" font-size="16" text-anchor="middle">Bénéfice net</text>
+  </g>
+  <g data-step="2">
+    <rect x="250" y="115" width="120" height="185" class="f-fg"/>
+    <text x="310" y="105" font-size="20" text-anchor="middle">168,3</text>
+    <text x="310" y="400" font-size="16" text-anchor="middle">Flux</text>
+    <text x="310" y="422" font-size="16" text-anchor="middle">d'exploitation</text>
+  </g>
+  <g data-step="3">
+    <line x1="370" y1="115" x2="430" y2="115" class="s-mid" stroke-width="2"/>
+    <rect x="430" y="115" width="120" height="232" class="f-mid"/>
+    <text x="490" y="105" font-size="20" text-anchor="middle">−210,7</text>
+    <text x="490" y="400" font-size="16" text-anchor="middle">Achats nets</text>
+    <text x="490" y="422" font-size="16" text-anchor="middle">d'équipements</text>
+  </g>
+  <g data-step="4">
+    <line x1="550" y1="347" x2="610" y2="347" class="s-acc" stroke-width="2"/>
+    <rect x="610" y="300" width="120" height="47" class="f-acc"/>
+    <text x="670" y="372" font-size="20" text-anchor="middle" class="t-acc">−42,4</text>
+    <text x="670" y="400" font-size="16" text-anchor="middle" class="t-acc">Flux disponible</text>
+  </g>
+</svg>
