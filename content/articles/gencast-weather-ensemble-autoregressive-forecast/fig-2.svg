@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 380">
+  <rect class="f-panel s-mid" x="30" y="70" width="170" height="60" rx="6" stroke-width="2"/>
+  <text x="115" y="106" font-size="17" text-anchor="middle">état il y a 12 h</text>
+  <rect class="f-panel s-mid" x="30" y="150" width="170" height="60" rx="6" stroke-width="2"/>
+  <text x="115" y="186" font-size="17" text-anchor="middle">état actuel</text>
+  <g data-step="2">
+    <path class="s-fg" fill="none" stroke-width="2" d="M200 100 H240 V180 H200"/>
+    <line class="s-fg" x1="240" y1="140" x2="272" y2="140" stroke-width="2"/>
+    <polygon class="f-fg" points="272,134 280,140 272,146"/>
+    <rect class="f-panel s-fg" x="280" y="95" width="170" height="90" rx="6" stroke-width="2"/>
+    <text x="365" y="136" font-size="18" text-anchor="middle">modèle appris</text>
+    <text class="t-mid" x="365" y="162" font-size="16" text-anchor="middle">GenCast</text>
+    <text x="365" y="42" font-size="17" text-anchor="middle">bruit tiré au hasard</text>
+    <line class="s-fg" x1="365" y1="52" x2="365" y2="87" stroke-width="2"/>
+    <polygon class="f-fg" points="359,87 365,95 371,87"/>
+    <line class="s-fg" x1="450" y1="140" x2="532" y2="140" stroke-width="2"/>
+    <polygon class="f-fg" points="532,134 540,140 532,146"/>
+    <rect class="f-panel s-fg" x="540" y="110" width="180" height="60" rx="6" stroke-width="2"/>
+    <text x="630" y="146" font-size="17" text-anchor="middle">état dans 12 h</text>
+  </g>
+  <g data-step="3">
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="2" d="M630 170 V250 H115 V218"/>
+    <polygon class="f-fg" points="109,218 115,210 121,218"/>
+    <text x="372" y="282" font-size="17" text-anchor="middle">réinjecté en entrée : 30 pas = 15 jours</text>
+  </g>
+  <g data-step="4">
+    <path class="s-acc" fill="none" stroke-width="2" d="M550 110 V100 H730 V160 H720"/>
+    <path class="s-acc" fill="none" stroke-width="2" d="M560 100 V90 H740 V150 H730"/>
+    <text class="t-acc" x="400" y="340" font-size="18" text-anchor="middle">relancé 50 fois : 50 scénarios possibles</text>
+  </g>
+</svg>

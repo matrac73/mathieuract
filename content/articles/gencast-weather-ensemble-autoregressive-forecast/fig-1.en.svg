@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <line class="s-line" x1="90" y1="95" x2="750" y2="95" stroke-width="1"/>
+  <line class="s-line" x1="90" y1="155" x2="750" y2="155" stroke-width="1"/>
+  <line class="s-line" x1="90" y1="275" x2="750" y2="275" stroke-width="1"/>
+  <line class="s-line" x1="90" y1="335" x2="750" y2="335" stroke-width="1"/>
+  <line class="s-mid" x1="90" y1="55" x2="90" y2="375" stroke-width="2"/>
+  <line class="s-mid" x1="90" y1="215" x2="750" y2="215" stroke-width="2"/>
+  <text class="t-mid" x="24" y="34" font-size="16">deviation from normal (°C)</text>
+  <text class="t-mid" x="78" y="101" font-size="16" text-anchor="end">+4</text>
+  <text class="t-mid" x="78" y="161" font-size="16" text-anchor="end">+2</text>
+  <text class="t-mid" x="78" y="221" font-size="16" text-anchor="end">0</text>
+  <text class="t-mid" x="78" y="281" font-size="16" text-anchor="end">−2</text>
+  <text class="t-mid" x="78" y="341" font-size="16" text-anchor="end">−4</text>
+  <text class="t-mid" x="90" y="400" font-size="16" text-anchor="middle">0</text>
+  <text class="t-mid" x="310" y="400" font-size="16" text-anchor="middle">5</text>
+  <text class="t-mid" x="530" y="400" font-size="16" text-anchor="middle">10</text>
+  <text class="t-mid" x="750" y="400" font-size="16" text-anchor="middle">15</text>
+  <text class="t-mid" x="420" y="432" font-size="16" text-anchor="middle">forecast horizon (days)</text>
+  <g data-step="3">
+    <polygon class="f-mid" fill-opacity="0.25" points="90,95 112,77 134,77.5 178,84.4 222,92.9 266,101.2 310,108.7 354,115.1 398,120.6 442,125.2 486,129 530,132.1 574,134.7 618,136.8 662,138.6 706,140 750,141.1 750,278.7 706,277.5 662,275.9 618,274 574,271.7 530,268.7 486,265 442,260.4 398,254.5 354,247.1 310,237.7 266,225.5 222,209.5 178,188.2 134,158.2 112,137"/>
+    <text x="400" y="240" font-size="17">likely zone, 2 times in 3</text>
+  </g>
+  <g data-step="4">
+    <line class="s-acc" x1="90" y1="146.2" x2="750" y2="146.2" stroke-width="2" stroke-dasharray="8 6"/>
+    <line class="s-acc" x1="90" y1="283.8" x2="750" y2="283.8" stroke-width="2" stroke-dasharray="8 6"/>
+    <text class="t-acc" x="750" y="318" font-size="17" text-anchor="end">usual variability: ± 2.3 °C</text>
+  </g>
+  <g data-step="2">
+    <path class="draw s-fg" pathLength="1" fill="none" stroke-width="3" d="M90 95 L112 107 L134 117.8 L178 136.3 L222 151.2 L266 163.3 L310 173.2 L354 181.1 L398 187.5 L442 192.8 L486 197 L530 200.4 L574 203.2 L618 205.4 L662 207.3 L706 208.7 L750 209.9"/>
+    <text x="400" y="172" font-size="17">best forecast</text>
+  </g>
+  <g data-step="1">
+    <circle class="f-fg" cx="90" cy="95" r="7"/>
+    <text x="106" y="62" font-size="17">today: +4 °C</text>
+  </g>
+</svg>
