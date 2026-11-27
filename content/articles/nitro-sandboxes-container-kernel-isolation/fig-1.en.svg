@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text x="210" y="48" font-size="22" text-anchor="middle">Virtual machines</text>
+  <text x="590" y="48" font-size="22" text-anchor="middle">Containers</text>
+  <rect x="40" y="384" width="340" height="40" class="f-panel s-mid"/>
+  <text x="210" y="410" font-size="18" text-anchor="middle" class="t-mid">Hardware</text>
+  <rect x="420" y="384" width="340" height="40" class="f-panel s-mid"/>
+  <text x="590" y="410" font-size="18" text-anchor="middle" class="t-mid">Hardware</text>
+  <g data-step="1">
+    <rect x="40" y="334" width="340" height="40" class="f-panel s-fg"/>
+    <text x="210" y="360" font-size="18" text-anchor="middle">Hypervisor</text>
+    <rect x="40" y="140" width="165" height="184" class="s-mid" fill="none"/>
+    <rect x="52" y="152" width="141" height="70" class="f-panel s-fg"/>
+    <text x="122" y="193" font-size="18" text-anchor="middle">App A</text>
+    <rect x="52" y="232" width="141" height="80" class="f-panel s-fg"/>
+    <text x="122" y="278" font-size="18" text-anchor="middle">Guest OS</text>
+    <rect x="215" y="140" width="165" height="184" class="s-mid" fill="none"/>
+    <rect x="227" y="152" width="141" height="70" class="f-panel s-fg"/>
+    <text x="297" y="193" font-size="18" text-anchor="middle">App B</text>
+    <rect x="227" y="232" width="141" height="80" class="f-panel s-fg"/>
+    <text x="297" y="278" font-size="18" text-anchor="middle">Guest OS</text>
+  </g>
+  <g data-step="2">
+    <rect x="420" y="334" width="340" height="40" class="f-panel s-fg"/>
+    <text x="590" y="360" font-size="18" text-anchor="middle">Host OS</text>
+    <rect x="420" y="284" width="340" height="40" class="f-panel s-fg"/>
+    <text x="590" y="310" font-size="16" text-anchor="middle">Container manager</text>
+    <rect x="420" y="140" width="165" height="134" class="f-panel s-fg"/>
+    <text x="502" y="200" font-size="18" text-anchor="middle">Container</text>
+    <text x="502" y="226" font-size="18" text-anchor="middle">App A</text>
+    <rect x="595" y="140" width="165" height="134" class="f-panel s-fg"/>
+    <text x="677" y="200" font-size="18" text-anchor="middle">Container</text>
+    <text x="677" y="226" font-size="18" text-anchor="middle">App B</text>
+  </g>
+  <g data-step="3">
+    <rect x="52" y="232" width="141" height="80" class="s-acc" fill="none" stroke-width="3"/>
+    <rect x="227" y="232" width="141" height="80" class="s-acc" fill="none" stroke-width="3"/>
+    <rect x="420" y="334" width="340" height="40" class="s-acc" fill="none" stroke-width="3"/>
+    <text x="210" y="104" font-size="18" text-anchor="middle" class="t-acc">One kernel per machine</text>
+    <text x="590" y="104" font-size="18" text-anchor="middle" class="t-acc">One kernel for all</text>
+  </g>
+</svg>
