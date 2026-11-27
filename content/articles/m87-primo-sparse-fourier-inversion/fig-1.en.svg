@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <text class="t-mid" x="200" y="48" font-size="17" text-anchor="middle">distance between two dishes</text>
+  <text class="t-mid" x="580" y="48" font-size="17" text-anchor="middle">ripple measured on the image</text>
+  <circle class="s-mid" cx="200" cy="225" r="130" fill="none" stroke-width="2"/>
+  <text class="t-mid" x="200" y="222" font-size="17" text-anchor="middle">Earth</text>
+  <rect class="f-panel" x="415" y="75" width="330" height="315"/>
+  <circle class="s-fg" cx="580" cy="240" r="63" fill="none" stroke-width="5"/>
+  <text class="t-mid" x="580" y="418" font-size="17" text-anchor="middle">ring: 42 µas</text>
+  <g data-step="1">
+    <line class="s-fg" x1="150.5" y1="104.8" x2="249.5" y2="104.8" stroke-width="3"/>
+    <circle class="f-fg" cx="150.5" cy="104.8" r="6"/>
+    <circle class="f-fg" cx="249.5" cy="104.8" r="6"/>
+    <text x="200" y="134" font-size="17" text-anchor="middle">4,900 km</text>
+    <g data-hide="2">
+      <line class="s-mid" x1="497.5" y1="112" x2="497.5" y2="380" stroke-width="2"/>
+      <line class="s-mid" x1="662.5" y1="112" x2="662.5" y2="380" stroke-width="2"/>
+      <line class="s-fg" x1="497.5" y1="106" x2="662.5" y2="106" stroke-width="2"/>
+      <text x="580" y="98" font-size="17" text-anchor="middle">55 µas</text>
+    </g>
+  </g>
+  <g data-step="2">
+    <line class="s-fg" x1="94" y1="300.3" x2="306" y2="300.3" stroke-width="3"/>
+    <circle class="f-fg" cx="94" cy="300.3" r="6"/>
+    <circle class="f-fg" cx="306" cy="300.3" r="6"/>
+    <text x="200" y="288" font-size="17" text-anchor="middle">10,400 km</text>
+    <line class="s-mid" x1="464.5" y1="112" x2="464.5" y2="380" stroke-width="2"/>
+    <line class="s-mid" x1="541.5" y1="112" x2="541.5" y2="380" stroke-width="2"/>
+    <line class="s-mid" x1="618.5" y1="112" x2="618.5" y2="380" stroke-width="2"/>
+    <line class="s-mid" x1="695.5" y1="112" x2="695.5" y2="380" stroke-width="2"/>
+    <line class="s-fg" x1="541.5" y1="106" x2="618.5" y2="106" stroke-width="2"/>
+    <text x="580" y="98" font-size="17" text-anchor="middle">26 µas</text>
+  </g>
+  <g data-step="3">
+    <text class="t-acc" x="200" y="418" font-size="18" text-anchor="middle">1 pair = 1 ripple</text>
+  </g>
+</svg>
