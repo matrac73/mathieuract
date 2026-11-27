@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 460">
+  <text x="400" y="40" font-size="20" text-anchor="middle">A parent instance with 4 vCPUs</text>
+  <rect x="60" y="290" width="160" height="60" class="f-panel s-fg"/>
+  <text x="140" y="327" font-size="18" text-anchor="middle">vCPU 1</text>
+  <rect x="235" y="290" width="160" height="60" class="f-panel s-fg"/>
+  <text x="315" y="327" font-size="18" text-anchor="middle">vCPU 2</text>
+  <rect x="410" y="290" width="160" height="60" class="f-panel s-fg"/>
+  <text x="490" y="327" font-size="18" text-anchor="middle">vCPU 3</text>
+  <rect x="585" y="290" width="160" height="60" class="f-panel s-fg"/>
+  <text x="665" y="327" font-size="18" text-anchor="middle">vCPU 4</text>
+  <g data-step="2">
+    <text x="60" y="190" font-size="18">Up to 20 sandboxes, 5 per vCPU</text>
+    <rect x="63" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="95" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="127" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="159" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="191" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="238" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="270" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="302" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="334" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="366" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="413" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="445" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="477" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="509" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="541" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="588" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="620" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="652" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="684" y="210" width="26" height="60" class="f-mid"/>
+    <rect x="716" y="210" width="26" height="60" class="f-mid"/>
+  </g>
+  <g data-step="3">
+    <text x="60" y="86" font-size="18">Memory per sandbox: 256 MiB minimum</text>
+    <rect x="60" y="100" width="512" height="34" class="f-panel s-fg"/>
+    <rect x="572" y="100" width="4" height="34" class="f-fg"/>
+    <text x="590" y="123" font-size="16" class="t-mid">+ 2 MiB overhead</text>
+  </g>
+  <g data-step="4">
+    <path d="M60 362 v10 H395 v-10" class="s-acc" fill="none" stroke-width="3"/>
+    <text x="227" y="398" font-size="18" text-anchor="middle" class="t-acc">core 1</text>
+    <path d="M410 362 v10 H745 v-10" class="s-acc" fill="none" stroke-width="3"/>
+    <text x="577" y="398" font-size="18" text-anchor="middle" class="t-acc">core 2</text>
+    <text x="400" y="434" font-size="20" text-anchor="middle" class="t-acc">At most 2 sandboxes compute at once</text>
+  </g>
+</svg>
